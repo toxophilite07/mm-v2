@@ -1,0 +1,23 @@
+.card-title {
+  font-size: 1rem!important
+}
+.btn-sm i {
+  font-size: .775rem!important
+}
+#birthdate-error {
+  margin-right: 1rem!important
+}
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  cursor: not-allowed!important
+}
+.badge {
+  padding: 3px 8px 0!important;
+  font-size: 70%!important
+}
+#contact_no-error {
+  width: 100%!important
+}
+#edit_contact_no-error {
+  width: 100%!important
+}

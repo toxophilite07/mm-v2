@@ -1,0 +1,21 @@
+.fc-unthemed .fc-today {
+  background: #f3f3fe!important
+}
+#external-events-listing .fc-event:hover {
+  color: #686868!important
+}
+#menstruation_period-error {
+  margin-right: 1rem!important
+}
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  cursor: not-allowed!important
+}
+.external-events .previous_periods {
+  border-left: 3px solid #727cf5!important;
+  background: #f3f3fe!important
+}
+.external-events .estimated_period {
+  border-left: 3px solid #fbbc06!important;
+  background: #fffbf2!important
+}

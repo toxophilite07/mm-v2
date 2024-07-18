@@ -1,0 +1,27 @@
+.form-control {
+  border-radius: 2px!important
+}
+.text-danger {
+  color: #f36!important
+}
+.ml-2 {
+  margin-left: .5rem!important
+}
+#birthdate-error {
+  margin-right: 1rem!important
+}
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  cursor: not-allowed!important
+}
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0
+}
+input[type=number] {
+  -moz-appearance: textfield
+}
+#contact_no-error {
+  width: 100%!important
+}

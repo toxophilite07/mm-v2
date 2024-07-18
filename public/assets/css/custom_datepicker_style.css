@@ -1,0 +1,6 @@
+.datepicker-centuries table,
+.datepicker-decades table,
+.datepicker-months table,
+.datepicker-years table {
+  width: 100%!important
+}
