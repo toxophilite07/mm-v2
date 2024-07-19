@@ -452,8 +452,6 @@ $(document).ready(function () {
         }
     });
 
-    
-
     $(document).on("click", ".delete_record", function (e) {
         Swal.fire({
             title: "Are you sure?",

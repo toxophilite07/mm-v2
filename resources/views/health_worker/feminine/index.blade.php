@@ -11,7 +11,6 @@
     border-color: #ff4dec; /* Change to match the background color */
     color: white; /* Change text color if needed */
 }
-
 </style>
 @section('contents')
     <div class="row">
@@ -26,8 +25,8 @@
                    <button type="button" class="btn btn-sm btn-primary mr-2" data-toggle="modal" data-target="#newFeminineModal">
                      <i class="fa-solid fa-plus"></i> Add New Feminine
                    </button>
-                   <button type="button" class="btn btn-sm btn-danger pdf-button" data-toggle="modal" data-target="#">
-                     <i class="fa-solid fa-print"></i> PDF
+                   <button type="button" class="btn btn-sm btn-danger pdf-button" onclick="printFeminineList()">
+                     <i class="fa-solid fa-print"></i> Print
                    </button>
                 </div>
 
@@ -68,3 +67,103 @@
 
     <script src="{{ asset('assets/js/health_worker/feminine_dt.js') }}"></script>
 @endsection
+<script>
+    $(function () {
+        if (!$.fn.DataTable.isDataTable('#feminine_table')) {
+            $("#feminine_table").DataTable({
+                aLengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                iDisplayLength: 10,
+                sAjaxSource: "../health-worker/feminine-data",
+                columns: [
+                    { data: "row_count" },
+                    { data: "full_name" },
+                    { data: "menstruation_status" },
+                    { data: "is_active" },
+                    { data: "estimated_menstrual_status" },
+                    { data: "action" }
+                ],
+                drawCallback: function(settings) {
+                    updateTotals(settings.json.data);
+                }
+            });
+            $("#feminine_table").each(function () {
+                var datatable = $(this);
+                var search_input = datatable
+                    .closest(".dataTables_wrapper")
+                    .find("div[id$=_filter] input");
+                search_input.attr("placeholder", "Search");
+                search_input.removeClass("form-control-sm");
+
+                var length_sel = datatable
+                    .closest(".dataTables_wrapper")
+                    .find("div[id$=_length] select");
+                length_sel.removeClass("form-control-sm");
+            });
+        }
+    });
+
+    function updateTotals(data) {
+        var totalActive = 0;
+        var totalInactive = 0;
+        data.forEach(item => {
+            if (item.is_active === 'Active') {
+                totalActive++;
+            } else {
+                totalInactive++;
+            }
+        });
+        document.getElementById('total_active').innerText = totalActive;
+        document.getElementById('total_inactive').innerText = totalInactive;
+    }
+
+    function printFeminineList() {
+        var table = document.getElementById('feminine_table');
+        var clonedTable = table.cloneNode(true);
+        var rows = clonedTable.rows;
+
+        // Hide the "Account Status" and "Action" columns
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].deleteCell(5);
+            rows[i].deleteCell(3);
+        }
+
+        // Create separate tables for the required columns
+        var headerTable = '<table border="1" style="width:100%; border-collapse: collapse; margin-bottom: 20px;"><thead><tr>';
+        headerTable += '<th>Name</th>';
+        headerTable += '<th>Menstruation Status</th>';
+        headerTable += '<th>Estimated Menstrual Status</th>';
+        headerTable += '</tr></thead><tbody>';
+
+        var nameTable = '';
+        for (var i = 1; i < rows.length; i++) {  // Start from 1 to skip the header row
+            nameTable += '<tr>';
+            nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
+            nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
+            nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
+            nameTable += '</tr>';
+        }
+
+        headerTable += nameTable + '</tbody></table>';
+
+        // Assuming you have variables for user information from the database
+        var newWindow = window.open('', '', 'height=500, width=800');
+        newWindow.document.write('<html><head><title>Assigned Feminine List</title>');
+        newWindow.document.write('<link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">');
+        newWindow.document.write('<style>');
+        newWindow.document.write('th.sorting::after, th.sorting_asc::after, th.sorting_desc::after { display: none !important; }');
+        newWindow.document.write('h2 { text-align: center; }');
+        newWindow.document.write('p { text-align: center; }');
+        newWindow.document.write('table { margin: 0 auto; }');
+        newWindow.document.write('</style>');
+        newWindow.document.write('</head><body>');
+        newWindow.document.write('<h2>Assigned Feminine List</h2>');
+        newWindow.document.write(headerTable);
+        newWindow.document.write('</body></html>');
+        newWindow.document.close();
+        newWindow.print();
+    }
+</script>
+

@@ -77,25 +77,26 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('user/change-password', [UserController::class, 'changePassword']);
     });
 
-    // Health Worker Routes
+// Health Worker Routes
     Route::middleware(['role:health_worker'])->group(function () {
-        Route::get('health-worker/dashboard', [BarangayHealthWorkerController::class, 'index'])->name('health-worker.dashboard');
-        
-        Route::get('health-worker/feminine-list', [BarangayHealthWorkerController::class, 'feminineList']);
-        Route::get('health-worker/feminine-data', [BarangayHealthWorkerController::class, 'feminineData']);
-        Route::get('health-worker/assign-feminine-list', [BarangayHealthWorkerController::class, 'healthWorkerFeminineList']);
-        Route::post('health-worker/new-feminine', [BarangayHealthWorkerController::class, 'postFeminine']);
-        Route::post('health-worker/update-feminine', [BarangayHealthWorkerController::class, 'postFeminine']);
-        Route::post('health-worker/delete-feminine', [BarangayHealthWorkerController::class, 'deleteFeminie']);
-        Route::post('health-worker/post-assign-feminine', [BarangayHealthWorkerController::class, 'postAssignFeminine']);
+    Route::get('health-worker/dashboard', [BarangayHealthWorkerController::class, 'index'])->name('health-worker.dashboard');
+    
+    Route::get('health-worker/feminine-list', [BarangayHealthWorkerController::class, 'feminineList']);
+    Route::get('health-worker/feminine-data', [BarangayHealthWorkerController::class, 'feminineData']);
+    Route::get('health-worker/assign-feminine-list', [BarangayHealthWorkerController::class, 'healthWorkerFeminineList']);
+    Route::post('health-worker/new-feminine', [BarangayHealthWorkerController::class, 'postFeminine']);
+    Route::post('health-worker/update-feminine', [BarangayHealthWorkerController::class, 'postFeminine']);
+    Route::post('health-worker/delete-feminine', [BarangayHealthWorkerController::class, 'deleteFeminie']);
+    Route::post('health-worker/post-assign-feminine', [BarangayHealthWorkerController::class, 'postAssignFeminine']);
 
-        Route::get('health-worker/calendar', [BarangayHealthWorkerController::class, 'calendarIndex']);
-        Route::get('health-worker/calendar-data', [BarangayHealthWorkerController::class, 'calendarData']);
-        
-        Route::get('health-worker/account', [BarangayHealthWorkerController::class, 'accountSettings']);
-        Route::post('health-worker/update-profile', [BarangayHealthWorkerController::class, 'updateProfile']);
-        Route::post('health-worker/change-password', [BarangayHealthWorkerController::class, 'changePassword']);
+    Route::get('health-worker/calendar', [BarangayHealthWorkerController::class, 'calendarIndex']);
+    Route::get('health-worker/calendar-data', [BarangayHealthWorkerController::class, 'calendarData']);
+    
+    Route::get('health-worker/account', [BarangayHealthWorkerController::class, 'accountSettings']);
+    Route::post('health-worker/update-profile', [BarangayHealthWorkerController::class, 'updateProfile']);
+    Route::post('health-worker/change-password', [BarangayHealthWorkerController::class, 'changePassword']);
 
-        Route::get('health-worker/pie-chart-data', [BarangayHealthWorkerController::class, 'pieChartData']);
-    });
+    Route::get('health-worker/pie-chart-data', [BarangayHealthWorkerController::class, 'pieChartData']);
+});
+
 });

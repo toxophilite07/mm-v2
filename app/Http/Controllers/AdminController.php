@@ -9,7 +9,8 @@ use App\Traits\UserRegistrationTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\MenstruationPeriod;
 use App\Models\FeminineHealthWorkerGroup;
@@ -129,8 +130,80 @@ class AdminController extends Controller {
     }
 
     public function postFeminine(Request $request) {
-        return $this->postForm($request->all());
+        $feminine = User::findOrFail($request->id);
+    
+        // Validate the request
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')
+                    ->ignore($feminine->id)
+                    ->where(function ($query) {
+                        return $query->whereIn('user_role_id', [2, 3]);
+                    }),
+            ],
+            'contact_no' => 'nullable|string|max:255',
+            'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
+            'menstruation_status' => 'nullable|string|max:255',
+            // Add other fields validation here
+        ], [
+            'email.unique' => 'The email address is already taken.',
+            'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+        ]);
+    
+        // Check if the email has changed
+        if ($feminine->email !== $request->email) {
+            $feminine->email = $request->email;
+        }
+    
+        // Update other fields
+        $feminine->first_name = $request->first_name;
+        $feminine->middle_name = $request->middle_name;
+        $feminine->last_name = $request->last_name;
+        $feminine->address = $request->address;
+        $feminine->contact_no = $request->contact_no;
+    
+        // Format birthdate if present
+        if ($request->filled('birthdate')) {
+            $feminine->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
+        } else {
+            $feminine->birthdate = null;
+        }
+    
+        $feminine->menstruation_status = $request->menstruation_status;
+    
+        // Save the health worker
+        $feminine->save();
+    
+        // Handle last_periods data
+        $lastPeriod = $feminine->last_periods->first() ?? null;
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Feminine details updated successfully.',
+            'data' => [
+                'first_name' => $feminine->first_name,
+                'middle_name' => $feminine->middle_name,
+                'last_name' => $feminine->last_name,
+                'email' => $feminine->email,
+                'address' => $feminine->address,
+                'contact_no' => $feminine->contact_no,
+                'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
+                'menstruation_status' => $feminine->menstruation_status,
+                'remarks' => $feminine->remarks ?? null,
+                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod['menstruation_date'])->format('m/d/Y') : null,
+                'menstruation_period_id' => $lastPeriod ? $lastPeriod['id'] : null,
+            ]
+        ]);
     }
+
 
     public function deleteFeminie(Request $request) {
         try {
@@ -347,8 +420,72 @@ class AdminController extends Controller {
     }
 
     public function postHealthWorker(Request $request) {
-        return $this->postHealthWorkerForm($request->all());
+        $health_worker = User::findOrFail($request->id);
+    
+        // Validate the request
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($health_worker->id)->where(function ($query) {
+                    return $query->where('user_role_id', 3);
+                }),
+            ],
+            'contact_no' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'birthdate' => 'nullable|date_format:m/d/Y',
+            'remarks' => 'nullable|string|max:255',
+            // Add other fields validation here
+        ], [
+            'email.unique' => 'The email address is already taken.',
+            'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+        ]);
+    
+        // Check if the email has changed
+        if ($health_worker->email !== $request->email) {
+            $health_worker->email = $request->email;
+        }
+    
+        // Update other fields
+        $health_worker->first_name = $request->first_name;
+        $health_worker->middle_name = $request->middle_name;
+        $health_worker->last_name = $request->last_name;
+        $health_worker->contact_no = $request->contact_no;
+        $health_worker->address = $request->address;
+    
+        // Format birthdate if present
+        if ($request->filled('birthdate')) {
+            $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
+        } else {
+            $health_worker->birthdate = null;
+        }
+    
+        $health_worker->remarks = $request->remarks;
+    
+        // Save the health worker
+        $health_worker->save();
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Health worker details updated successfully.',
+            'data' => [
+                'first_name' => $health_worker->first_name,
+                'last_name' => $health_worker->last_name,
+                'middle_name' => $health_worker->middle_name ?? null, // Ensure this field exists or handle accordingly
+                'email' => $health_worker->email,
+                'contact_no' => $health_worker->contact_no,
+                'address' => $health_worker->address,
+                'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
+                'remarks' => $health_worker->remarks ?? null,
+            ]
+        ]);
     }
+    
 
     public function deleteHealthWorker(Request $request) {
         try {
@@ -495,6 +632,7 @@ class AdminController extends Controller {
                 ];
             });
     }
+    
     public function verifyHealthWorker(Request $request)
 {
     $id = $request->input('id');

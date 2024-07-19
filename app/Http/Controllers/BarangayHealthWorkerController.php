@@ -10,11 +10,13 @@ use App\Traits\UserRegistrationTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\MenstruationPeriod;
 use App\Models\FeminineHealthWorkerGroup;
 use Carbon\Carbon;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarangayHealthWorkerController extends Controller
 {
@@ -190,46 +192,66 @@ class BarangayHealthWorkerController extends Controller
     }
 
     public function updateProfile(Request $request)
-    {
-        try {
-            $check_validation = Validator::make($request->all(), [
-                'first_name' => 'required|max:100',
-                'last_name' => 'required|max:100',
-                'email' => 'nullable|email|max:100|unique:users,email',
-                'birthdate' => 'required|date|before:today',
-                'contact_no' => ['numeric', 'nullable', 'regex:/^\d{10,11}$/', 'unique:users,contact_no', 'required_if:email,null'],
-            ], [
-                'contact_no.regex' => 'The contact number must be 10 or 11 digits.',
-                'contact_no.unique' => 'The contact number has already been taken.',
-                'unique' => 'The :attribute field has already been taken.'
-            ]);
+{
+    try {
+        // Find the user
+        $user = User::findOrFail($request->id);
 
-            if ($check_validation->fails()) return response()->json(['success' => false, 'message' => $check_validation->errors()->first()], 500);
+        // Validate the request
+        $check_validation = Validator::make($request->all(), [
+            'first_name' => 'required|max:100',
+            'last_name' => 'required|max:100',
+            'email' => [
+                'nullable',
+                'email',
+                'max:100',
+                Rule::unique('users', 'email')->ignore($user->id)
+            ],
+            'birthdate' => 'required|date|before:today',
+            'contact_no' => [
+                'numeric',
+                'nullable',
+                'regex:/^\d{10,11}$/',
+                Rule::unique('users', 'contact_no')->ignore($user->id),
+                'required_if:email,null'
+            ],
+        ], [
+            'contact_no.regex' => 'The contact number must be 10 or 11 digits.',
+            'contact_no.unique' => 'The contact number has already been taken.',
+            'unique' => 'The :attribute field has already been taken.'
+        ]);
 
-            if (!isset($request->id) || Auth::user()->id != $request->id) {
-                return response()->json(['success' => false, 'message' => 'Something went wrong, failed to save data. Please try again.'], 500);
-            }
-
-            $user_data = User::findOrFail($request->id);
-            $user_data->fill([
-                'first_name' => $request->first_name,
-                'middle_name' => $request->middle_name ?? null,
-                'last_name' => $request->last_name,
-                'email' => $request->email ?? null,
-                'contact_no' => $request->contact_no ?? null,
-                'address' => $request->address ?? null,
-                'birthdate' => date('Y-m-d', strtotime($request->birthdate)),
-                'remarks' => $request->remarks ?? null,
-            ]);
-            $user_data->save();
-
-            return response()->json(['success' => true, 'message' => 'Profile successfully updated'], 200);
-        } catch (\ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'message' => 'User not found, please refresh your browser and try again'], 404);
-        } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        // Check for validation errors
+        if ($check_validation->fails()) {
+            return response()->json(['success' => false, 'message' => $check_validation->errors()->first()], 500);
         }
+
+        // Ensure the authenticated user is updating their own profile
+        if (!isset($request->id) || Auth::user()->id != $request->id) {
+            return response()->json(['success' => false, 'message' => 'Something went wrong, failed to save data. Please try again.'], 500);
+        }
+
+        // Update user data
+        $user->fill([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name ?? null,
+            'last_name' => $request->last_name,
+            'email' => $request->email ?? null,
+            'contact_no' => $request->contact_no ?? null,
+            'address' => $request->address ?? null,
+            'birthdate' => date('Y-m-d', strtotime($request->birthdate)),
+            'remarks' => $request->remarks ?? null,
+        ]);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Profile successfully updated'], 200);
+    } catch (\ModelNotFoundException $e) {
+        return response()->json(['status' => 'error', 'message' => 'User not found, please refresh your browser and try again'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
     }
+}
+
 
     public function changePassword(Request $request)
     {
@@ -338,4 +360,11 @@ class BarangayHealthWorkerController extends Controller
 
         return 28; // default cycle length if age range not found
     }
+
+    public function print_pdf($id)
+    {
+        $pdf = Pdf::loadView('health_worker.invoice');
+        return $pdf->download('invoice.pdf');
+    }
+
 }
