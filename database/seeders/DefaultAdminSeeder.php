@@ -18,10 +18,10 @@ class DefaultAdminSeeder extends Seeder
         DB::table('users')->insert([
             'first_name' => 'MCC',
             'last_name' => 'Admin',
-            'email' => 'mcc@admin.com',
+            'email' => 'mccadmin@gmail.com',
             'user_role_id' => 1, // admin
             'menstruation_status' => 0,
-            'password' => Hash::make('mcc@admin.com'),
+            'password' => Hash::make('mccadmin@gmail.com'),
             'is_active' => 1, // by default, admin is active
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
