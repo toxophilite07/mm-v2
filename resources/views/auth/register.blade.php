@@ -74,13 +74,13 @@
                                     @auth
                                         @if(Auth::user()->user_role_id == 1)
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @elseif(Auth::user()->user_role_id == 3)
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @else
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @endif
                                     @else
                                         <p class="text-center mb-4">Please fill-up the form to create an account.</p>
@@ -120,6 +120,12 @@
                                                 <div class="col-lg-8 col-sm-12 mb-3">
                                                     <label for="address" class="form-label">Address</label>
                                                     <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Enter your address" oninput="handleInputCapitalize(event)">
+                                                   
+                                                    @if ($errors->has('address'))
+                                                        <span class="invalid-feedback">
+                                                            <strong>{{ $errors->first('address') }}</strong>
+                                                        </span>
+                                                    @endif
                                                 </div>
     
                                                 <div class="col-lg-4 col-sm-12 mb-4">
@@ -157,7 +163,7 @@
                                                 </div>
 
                                                 <div class="col-lg-6 col-sm-12 mb-4">
-                                                    <label for="contact_no" class="form-label">Contact No. (optional)</label>
+                                                    <label for="contact_no" class="form-label">Contact No.</label>
                                                     <div class="input-group">
                                                         <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
                                                         <input type="text" id="contact_no" name="contact_no" class="form-control {{ $errors->has('contact_no') ? 'is-invalid' : '' }}" value="{{ old('contact_no') }}" placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">
