@@ -16,7 +16,7 @@ class DefaultAdminSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'first_name' => 'MCC',
+            'first_name' => 'Mcc',
             'last_name' => 'Admin',
             'email' => 'mccadmin@gmail.com',
             'user_role_id' => 1, // admin

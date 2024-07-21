@@ -507,19 +507,24 @@ class AdminController extends Controller {
     public function healthWorkerFeminineList(Request $request) {
 
         $assigned_feminine_list = $this->assignedFeminineList($request->health_worker_id);
-
+    
         $feminine_list = User::where('user_role_id', 2)
             ->where('is_active', 1)
             ->whereNotIn('id', $assigned_feminine_list->pluck('id')->toArray())
-            ->select(['id',  \DB::raw("CONCAT(users.last_name,', ',users.first_name) AS full_name")])->get();
-
+            ->select([
+                'id',  
+                \DB::raw("CONCAT(users.last_name, ', ', users.first_name) AS full_name"), 'address' // Include address field
+            ])
+            ->get();
+    
         $data = [
             'assigned_feminine_list' => $assigned_feminine_list,
             'feminine_list' => $feminine_list
         ];
-
+    
         return response()->json($data);
     }
+    
 
     public function postAssignFeminine(Request $request) {
 

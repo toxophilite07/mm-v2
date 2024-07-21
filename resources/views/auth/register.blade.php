@@ -74,13 +74,13 @@
                                     @auth
                                         @if(Auth::user()->user_role_id == 1)
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @elseif(Auth::user()->user_role_id == 3)
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @else
                                             <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+                                            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @endif
                                     @else
                                         <p class="text-center mb-4">Please fill-up the form to create an account.</p>
@@ -118,8 +118,8 @@
 
                                             <div class="row">
                                                 <div class="col-lg-8 col-sm-12 mb-3">
-                                                    <label for="address" class="form-label">Address</label>
-                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Enter your address" oninput="handleInputCapitalize(event)">
+                                                    <label for="address" class="form-label">Complete Address</label>
+                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Tarong (Purok Gumamela) Madridejos Cebu" oninput="handleInputCapitalize(event)">
                                                    
                                                     @if ($errors->has('address'))
                                                         <span class="invalid-feedback">

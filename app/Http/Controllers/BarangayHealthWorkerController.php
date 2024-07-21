@@ -62,59 +62,65 @@ class BarangayHealthWorkerController extends Controller
 
     public function feminineData()
     {
-
-        $feminine_arr = FeminineHealthWorkerGroup::join('users', 'users.id', '=', 'feminine_health_worker_groups.feminine_id')
-            ->where('feminine_health_worker_groups.health_worker_id', Auth::user()->id)
-            ->where('users.user_role_id', 2)
-            ->orderBy('users.last_name', 'ASC')
-            ->get(['users.id', 'users.first_name', 'users.last_name', 'users.middle_name', 'users.address', 'users.email', 'users.contact_no', 'users.birthdate', 'users.menstruation_status', 'users.is_active', 'users.remarks'])
-            ->toArray();
-
-        $row_count = 0;
-        foreach ($feminine_arr as $feminine_key => $feminine) {
-            $full_name = $feminine['last_name'] . ', ' . $feminine['first_name'] . ' ' . $feminine['middle_name'];
-            $last_period_list = MenstruationPeriod::where('user_id', $feminine['id'])->orderBy('menstruation_date', 'DESC')->take(3)->get(['id', 'menstruation_date']);
-
-            if (count($last_period_list) !== 0) {
-                $estimated_next_period = $this->estimatedNextPeriod($last_period_list->first()->menstruation_date, $feminine['birthdate']);
+        try {
+            $feminine_arr = FeminineHealthWorkerGroup::join('users', 'users.id', '=', 'feminine_health_worker_groups.feminine_id')
+                ->where('feminine_health_worker_groups.health_worker_id', Auth::user()->id)
+                ->where('users.user_role_id', 2)
+                ->orderBy('users.last_name', 'ASC')
+                ->get(['users.id', 'users.first_name', 'users.last_name', 'users.middle_name', 'users.address', 'users.email', 'users.contact_no', 'users.birthdate', 'users.menstruation_status', 'users.is_active', 'users.remarks'])
+                ->toArray();
+    
+            $row_count = 0;
+            foreach ($feminine_arr as $feminine_key => $feminine) {
+                $full_name = $feminine['last_name'] . ', ' . $feminine['first_name'] . ' ' . $feminine['middle_name'];
+                $last_period_list = MenstruationPeriod::where('user_id', $feminine['id'])->orderBy('menstruation_date', 'DESC')->take(3)->get(['id', 'menstruation_date']);
+    
+                if (count($last_period_list) !== 0) {
+                    $estimated_next_period = $this->estimatedNextPeriod($last_period_list->first()->menstruation_date, $feminine['birthdate']);
+                } else {
+                    $estimated_next_period = 'N/A';
+                }
+    
+                $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
+                $feminine_arr[$feminine_key]['full_name'] = $full_name;
+                $feminine_arr[$feminine_key]['menstruation_status'] = '<span class="text-' . ($feminine['menstruation_status'] === 1 ? 'success' : 'danger') . '"><strong>&bull;</strong> ' . ($feminine['menstruation_status'] === 1 ? 'Active' : 'Inactive') . '</span>';
+    
+                if ($feminine['is_active'] === 1) {
+                    $feminine_arr[$feminine_key]['is_active'] = '<span class="text-success"><strong>&bull;</strong> Verified</span>';
+                } else {
+                    $feminine_arr[$feminine_key]['is_active'] = '<span class="text-warning"><strong>&bull;</strong> Pending</span>';
+                }
+    
+                $feminine_arr[$feminine_key]['action'] = '
+                    <button type="button" class="btn btn-sm btn-secondary" id="period_notif_' . $feminine['id'] . '"
+                        data-full_name="' . $full_name . '"
+                        data-email="' . ($feminine['email'] ?? 'N/A' ) . '"
+                        data-contact_no="' . $feminine['contact_no'] . '"
+                        data-address="' . $feminine['address'] . '"
+                        data-birthdate="' . ($feminine['birthdate'] ? date('F j, Y', strtotime($feminine['birthdate'])) : 'N/A') . '"
+                        data-menstruation_status="' . $feminine['menstruation_status'] . '"
+                        data-is_active="' . $feminine['is_active'] . '"
+                        data-remarks="' . ($feminine['remarks'] ?? 'N/A') . '"
+                        data-last_period_dates=' . (json_encode($last_period_list) ?? 'N/A') . '
+                        data-estimated_next_period="' . (is_string($estimated_next_period) ? $estimated_next_period : date('F j, Y', strtotime($estimated_next_period))) . '"
+                        data-toggle="modal" data-target="#viewFeminineModal">
+                            <i class="fa-solid fa-magnifying-glass"></i> View
+                    </button>
+                    
+                    <button type="button" class="btn btn-sm btn-warning text-white delete_record" data-id="' . $feminine['id'] . '"><i class="fa-solid fa-user-xmark"></i> Unassigned</button>
+                ';
+    
+                $feminine_arr[$feminine_key]['estimated_next_period'] = is_string($estimated_next_period) ? $estimated_next_period : date('F j, Y', strtotime($estimated_next_period));
+                $feminine_arr[$feminine_key]['estimated_menstrual_status'] = !is_string($estimated_next_period) && $estimated_next_period < date('Y-m-d') ? '<span class="text-danger"><strong>&bull;</strong> Delay</span>' : '<span class="text-success"><strong>&bull;</strong> On Time</span>';
             }
-
-            $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
-            $feminine_arr[$feminine_key]['full_name'] = $full_name;
-            $feminine_arr[$feminine_key]['menstruation_status'] = '<span class="text-' . ($feminine['menstruation_status'] === 1 ? 'success' : 'danger') . '"><strong>&bull;</strong> ' . ($feminine['menstruation_status'] === 1 ? 'Active' : 'Inactive') . '</span>';
-
-            if ($feminine['is_active'] === 1) {
-                $feminine_arr[$feminine_key]['is_active'] = '<span class="text-success"><strong>&bull;</strong> Verified</span>';
-            } else {
-                $feminine_arr[$feminine_key]['is_active'] = '<span class="text-warning"><strong>&bull;</strong> Pending</span>';
-            }
-
-            $feminine_arr[$feminine_key]['action'] = '
-                <button type="button" class="btn btn-sm btn-secondary" id="period_notif_' . $feminine['id'] . '"
-                    data-full_name="' . $full_name . '"
-                    data-email="' . ($feminine['email'] ?? 'N/A' ) . '"
-                    data-contact_no="' . $feminine['contact_no'] . '"
-                    data-address="' . $feminine['address'] . '"
-                    data-birthdate="' . ($feminine['birthdate'] ? date('F j, Y', strtotime($feminine['birthdate'])) : 'N/A') . '"
-                    data-menstruation_status="' . $feminine['menstruation_status'] . '"
-                    data-is_active="' . $feminine['is_active'] . '"
-                    data-remarks="' . ($feminine['remarks'] ?? 'N/A') . '"
-                    data-last_period_dates=' . (json_encode($last_period_list) ?? 'N/A') . '
-                    data-estimated_next_period="' . (date('F j, Y', strtotime($estimated_next_period))) . '"
-                    data-toggle="modal" data-target="#viewFeminineModal">
-                        <i class="fa-solid fa-magnifying-glass"></i> View
-                </button>
-                
-
-                <button type="button" class="btn btn-sm btn-warning text-white delete_record" data-id="' . $feminine['id'] . '"><i class="fa-solid fa-user-xmark"></i> Unassigned</button>
-            ';
-
-            $feminine_arr[$feminine_key]['estimated_next_period'] = date('F j, Y', strtotime($estimated_next_period));
-            $feminine_arr[$feminine_key]['estimated_menstrual_status'] = $estimated_next_period < date('Y-m-d') ? '<span class="text-danger"><strong>&bull;</strong> Delay</span>' : '<span class="text-success"><strong>&bull;</strong> On Time</span>';
+    
+            return response()->json(['data' => $feminine_arr, "recordsFiltered" => count($feminine_arr), 'recordsTotal' => count($feminine_arr)]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching feminine data: ', ['message' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        return response()->json(['data' => $feminine_arr, "recordsFiltered" => count($feminine_arr), 'recordsTotal' => count($feminine_arr)]);
     }
+    
 
     public function calendarIndex()
     {

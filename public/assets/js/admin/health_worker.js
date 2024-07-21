@@ -385,11 +385,14 @@ $(document).ready(function () {
                 selectElement.append("<option></option>");
                 $.each(data.feminine_list, function (index, feminine) {
                     selectElement.append(
-                        '<option value="' +
-                            feminine.id +
-                            '">' +
-                            feminine.full_name +
-                            "</option>"
+                      '<option value="' +
+                        feminine.id +
+                        '">' +
+                        feminine.full_name +
+                        ' (' +
+                        feminine.address +
+                        ')' +
+                        "</option>"
                     );
                 });
 
