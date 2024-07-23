@@ -625,18 +625,20 @@ class AdminController extends Controller {
         ]);
     }    
 
-    private function assignedFeminineList($health_worker_id) {
-        return $assigned_feminine_list = FeminineHealthWorkerGroup::where('health_worker_id', $health_worker_id)
-            ->with('feminine:id,last_name,first_name')
-            ->get(['feminine_id', 'feminine_health_worker_groups.id as feminine_health_worker_group_id'])
-            ->map(function ($item) {
-                return [
-                    'id' => $item->feminine->id,
-                    'feminine_health_worker_group_id' => $item->feminine_health_worker_group_id,
-                    'full_name' => $item->feminine->full_name(),
-                ];
-            });
-    }
+   private function assignedFeminineList($health_worker_id) {
+    return FeminineHealthWorkerGroup::where('health_worker_id', $health_worker_id)
+        ->with('feminine:id,last_name,first_name,address') // Include address field
+        ->get(['feminine_id', 'feminine_health_worker_groups.id as feminine_health_worker_group_id'])
+        ->map(function ($item) {
+            return [
+                'id' => $item->feminine->id,
+                'feminine_health_worker_group_id' => $item->feminine_health_worker_group_id,
+                'full_name' => $item->feminine->full_name(),
+                'address' => $item->feminine->address // Include address in the array
+            ];
+        });
+}
+
     
     public function verifyHealthWorker(Request $request)
 {

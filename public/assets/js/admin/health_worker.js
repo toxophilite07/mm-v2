@@ -282,7 +282,7 @@ $(document).ready(function () {
                         " mb-0 assigned_" +
                         value.feminine_health_worker_group_id +
                         '">• ' +
-                        value.full_name +
+                        value.full_name +  ' (' + value.address + ')' +
                         '<i class="fa-solid fa-trash float-right text-danger btn-icon remove_assign" data-id="' +
                         value.feminine_health_worker_group_id +
                         '" role="button"></i></p>'

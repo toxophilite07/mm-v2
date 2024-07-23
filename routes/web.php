@@ -80,7 +80,6 @@ Route::group(['middleware' => 'auth'], function () {
 // Health Worker Routes
     Route::middleware(['role:health_worker'])->group(function () {
     Route::get('health-worker/dashboard', [BarangayHealthWorkerController::class, 'index'])->name('health-worker.dashboard');
-    
     Route::get('health-worker/feminine-list', [BarangayHealthWorkerController::class, 'feminineList']);
     Route::get('health-worker/feminine-data', [BarangayHealthWorkerController::class, 'feminineData']);
     Route::get('health-worker/assign-feminine-list', [BarangayHealthWorkerController::class, 'healthWorkerFeminineList']);
