@@ -118,8 +118,8 @@
 
                                             <div class="row">
                                                 <div class="col-lg-8 col-sm-12 mb-3">
-                                                    <label for="address" class="form-label">Complete Address</label>
-                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Tarong (Purok Gumamela) Madridejos Cebu" oninput="handleInputCapitalize(event)">
+                                                    <label for="address" class="form-label">Address</label>
+                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Tarong (Purok Gumamela) Madridejos Cebu" oninput="handleInputCapitalize(event)" required="Please enter your complete address">
                                                    
                                                     @if ($errors->has('address'))
                                                         <span class="invalid-feedback">
