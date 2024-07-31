@@ -14,7 +14,7 @@
                     <div class="d-flex justify-content-between align-items-baseline mb-4 mb-md-3">
                         <h6 class="card-title mb-0">Feminine List</h6>
                       <!--  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newFeminineModal"><i class="fa-solid fa-plus"></i> Add New Feminine</button>
-                    </div> -->
+                    --></div>
                     <div class="table-responsive">
                         <table id="feminine_table" class="table">
                             <thead>
