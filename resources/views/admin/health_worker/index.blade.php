@@ -45,8 +45,8 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-4 mb-md-3">
                         <h6 class="card-title mb-0">Health Worker List</h6>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newHealthWorkerModal"><i class="fa-solid fa-plus"></i> Add New Health Worker</button>
-                    </div>
+                        <!--<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newHealthWorkerModal"><i class="fa-solid fa-plus"></i> Add New Health Worker</button>
+                  --> </div>
                     <div class="table-responsive">
                         <table id="hw_table" class="table">
                             <thead>
