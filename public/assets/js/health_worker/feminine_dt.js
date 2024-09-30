@@ -272,25 +272,25 @@ $(document).ready(function () {
 
     $("#assignFeminineModal").on("show.bs.modal", function (e) {
         $.ajax({
-            url: "/health-worker/assign-feminine-list", // Use the correct URL
+            url: "/health-worker/assign-feminine-list",
             type: "GET",
             data: {
-                health_worker_id: $(document).find("#health_worker_id").val(), // Corrected selector
+                health_worker_id: $("#health_worker_id").val(),
             },
             dataType: "json",
             success: function (data) {
-                var selectElement = $(document).find("#assign_feminine");
+                console.log(data); // Logs the response data for debugging
+                var selectElement = $("#assign_feminine");
                 selectElement.empty();
     
                 selectElement.append("<option></option>");
                 $.each(data.feminine_list, function (index, feminine) {
-                    // Include address in the option text
                     var address = feminine.address ? feminine.address : "No address provided";
                     selectElement.append(
                         '<option value="' +
                             feminine.id +
                             '">' +
-                            feminine.full_name +
+                            feminine.full_name + // Access `full_name`
                             " - " +
                             address +
                             "</option>"
@@ -307,6 +307,7 @@ $(document).ready(function () {
             },
         });
     });
+    
     
     $(document).on("click", "#assign_btn", function () {
         var selected_options = $(document).find("#assign_feminine").val();

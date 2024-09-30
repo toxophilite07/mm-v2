@@ -549,7 +549,7 @@ $(document).ready(function () {
                     position: "topCenter",
                     drag: false,
                     title: "Oops!",
-                    // message: "Something went wrong, please try again.",
+                    message: "Something went wrong, please try again.",
                     message: err.responseJSON.message,
                     transitionIn: "bounceInDown",
                     transitionOut: "fadeOutUp",
@@ -627,3 +627,7 @@ $("#newHealthWorkerModal").on("hidden.bs.modal", function () {
 $("#viewHealthWorkerModal").on("hidden.bs.modal", function () {
     $(this).find(".modal-body #view_feminnine_assign").empty();
 });
+
+
+
+

@@ -27,6 +27,7 @@ class AdminController extends Controller {
     
         // Fetch notifications and counts
         $new_notification = $this->signupNotification();
+        $new_health_worker_notification = $this->healthWorkerSignupNotification(); 
         $new_period_notification = $this->newMenstrualPeriodNotification();
         $count = $this->feminineCount();
     
@@ -52,6 +53,7 @@ class AdminController extends Controller {
         return view('admin.dashboard', compact(
             'count', 
             'new_notification', 
+            'new_health_worker_notification',
             'new_period_notification', 
             'total_period_per_year', 
             'health_worker_count', 
@@ -122,14 +124,86 @@ class AdminController extends Controller {
         return response()->json($data_response);
     }
 
-    public function feminineList() {
-        $new_notification = $this->signupNotification();
-        $new_period_notification = $this->newMenstrualPeriodNotification();
-
-        return view('admin/feminine/index', compact('new_notification', 'new_period_notification'));
+    // public function menstrualCyclePrediction()
+    // {
+    //     $user = auth()->user();
+    //     if (!$user) {
+    //         return response()->json(['error' => 'User not authenticated'], 401);
+    //     }
+    
+    //     $periods = MenstruationPeriod::where('user_id', $user->id)
+    //         ->orderBy('menstruation_date', 'desc')
+    //         ->take(5)
+    //         ->get();
+    
+    //     $cycle_lengths = [];
+    //     for ($i = 0; $i < count($periods) - 1; $i++) {
+    //         $cycle_lengths[] = Carbon::parse($periods[$i]->menstruation_date)
+    //             ->diffInDays(Carbon::parse($periods[$i + 1]->menstruation_date));
+    //     }
+    
+    //     $average_cycle_length = count($cycle_lengths) > 0 ? array_sum($cycle_lengths) / count($cycle_lengths) : 28;
+    
+    //     $predictions = [];
+    //     $last_period_date = $periods->first() ? Carbon::parse($periods->first()->menstruation_date) : Carbon::now();
+        
+    //     for ($i = 0; $i < 12; $i++) {
+    //         $next_period_date = $last_period_date->copy()->addDays($average_cycle_length);
+    //         $predictions[] = [
+    //             'month' => $next_period_date->format('F'),
+    //             'year' => $next_period_date->year,
+    //             'predicted_date' => $next_period_date->format('Y-m-d'),
+    //             'status' => $this->determineStatus($next_period_date, $last_period_date, $average_cycle_length),
+    //         ];
+    //         $last_period_date = $next_period_date;
+    //     }
+    
+    //     return response()->json($predictions);
+    // }
+    
+    private function determineStatus($predicted_date, $last_period_date, $average_cycle_length)
+    {
+        $current_date = Carbon::now();
+        $days_since_last_period = $current_date->diffInDays($last_period_date);
+        $days_until_prediction = $current_date->diffInDays($predicted_date, false);
+    
+        if ($days_until_prediction <= 0 && $days_until_prediction > -5) {
+            return 'On Period';
+        }
+    
+        if ($days_since_last_period > 60) {  // Example threshold for irregularity
+            return 'Irregular';
+        }
+    
+        if ($days_since_last_period > $average_cycle_length + 14) {  // Potential pregnancy
+            return 'Pregnant';
+        }
+    
+        return 'Normal';
     }
 
-    public function postFeminine(Request $request) {
+    public function feminineList() {
+        $new_notification = $this->signupNotification() ?? [];
+        $new_period_notification = $this->newMenstrualPeriodNotification() ?? [];
+        $new_health_worker_notification = $this->healthWorkerSignupNotification() ?? [];
+        
+        $new_notification = $new_notification->sortByDesc('created_at');
+        $new_health_worker_notification = $new_health_worker_notification->sortByDesc('created_at');
+    
+        \Log::info('New Notifications: ', $new_notification->toArray());
+        \Log::info('New Health Worker Notifications: ', $new_health_worker_notification->toArray());
+        
+        return view('admin/feminine/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
+    }
+    private function healthWorkerSignupNotification() {
+        return User::where('user_role_id', 3) // Assuming 3 is the role ID for health workers
+                   ->where('is_active', 0)
+                   ->orderBy('created_at', 'DESC')
+                   ->get();
+    }    
+
+    public function postFeminine(Request $request)
+    {
         $feminine = User::findOrFail($request->id);
     
         // Validate the request
@@ -139,7 +213,7 @@ class AdminController extends Controller {
             'last_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'email' => [
-                'required',
+                'nullable', // Allow email to be null
                 'string',
                 'email',
                 'max:255',
@@ -152,23 +226,35 @@ class AdminController extends Controller {
             'contact_no' => 'nullable|string|max:255',
             'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
             'menstruation_status' => 'nullable|string|max:255',
-            // Add other fields validation here
+            'last_period_date' => 'nullable|date_format:m/d/Y', // Add validation for last period date
         ], [
             'email.unique' => 'The email address is already taken.',
             'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+            'last_period_date.date_format' => 'The last period date format is invalid. Please use MM/DD/YYYY.',
         ]);
     
+        // Sanitize input to prevent XSS attacks
+        $sanitizedData = [
+            'first_name' => strip_tags($request->first_name),
+            'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
+            'last_name' => strip_tags($request->last_name),
+            'address' => strip_tags($request->address),
+            'email' => $request->filled('email') ? strip_tags($request->email) : null,
+            'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
+            'menstruation_status' => $request->filled('menstruation_status') ? strip_tags($request->menstruation_status) : null,
+        ];
+    
         // Check if the email has changed
-        if ($feminine->email !== $request->email) {
-            $feminine->email = $request->email;
+        if ($feminine->email !== $sanitizedData['email']) {
+            $feminine->email = $sanitizedData['email'];
         }
     
         // Update other fields
-        $feminine->first_name = $request->first_name;
-        $feminine->middle_name = $request->middle_name;
-        $feminine->last_name = $request->last_name;
-        $feminine->address = $request->address;
-        $feminine->contact_no = $request->contact_no;
+        $feminine->first_name = $sanitizedData['first_name'];
+        $feminine->middle_name = $sanitizedData['middle_name'];
+        $feminine->last_name = $sanitizedData['last_name'];
+        $feminine->address = $sanitizedData['address'];
+        $feminine->contact_no = $sanitizedData['contact_no'];
     
         // Format birthdate if present
         if ($request->filled('birthdate')) {
@@ -177,33 +263,51 @@ class AdminController extends Controller {
             $feminine->birthdate = null;
         }
     
-        $feminine->menstruation_status = $request->menstruation_status;
+        // Update menstruation status
+        $feminine->menstruation_status = $sanitizedData['menstruation_status'];
     
-        // Save the health worker
+        // Save the feminine data
         $feminine->save();
     
         // Handle last_periods data
         $lastPeriod = $feminine->last_periods->first() ?? null;
     
+        if ($request->filled('last_period_date')) {
+            // Update or create last period information
+            if ($lastPeriod) {
+                $lastPeriod->menstruation_date = Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d');
+                $lastPeriod->save();
+            } else {
+                // Create a new record for last period
+                $feminine->last_periods()->create([
+                    'menstruation_date' => Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d'),
+                ]);
+            }
+        }
+    
         return response()->json([
             'status' => 'success',
             'message' => 'Feminine details updated successfully.',
             'data' => [
-                'first_name' => $feminine->first_name,
-                'middle_name' => $feminine->middle_name,
-                'last_name' => $feminine->last_name,
-                'email' => $feminine->email,
-                'address' => $feminine->address,
-                'contact_no' => $feminine->contact_no,
+                'first_name' => htmlspecialchars($feminine->first_name),
+                'middle_name' => htmlspecialchars($feminine->middle_name),
+                'last_name' => htmlspecialchars($feminine->last_name),
+                'email' => htmlspecialchars($feminine->email),
+                'address' => htmlspecialchars($feminine->address),
+                'contact_no' => htmlspecialchars($feminine->contact_no),
                 'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
-                'menstruation_status' => $feminine->menstruation_status,
-                'remarks' => $feminine->remarks ?? null,
-                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod['menstruation_date'])->format('m/d/Y') : null,
-                'menstruation_period_id' => $lastPeriod ? $lastPeriod['id'] : null,
+                'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
+                'remarks' => htmlspecialchars($feminine->remarks ?? null),
+                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
+                'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
             ]
         ]);
     }
-
+    
+    public function postnewfeminine(Request $request)
+    {
+        return $this->postForm($request->all());
+    }
 
     public function deleteFeminie(Request $request) {
         try {
@@ -300,7 +404,7 @@ class AdminController extends Controller {
 
             $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
             $feminine_arr[$feminine_key]['full_name'] = $full_name;
-            $feminine_arr[$feminine_key]['menstruation_status'] = '<span class="text-' . ($feminine['menstruation_status'] === 1 ? 'success' : 'danger') . '"><strong>&bull;</strong> ' . ($feminine['menstruation_status'] === 1 ? 'Active' : 'Inactive') . '</span>';
+            $feminine_arr[$feminine_key]['menstruation_status'] = '<span class="text-' . ($feminine['menstruation_status'] === 1 ? 'success' : 'danger') . '"><strong>&bull;</strong> ' . ($feminine['menstruation_status'] === 1 ? 'Regular' : 'Irregular') . '</span>';
 
             $feminine_arr[$feminine_key]['is_assigned'] = '
                 <span class="text-' . ($assign_status->count() === 0 ? 'warning' : 'success') . '"><strong>&bull;</strong> ' . ($assign_status->count() === 0 ? 'Not Assigned' : 'Assigned') . '</span>
@@ -413,13 +517,21 @@ class AdminController extends Controller {
     }
 
     public function healthWorkerIndex() {
-        $new_notification = $this->signupNotification();
-        $new_period_notification = $this->newMenstrualPeriodNotification();
-            
-        return view('admin/health_worker/index', compact('new_notification', 'new_period_notification'));
+        $new_notification = $this->signupNotification() ?? [];
+        $new_period_notification = $this->newMenstrualPeriodNotification() ?? [];
+        $new_health_worker_notification = $this->healthWorkerSignupNotification() ?? [];
+        
+        $new_notification = $new_notification->sortByDesc('created_at');
+        $new_health_worker_notification = $new_health_worker_notification->sortByDesc('created_at');
+    
+        \Log::info('New Notifications: ', $new_notification->toArray());
+        \Log::info('New Health Worker Notifications: ', $new_health_worker_notification->toArray());
+        
+        return view('admin/health_worker/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
     }
 
-    public function postHealthWorker(Request $request) {
+    public function postHealthWorker(Request $request)
+    {
         $health_worker = User::findOrFail($request->id);
     
         // Validate the request
@@ -440,32 +552,40 @@ class AdminController extends Controller {
             'address' => 'nullable|string|max:255',
             'birthdate' => 'nullable|date_format:m/d/Y',
             'remarks' => 'nullable|string|max:255',
-            // Add other fields validation here
         ], [
             'email.unique' => 'The email address is already taken.',
             'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
         ]);
     
+        // Sanitize inputs to prevent XSS
+        $validatedData['first_name'] = strip_tags($request->first_name);
+        $validatedData['middle_name'] = strip_tags($request->middle_name);
+        $validatedData['last_name'] = strip_tags($request->last_name);
+        $validatedData['email'] = strip_tags($request->email);
+        $validatedData['contact_no'] = strip_tags($request->contact_no);
+        $validatedData['address'] = strip_tags($request->address);
+        $validatedData['remarks'] = strip_tags($request->remarks);
+    
         // Check if the email has changed
-        if ($health_worker->email !== $request->email) {
-            $health_worker->email = $request->email;
+        if ($health_worker->email !== $validatedData['email']) {
+            $health_worker->email = $validatedData['email'];
         }
     
-        // Update other fields
-        $health_worker->first_name = $request->first_name;
-        $health_worker->middle_name = $request->middle_name;
-        $health_worker->last_name = $request->last_name;
-        $health_worker->contact_no = $request->contact_no;
-        $health_worker->address = $request->address;
+        // Update other fields with sanitized data
+        $health_worker->first_name = $validatedData['first_name'];
+        $health_worker->middle_name = $validatedData['middle_name'];
+        $health_worker->last_name = $validatedData['last_name'];
+        $health_worker->contact_no = $validatedData['contact_no'];
+        $health_worker->address = $validatedData['address'];
     
         // Format birthdate if present
         if ($request->filled('birthdate')) {
-            $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
+            $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $validatedData['birthdate'])->format('Y-m-d');
         } else {
             $health_worker->birthdate = null;
         }
     
-        $health_worker->remarks = $request->remarks;
+        $health_worker->remarks = $validatedData['remarks'];
     
         // Save the health worker
         $health_worker->save();
@@ -474,18 +594,22 @@ class AdminController extends Controller {
             'status' => 'success',
             'message' => 'Health worker details updated successfully.',
             'data' => [
-                'first_name' => $health_worker->first_name,
-                'last_name' => $health_worker->last_name,
-                'middle_name' => $health_worker->middle_name ?? null, // Ensure this field exists or handle accordingly
-                'email' => $health_worker->email,
-                'contact_no' => $health_worker->contact_no,
-                'address' => $health_worker->address,
+                'first_name' => htmlspecialchars($health_worker->first_name),
+                'middle_name' => htmlspecialchars($health_worker->middle_name),
+                'last_name' => htmlspecialchars($health_worker->last_name),
+                'email' => htmlspecialchars($health_worker->email),
+                'contact_no' => htmlspecialchars($health_worker->contact_no),
+                'address' => htmlspecialchars($health_worker->address),
                 'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
-                'remarks' => $health_worker->remarks ?? null,
+                'remarks' => htmlspecialchars($health_worker->remarks ?? null),
             ]
         ]);
     }
     
+
+    public function postnewhbw(Request $request) {
+        return $this->postHealthWorkerForm($request->all());
+    }  
 
     public function deleteHealthWorker(Request $request) {
         try {
@@ -524,7 +648,6 @@ class AdminController extends Controller {
     
         return response()->json($data);
     }
-    
 
     public function postAssignFeminine(Request $request) {
 
@@ -625,41 +748,40 @@ class AdminController extends Controller {
         ]);
     }    
 
-   private function assignedFeminineList($health_worker_id) {
-    return FeminineHealthWorkerGroup::where('health_worker_id', $health_worker_id)
-        ->with('feminine:id,last_name,first_name,address') // Include address field
-        ->get(['feminine_id', 'feminine_health_worker_groups.id as feminine_health_worker_group_id'])
-        ->map(function ($item) {
-            return [
-                'id' => $item->feminine->id,
-                'feminine_health_worker_group_id' => $item->feminine_health_worker_group_id,
-                'full_name' => $item->feminine->full_name(),
-                'address' => $item->feminine->address // Include address in the array
-            ];
-        });
-}
-
-    
+    private function assignedFeminineList($health_worker_id) {
+        return FeminineHealthWorkerGroup::where('health_worker_id', $health_worker_id)
+            ->with('feminine:id,last_name,first_name,address') // Include address field
+            ->get(['feminine_id', 'feminine_health_worker_groups.id as feminine_health_worker_group_id'])
+            ->map(function ($item) {
+                return [
+                    'id' => $item->feminine->id,
+                    'feminine_health_worker_group_id' => $item->feminine_health_worker_group_id,
+                    'full_name' => $item->feminine->full_name(),
+                    'address' => $item->feminine->address // Include address in the array
+                ];
+            });
+    }
+   
     public function verifyHealthWorker(Request $request)
-{
-    $id = $request->input('id');
+    {
+        $id = $request->input('id');
 
-    // Fetch the user with the provided ID
-    $user = User::find($id);
+        // Fetch the user with the provided ID
+        $user = User::find($id);
 
-    if (!$user) {
-        return response()->json(['message' => 'Health Worker not found'], 404);
+        if (!$user) {
+            return response()->json(['message' => 'Health Worker not found'], 404);
+        }
+
+        // Check if the user is a Health Worker
+        if ($user->user_role_id != 3) {
+            return response()->json(['message' => 'Unauthorized action'], 403);
+        }
+
+        // Verify the Health Worker
+        $user->is_active = 1;
+        $user->save();
+
+        return response()->json(['message' => 'Health Worker verified successfully']);
     }
-
-    // Check if the user is a Health Worker
-    if ($user->user_role_id != 3) {
-        return response()->json(['message' => 'Unauthorized action'], 403);
-    }
-
-    // Verify the Health Worker
-    $user->is_active = 1;
-    $user->save();
-
-    return response()->json(['message' => 'Health Worker verified successfully']);
-}
 }

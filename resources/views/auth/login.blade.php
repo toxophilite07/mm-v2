@@ -6,33 +6,36 @@
     <title>Mentrual Monitoring App :: Sign In ::</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <style>
         .form-control { border-radius: 2px !important; }
         .btn-primary {
-    background-color: #F6A5BB;
-    border: none;
-}
-.floating-shadow {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transition: box-shadow 0.3s ease-in-out;
-}
+        background-color: #F6A5BB;
+        border: none;
+    }
+    .floating-shadow {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        transition: box-shadow 0.3s ease-in-out;
+    }
 
-.floating-shadow:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
-}
-.btn-primary.no-hover:hover {
-    background-color: #F6A5BB; /* Default Bootstrap primary color */
-    border-color: #0d6efd; /* Default Bootstrap primary color */
-}
-.card {
-    margin-top: 40px !important;
-    margin-bottom: 40px !important;
-        }
+    .floating-shadow:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
+    }
+    .btn-primary.no-hover:hover {
+        background-color: #F6A5BB; /* Default Bootstrap primary color */
+        border-color: #0d6efd; /* Default Bootstrap primary color */
+    }
+    .card {
+        margin-top: 40px !important;
+        margin-bottom: 40px !important;
+            }
     </style>
 </head>
+@include('partials.cookie-consent')
 <body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
@@ -77,7 +80,7 @@
                                                 @endif
                                             </div>
                                             <div class="mb-3" id="mobileInput">
-                                                <label for="contact_no" class="form-label">Mobile #</label>
+                                                <label for="contact_no" class="form-label">Mobile # (Optional)</label>
                                                 <div class="input-group">
                                                     <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
                                                     <input type="text" id="contact_no" name="contact_no" class="form-control" required autofocus placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">
@@ -92,9 +95,10 @@
                                                 <label for="password" class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-                                                    <button type="button" class="btn btn-outline-secondary" id="showPasswordBtn">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
-                                                    </button>
+                                            <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
+                                                <i id="showIcon" class="bi bi-eye"></i>
+                                                <i id="hideIcon" class="bi bi-eye" style="display:none;"></i>
+                                            </button>
                                                 </div>
                                                 {{-- <label for="password" class="form-label">Password</label>
                                                 <input type="password" id="password" name="password" class="form-control  {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required> --}}
@@ -127,7 +131,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
 
     <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -167,21 +171,23 @@
         }
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var passwordInput = document.getElementById('password');
-            var showPasswordBtn = document.getElementById('showPasswordBtn');
-    
-            showPasswordBtn.addEventListener('click', function () {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                } else {
-                    passwordInput.type = 'password';
-                }
-            });
-        });
+    const passwordInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const showIcon = document.getElementById('showIcon');
+    const hideIcon = document.getElementById('hideIcon');
+
+    togglePasswordBtn.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Toggle icon visibility
+        showIcon.style.display = type === 'password' ? 'block' : 'none';
+        hideIcon.style.display = type === 'password' ? 'none' : 'block';
+    });
     </script>
+
     <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const greetingElement = document.getElementById('greeting');
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
@@ -198,8 +204,6 @@ document.addEventListener('DOMContentLoaded', function() {
     greetingElement.textContent = greeting;
 });
 </script>
-
-
     @include('auth.response')
 </body>
 </html>

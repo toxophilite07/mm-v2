@@ -1,9 +1,8 @@
 $(function () {
-    'use strict'
-    
+    'use strict';
+
     $.validator.setDefaults({
         submitHandler: function () {
-
             var form = $('#editFeminineForm');
 
             $.ajax({
@@ -64,18 +63,7 @@ $(function () {
 
     $("#editFeminineForm").validate({
         onkeyup: function (element) {
-            if ($(element).attr('id') === 'edit_email_address') {
-                $(element).val() !== ''
-                    ? $('#edit_contact_no-error').css('display', 'none').closest('.form-group').removeClass('has-danger')
-                    : $('#edit_contact_no-error').css('display', 'block').closest('.form-group').addClass('has-danger');
-            }
-
-            if ($(element).attr('id') === 'edit_contact_no') {
-                $(element).val() !== ''
-                    ? $('#edit_email_address-error').css('display', 'none').closest('.form-group').removeClass('has-danger')
-                    : $('#edit_email_address-error').css('display', 'block').closest('.form-group').addClass('has-danger');
-            }
-
+            // Dynamically validate the fields
             $(element).valid();
         },
         rules: {
@@ -86,9 +74,6 @@ $(function () {
                 required: true,
             },
             edit_email_address: {
-                required: function (element) {
-                    return $("#edit_contact_no").val() === "";
-                },
                 email: true
             },
             edit_menstruation_status: {
@@ -103,9 +88,6 @@ $(function () {
                 date: true
             },
             edit_contact_no: {
-                required: function (element) {
-                    return $("#edit_email_address").val() === "";
-                },
                 digits: true,
                 minlength: 10,
                 maxlength: 11
@@ -119,7 +101,7 @@ $(function () {
                 required: "Please enter a last name",
             },
             edit_email_address: {
-                required: "Please enter the active email of the user",
+                email: "Please enter a valid email address"
             },
             edit_menstruation_status: {
                 required: "Please select the current menstruation status of the user",
@@ -134,8 +116,7 @@ $(function () {
             edit_contact_no: {
                 digits: "Please enter a valid contact number",
                 minlength: "Must be at least 10 digits",
-                maxlength: "Must not exceed 11 digits",
-                required: "Please enter your contact number"
+                maxlength: "Must not exceed 11 digits"
             }
         },
         errorPlacement: function (label, element) {
@@ -143,20 +124,12 @@ $(function () {
             label.insertAfter(element);
         },
         highlight: function (element, errorClass) {
-            $(element).parent().addClass('has-danger')
-            $(element).addClass('form-control-danger')
-
-            if ($(element).attr('id') === 'edit_contact_no' || $(element).attr('id') === 'edit_email_address') {
-                $(element).closest('.form-group').addClass('has-danger')
-            }
+            $(element).parent().addClass('has-danger');
+            $(element).addClass('form-control-danger');
         },
         unhighlight: function (element, errorClass) {
             $(element).parent().removeClass('has-danger');
             $(element).removeClass('form-control-danger');
-
-            if ($(element).attr('id') === 'edit_contact_no' || $(element).attr('id') === 'edit_email_address') {
-                $(element).closest('.form-group').removeClass('has-danger')
-            }
         }
     });
-})
+});

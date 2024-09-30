@@ -62,13 +62,13 @@
     <div class="form-group">
         <label for="edit_menstruation_status">Menstruation Status</label>
         <select name="edit_menstruation_status" id="edit_menstruation_status" name="edit_menstruation_status" aria-describedby="edit_menstruation_help">
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
+            <option value="1">Regular</option>
+            <option value="0">Irregular</option>
         </select>
         <div class="col-12 mt-2">
             <small id="edit_menstruation_help" class="form-text text-muted">
-                <li><span class="font-weight-bold">Active</span> - Menstruation is active and not pregnant</li>
-                <li><span class="font-weight-cold">Inactive</span> - Menstruation is not active and might be pregnant</li>
+                <li><span class="font-weight-bold">Regular</span> - Menstruation is active and not pregnant</li>
+                <li><span class="font-weight-cold">Irregular</span> - Menstruation is not active and might be pregnant</li>
             </small>
         </div>
     </div>

@@ -1,22 +1,35 @@
 var date = new Date();
 var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
+// $("#last_period_datepicker").datepicker({
+//     format: "mm/dd/yyyy",
+//     todayHighlight: true,
+//     autoclose: true,
+//     endDate: "+0d",
+// });
+
+// $("#birthdate_datepicker").datepicker({
+//     format: "mm/dd/yyyy",
+//     todayHighlight: true,
+//     autoclose: true,
+//     endDate: "+0d",
+// });
+
+// $("#last_period_datepicker").datepicker("setDate", today);
+// $("#birthdate_datepicker").datepicker("setDate", today);
+
 $("#last_period_datepicker").datepicker({
     format: "mm/dd/yyyy",
-    todayHighlight: true,
     autoclose: true,
-    endDate: "+0d",
-});
+    endDate: "+0d"
+}).datepicker("setDate", null); // Ensure no date is set initially
 
 $("#birthdate_datepicker").datepicker({
     format: "mm/dd/yyyy",
     todayHighlight: true,
     autoclose: true,
-    endDate: "+0d",
-});
-
-$("#last_period_datepicker").datepicker("setDate", today);
-$("#birthdate_datepicker").datepicker("setDate", today);
+    endDate: "+0d"
+}).datepicker("setDate", today); // Optionally set today's date
 
 $.ajaxSetup({
     headers: {
@@ -24,43 +37,30 @@ $.ajaxSetup({
     },
 });
 
+// Custom validation method to ensure at least one of the fields is filled if provided
+$.validator.addMethod("eitherOr", function (value, element, params) {
+    var otherElement = $(params).val();
+    return !value || !otherElement || (value && otherElement); // Either both or neither can be filled
+}, "Please provide either email or contact number if one is provided.");
+
 $.validator.setDefaults({
-    submitHandler: function () {
-        var form = $("#newFeminineForm");
+    submitHandler: function (form) {
+        var formData = $(form).serialize(); // Serialize form data
 
         $.ajax({
             url: "../health-worker/new-feminine",
             type: "POST",
             dataType: "json",
-            data: {
-                first_name: form.find("#first_name").val(),
-                last_name: form.find("#last_name").val(),
-                middle_name: form.find("#middle_name").val(),
-                address: form.find("#address").val(),
-                email: form.find("#email_address").val(),
-                contact_no: form.find("#contact_no").val(),
-                birthdate: form.find("#birthdate").val(),
-                menstruation_status: form.find("#menstruation_status").val(),
-                last_period_date: form.find("#last_period_date").val(),
-                remarks: form.find("#remarks").val(),
-            },
+            data: formData,
             success: function (data) {
                 if (data) {
-                    $("#feminine_count").text(
-                        data.feminine_count.feminine_count
-                    );
-                    $("#active_feminine_count").text(
-                        data.feminine_count.active_feminine_count
-                    );
-                    $("#inactive_feminine_count").text(
-                        data.feminine_count.inactive_feminine_count
-                    );
+                    $("#feminine_count").text(data.feminine_count.feminine_count);
+                    $("#active_feminine_count").text(data.feminine_count.active_feminine_count);
+                    $("#inactive_feminine_count").text(data.feminine_count.inactive_feminine_count);
 
                     $("#feminine_table").DataTable().ajax.reload();
-
                     $("#newFeminineModal").modal("hide");
                     $("#newFeminineForm").trigger("reset");
-
                     $("#last_period_datepicker").datepicker("setDate", today);
 
                     iziToast.success({
@@ -73,11 +73,11 @@ $.validator.setDefaults({
                         message: data.message,
                         transitionIn: "bounceInDown",
                         transitionOut: "fadeOutUp",
-                        timeout: 7000, // 7 seconds
+                        timeout: 7000,
                     });
                 }
             },
-            error: function (response) {
+            error: function () {
                 iziToast.error({
                     close: false,
                     displayMode: 2,
@@ -95,18 +95,6 @@ $.validator.setDefaults({
 
 $("#newFeminineForm").validate({
     onkeyup: function (element) {
-        if ($(element).attr('id') === 'email_address') {
-            $(element).val() !== ''
-                ? $('#contact_no-error').css('display', 'none').closest('.form-group').removeClass('has-danger')
-                : $('#contact_no-error').css('display', 'block').closest('.form-group').addClass('has-danger');
-        }
-
-        if ($(element).attr('id') === 'contact_no') {
-            $(element).val() !== ''
-                ? $('#email_address-error').css('display', 'none').closest('.form-group').removeClass('has-danger')
-                : $('#email_address-error').css('display', 'block').closest('.form-group').addClass('has-danger');
-        }
-
         $(element).valid();
     },
     rules: {
@@ -116,11 +104,12 @@ $("#newFeminineForm").validate({
         last_name: {
             required: true,
         },
+        address: {
+            required: true,
+        },
         email_address: {
-            required: function (element) {
-                return $("#contact_no").val() === "";
-            },
-            email: true
+            email: true, // Email format validation
+            // No 'required' rule, but must be valid if provided
         },
         menstruation_status: {
             required: true,
@@ -134,12 +123,10 @@ $("#newFeminineForm").validate({
             date: true,
         },
         contact_no: {
-            required: function (element) {
-                return $("#email_address").val() === "";
-            },
             digits: true,
             minlength: 10,
-            maxlength: 11
+            maxlength: 11,
+            // No 'required' rule, but must be valid if provided
         }
     },
     messages: {
@@ -149,12 +136,18 @@ $("#newFeminineForm").validate({
         last_name: {
             required: "Please enter a last name",
         },
+        address: {
+            required: "Please enter a valid  address",
+        },
         email_address: {
-            required: "Please enter the active email of the user",
+            email: "Please enter a valid email address",
         },
         menstruation_status: {
-            required:
-                "Please select the current menstruation status of the user",
+            required: "Please select the current menstruation status of the user",
+        },
+        last_period_date: {
+            required: "Please provide last menstruation date",
+            date: true,
         },
         birthdate: {
             required: "Please select the birthdate of the user",
@@ -164,7 +157,6 @@ $("#newFeminineForm").validate({
             digits: "Please enter a valid contact number",
             minlength: "Must be at least 10 digits",
             maxlength: "Must not exceed 11 digits",
-            required: "Please enter your contact number"
         }
     },
     errorPlacement: function (label, element) {
@@ -174,28 +166,37 @@ $("#newFeminineForm").validate({
     highlight: function (element, errorClass) {
         $(element).parent().addClass("has-danger");
         $(element).addClass("form-control-danger");
-
-        if ($(element).attr('id') === 'contact_no' || $(element).attr('id') === 'email_address') {
-            $(element).closest('.form-group').addClass('has-danger')
-        }
     },
     unhighlight: function (element, errorClass) {
-        $(element).parent().removeClass('has-danger');
-        $(element).removeClass('form-control-danger');
-
-        if ($(element).attr('id') === 'contact_no' || $(element).attr('id') === 'email_address') {
-            $(element).closest('.form-group').removeClass('has-danger')
-        }
+        $(element).parent().removeClass("has-danger");
+        $(element).removeClass("form-control-danger");
     }
 });
 
+// $("#newFeminineModal").on("shown.bs.modal", function () {
+//     $("#newFeminineForm").trigger("reset");
+//     $("#last_period_datepicker").datepicker("setDate", today);
+//     $("#birthdate_datepicker").datepicker("setDate", today);
+// });
+
+// $("#newFeminineModal").on("hidden.bs.modal", function () {
+//     $("#newFeminineForm").trigger("reset");
+//     $("#last_period_datepicker").datepicker("setDate", today);
+// });
+
 $("#newFeminineModal").on("shown.bs.modal", function () {
-    $("#newFeminineForm").trigger("reset");
-    $("#last_period_datepicker").datepicker("setDate", today);
-    $("#birthdate_datepicker").datepicker("setDate", today);
+    $("#newFeminineForm").trigger("reset"); // Reset the form
+    $("#last_period_date").val(''); // Clear the date input value
+    $("#last_period_datepicker").datepicker("setDate", null); // Update datepicker to clear date
 });
 
 $("#newFeminineModal").on("hidden.bs.modal", function () {
-    $("#newFeminineForm").trigger("reset");
-    $("#last_period_datepicker").datepicker("setDate", today);
+    $("#newFeminineForm").trigger("reset"); // Reset the form
+    $("#last_period_date").val(''); // Clear the date input value
+    $("#last_period_datepicker").datepicker("setDate", null); // Update datepicker to clear date
+});
+
+$("#newFeminineForm").on("reset", function () {
+    $("#last_period_date").val(''); // Clear the date input value
+    $("#last_period_datepicker").datepicker("setDate", null); // Update datepicker to clear date
 });

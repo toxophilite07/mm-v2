@@ -52,54 +52,79 @@
                 </li>
 
                 @if(Auth::user()->user_role_id == 1)
-                <li class="nav-item dropdown nav-notifications">
-                    <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i data-feather="bell"></i>
-                        @if(count($new_notification) != 0)
-                            <div class="indicator" id="notification_indicator">
-                                <div class="circle"></div>
-                            </div>
-                        @endif
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                        <div class="dropdown-header d-flex align-items-center justify-content-between">
-                            @if(count($new_notification) != 0)
-                                <p class="mb-0 font-weight-medium notification_count">{{ count($new_notification) }} New Notifications</p>
-                            @else
-                                <p class="mb-0 font-weight-medium notification_count">No Notifications</p>
+                    <li class="nav-item dropdown nav-notifications">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="bell"></i>
+                            @if(count($new_notification ?? []) > 0 || count($new_health_worker_notification ?? []) > 0)
+                                <div class="indicator" id="notification_indicator">
+                                    <div class="circle"></div>
+                                </div>
                             @endif
-                        </div>
-                        <div class="dropdown-body" id="notification_container">
-                            @if(count($new_notification) != 0)
-                                @foreach($new_notification as $notification)
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="notificationDropdown">
+                            <div class="dropdown-header d-flex align-items-center justify-content-between">
+                                @if(count($new_notification ?? []) > 0 || count($new_health_worker_notification ?? []) > 0)
+                                    <p class="mb-0 font-weight-medium notification_count">
+                                        {{ count($new_notification ?? []) + count($new_health_worker_notification ?? []) }} New Notifications
+                                    </p>
+                                @else
+                                    <p class="mb-0 font-weight-medium notification_count">No Notifications</p>
+                                @endif
+                            </div>
+                            <div class="dropdown-body" id="notification_container">
+                                @forelse($new_notification ?? [] as $notification)
                                     <a href="{{ URL::to('admin/feminine-list') }}?q={{ $notification->id }}" id="notification_body_{{ $notification->id }}" class="dropdown-item">
                                         <div class="icon">
                                             <i data-feather="user-plus"></i>
                                         </div>
                                         <div class="content">
                                             <p>{{ $notification->first_name.' '.$notification->last_name }}</p>
-                                            <p class="sub-text text-muted">For verification</p>
+                                            <p class="sub-text text-muted">Feminine user for verification</p>
                                         </div>
                                     </a>
-                                @endforeach
-                            @else
-                                <a href="javascript:;" class="dropdown-item">
-                                    <div class="icon">
-                                        <i data-feather="coffee"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>No notifications have a coffee</p>
-                                    </div>
-                                </a>
-                            @endif
+                                @empty
+                                    <!-- Handle empty feminine notifications -->
+                                @endforelse
+
+                                @forelse($new_health_worker_notification ?? [] as $notification)
+                                    <a href="{{ URL::to('admin/health-worker') }}?q={{ $notification->id }}" id="notification_body_hw_{{ $notification->id }}" class="dropdown-item">
+                                        <div class="icon">
+                                            <i data-feather="user-plus"></i>
+                                        </div>
+                                        <div class="content">
+                                            <p>{{ $notification->first_name.' '.$notification->last_name }}</p>
+                                            <p class="sub-text text-muted">Health worker for verification</p>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <!-- Handle empty health worker notifications -->
+                                @endforelse
+
+                                @if(count($new_notification ?? []) == 0 && count($new_health_worker_notification ?? []) == 0)
+                                    <a href="javascript:;" class="dropdown-item">
+                                        <div class="icon">
+                                            <i data-feather="coffee"></i>
+                                        </div>
+                                        <div class="content">
+                                            <p>No notifications, have a coffee</p>
+                                        </div>
+                                    </a>
+                                @endif
+                            </div>
+                            <!-- Optional: Add a "View all" link if needed -->
+                            <!--
+                            <div class="dropdown-footer d-flex align-items-center justify-content-center">
+                                <a href="{{ URL::to('admin/all-notifications') }}">View all</a>
+                            </div>
+                            -->
                         </div>
-                        <div class="dropdown-footer d-flex align-items-center justify-content-center">
-                            <a href="{{ URL::to('admin/feminine-list') }}">View all</a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
                 @endif
+
+
+
+                
             @endif
             <li class="nav-item dropdown nav-profile">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"

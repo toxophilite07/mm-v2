@@ -20,6 +20,15 @@
         #contact_no-error {
             width: 100%!important
         }
+        #onPeriodCount, #pregnantCount, #irregularCount {
+    font-size: 16px;
+    margin: 10px;
+}
+#menstrualCycleChart {
+    width: 400px;
+    height: 200px;
+}
+
     </style>
 @endsection
 
@@ -187,28 +196,29 @@
       </div>
 
   
-    <div class="row">
-        <div class="col-lg-6 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Feminine Status Chart</h5>
-                    <div id="status_chart"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title mb-1">Yearly Period Rate (by months)</h5>
-                    <p class="text-muted ml-3 mb-0 small">&bull; Year - {{ date('Y') }}</p>
-                    <p class="text-muted ml-3 mb-0 small">&bull; Total - {{ $total_period_per_year }}</p>
-                    <div class="mt-2" id="yearly_period"></div>
-                </div>
+      <div class="row">
+    <div class="col-lg-6 col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Feminine Status Chart</h5>
+                <div id="status_chart"></div>
             </div>
         </div>
     </div>
+    <div class="col-lg-6 col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-1">Yearly Period Rate (by months)</h5>
+                <p class="text-muted ml-3 mb-0 small">&bull; Year - {{ date('Y') }}</p>
+                <p class="text-muted ml-3 mb-0 small">&bull; Total - {{ $total_period_per_year }}</p>
+                <div class="mt-2" id="yearly_period"></div>
+            </div>
+        </div>
+    </div>  
+</div>
 
-    <div class="modal fade" id="newFeminineModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newFeminineLbl" aria-hidden="true">
+
+    <!-- <div class="modal fade" id="newFeminineModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newFeminineLbl" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -224,13 +234,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 @endsection
 
 @section('scripts')
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/form_validation.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="{{ asset('assets/amcharts/amcharts.com_lib_5_index.js') }}"></script>
     <script src="{{ asset('assets/amcharts/amcharts.com_lib_5_percent.js') }}"></script>
@@ -238,6 +249,7 @@
     <script src="{{ asset('assets/amcharts/amcharts.com_lib_5_themes_Animated.js') }}"></script>
 
     <script src="{{ asset('assets/js/admin/pie_chart.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/prediction.js') }}"></script>
     <script src="{{ asset('assets/js/admin/yearly_period_bar_chart.js') }}"></script>
 @endsection
 
@@ -259,5 +271,4 @@ document.addEventListener('DOMContentLoaded', function() {
     const admin = 'Admin';
     greetingElement.textContent = `${greeting} ${admin} welcome back! 👋`;
 });
-
     </script>

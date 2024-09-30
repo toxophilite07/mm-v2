@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -60,5 +60,21 @@ class User extends Authenticatable
 
     public function full_name() {
         return $this->last_name . ', ' . $this->first_name;
+    }
+
+    // public function getFullNameAttribute_health_worker()
+    // {
+    //     return "{$this->first_name} {$this->last_name}";
+    // }
+
+    public function getHealthWorkerFullNameAttribute()
+    {
+        // Specific format for health workers
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function menstruationPeriods()
+    {
+        return $this->hasMany(MenstruationPeriod::class);
     }
 }

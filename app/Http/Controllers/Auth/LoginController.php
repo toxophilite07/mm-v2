@@ -5,30 +5,19 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\Guard;
-
+use Illuminate\Contracts\Auth\Guard; // Make sure this is included
 use Session;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
+    protected $auth; // Declare the auth property
+
     public function __construct(Guard $auth) {
-        $this->auth = $auth;
+        $this->auth = $auth; // Assign the injected Guard instance to the property
         $this->middleware('guest')->except('logout');
 
         \Artisan::call('optimize:clear');
@@ -39,8 +28,11 @@ class LoginController extends Controller
         $multi_user_field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'contact_no';
     
         $credentials[$multi_user_field] = $request->input($multi_user_field);
+
+        // Check if the "Remember Me" checkbox is selected
+        $remember = $request->filled('remember');
     
-        if ($this->auth->attempt($credentials)) {
+        if ($this->auth->attempt($credentials, $remember)) {
             $user = $this->auth->user();
     
             if($user->user_role_id == 1) {

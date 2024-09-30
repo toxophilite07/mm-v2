@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\MenstruationPeriod;
+use App\Models\FeminineHealthWorkerGroup;
 
 use Carbon\Carbon;
 
@@ -19,15 +20,53 @@ class UserController extends Controller
 
     public function index()
     {
-
         $menstruation_period_list = $this->getMenstruationPeriods();
         $estimated_next_period = null;
+        $reminder_needed = false;
+    
         if (count($menstruation_period_list) !== 0) {
             $estimated_next_period = $this->estimatedNextPeriod($menstruation_period_list->first()->menstruation_date, Auth::user()->birthdate);
+    
+            // Check if the estimated next period is today
+            if ($estimated_next_period === Carbon::today()->toDateString()) {
+                $reminder_needed = true;
+            }
         }
-
-        return view('user.dashboard', compact('menstruation_period_list', 'estimated_next_period'));
+    
+        // Fetch the health worker monitoring the logged-in user
+        $health_worker = FeminineHealthWorkerGroup::where('feminine_id', Auth::user()->id)
+            ->with('healthWorker')
+            ->first()
+            ->healthWorker ?? null;
+    
+        return view('user.dashboard', compact('menstruation_period_list', 'estimated_next_period', 'reminder_needed', 'health_worker'));
     }
+
+    public function autoAddPeriod(Request $request)
+{
+    try {
+        if (Auth::check()) {
+
+            if (Auth::user()->menstruation_status == 0) {
+                return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save a new record at the moment.'], 500);
+            }
+
+            $menstruation_period = MenstruationPeriod::firstOrCreate([
+                'user_id' => Auth::user()->id,
+                'menstruation_date' => $request->menstruation_period,
+            ]);
+
+            return response()->json(['status' => 'success', 'message' => 'Menstruation Period successfully added']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+        }
+    } catch (ModelNotFoundException $e) {
+        return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+    }
+}
+
 
     public function menstruationCalendarPeriod()
     {
@@ -203,18 +242,21 @@ class UserController extends Controller
                 return response()->json(['success' => false, 'message' => 'Something went wrong, failed to save data. Please try again.'], 500);
             }
     
-            // Update user data
-            $user->fill([
-                'first_name' => $request->first_name,
-                'middle_name' => $request->middle_name ?? null,
-                'last_name' => $request->last_name,
-                'email' => $request->email ?? null,
-                'contact_no' => $request->contact_no ?? null,
-                'address' => $request->address ?? null,
+            // Sanitize the input to prevent XSS
+            $sanitizedData = [
+                'first_name' => htmlspecialchars($request->first_name),
+                'middle_name' => isset($request->middle_name) ? htmlspecialchars($request->middle_name) : null,
+                'last_name' => htmlspecialchars($request->last_name),
+                'email' => isset($request->email) ? htmlspecialchars($request->email) : null,
+                'contact_no' => isset($request->contact_no) ? htmlspecialchars($request->contact_no) : null,
+                'address' => isset($request->address) ? htmlspecialchars($request->address) : null,
                 'birthdate' => date('Y-m-d', strtotime($request->birthdate)),
-                'menstruation_status' => $request->menstruation_status ?? null,
-                'remarks' => $request->remarks ?? null,
-            ]);
+                'menstruation_status' => $request->menstruation_status,
+                'remarks' => isset($request->remarks) ? htmlspecialchars($request->remarks) : null,
+            ];
+    
+            // Update user data
+            $user->fill($sanitizedData);
             $user->save();
     
             return response()->json(['success' => true, 'message' => 'Profile successfully updated'], 200);
@@ -224,6 +266,7 @@ class UserController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+    
     
 
     public function changePassword(Request $request)

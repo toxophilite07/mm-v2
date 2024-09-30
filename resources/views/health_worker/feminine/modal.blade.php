@@ -55,7 +55,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email_address">Active Email</label>
@@ -71,26 +71,37 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        
                         <div class="form-group">
                             <label for="menstruation_status">Menstruation Status</label>
                             <select name="menstruation_status" id="menstruation_status" name="menstruation_status" aria-describedby="menstruation_help">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                                <option value="1">Regular</option>
+                                <option value="0">Irregular</option>
                             </select>
                             <div class="col-12 mt-2">
                                 <small id="menstruation_help" class="form-text text-muted">
-                                    <li><span class="font-weight-bold">Active</span> - Menstruation is active and not pregnant</li>
-                                    <li><span class="font-weight-bold">Inactive</span> - Menstruation is not active and might be pregnant</li>
+                                    <li><span class="font-weight-bold">Regular</span> - Menstruation is active and not pregnant</li>
+                                    <li><span class="font-weight-bold">Irregular</span> - Menstruation is not active and might be pregnant</li>
                                 </small>
                             </div>
                         </div>
+                        
                         <div class="form-group">
                             <label for="last_period_date" class="control-label">Last Recorded Period Date</label>
                             <div class="input-group date datepicker" id="last_period_datepicker">
-                                <input type="text" id="last_period_date" name="last_period_date" class="form-control"><span class="input-group-addon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+                                <input type="text" id="last_period_date" name="last_period_date" class="form-control" autocomplete="off">
+                                <span class="input-group-addon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </span>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="remarks" class="control-label">Remarks</label>
                             <textarea class="form-control" name="remarks" id="remarks" rows="4" placeholder="Enter a remark (optional)"></textarea>

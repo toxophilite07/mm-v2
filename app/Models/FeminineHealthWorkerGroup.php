@@ -14,4 +14,9 @@ class FeminineHealthWorkerGroup extends Model
     public function feminine() {
         return $this->belongsTo(User::class, 'feminine_id');
     }
+
+    public function healthWorker()
+    {
+        return $this->belongsTo(User::class, 'health_worker_id');
+    }
 }

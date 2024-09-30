@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mentrual Monitoring App :: Sign Up ::</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
-    
+   
     <link rel="stylesheet" href="{{ asset('assets/template/css/demo_1/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.2.1-web/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/template/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/custom_datepicker_style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/custom_style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .form-control { border-radius: 2px !important; }
         footer {
@@ -49,8 +52,35 @@
     background-color: #F6A5BB; /* Default Bootstrap primary color */
     border-color: #0d6efd; /* Default Bootstrap primary color */
 }
+.close-button-container {
+        text-align: right;
+    }
+    .form-control {
+        transition: background-color 0.3s ease; /* Smooth transition for background color */
+    }
+    .strength-indicator {
+    height: 5px; /* Height of the indicator */
+    background-color: transparent; /* Default to transparent */
+    transition: width 0.3s ease, background-color 0.3s ease; /* Smooth transition for width and color */
+    border-radius: 3px; /* Rounded corners */
+    margin-top: 5px; /* Space above the indicator */
+}
+
+.strength-indicator.weak {
+    /* Styles for weak can be left empty as we set it in JavaScript */
+}
+
+.strength-indicator.moderate {
+    /* Styles for moderate can be left empty as we set it in JavaScript */
+}
+
+.strength-indicator.strong {
+    /* Styles for strong can be left empty as we set it in JavaScript */
+}
+
 </style>
 </head>
+@include('partials.terms-and-conditions')
 <body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
@@ -63,6 +93,9 @@
                         @endauth
                         <div class="card mb-0">
                             <div class="card-body floating-shadow">
+                            <div class="close-button-container">
+                            <button type="button" class="btn-close" aria-label="Close" onclick="closeForm()"></button>
+                        </div>
                                 <div class="d-flex align-items-center justify-content-center">
                                     <img style="width: 200px" class="img-fluid" alt="logo" src="{{ asset('assets/images/blood.jpg') }}" />
                                 </div>
@@ -119,7 +152,7 @@
                                             <div class="row">
                                                 <div class="col-lg-8 col-sm-12 mb-3">
                                                     <label for="address" class="form-label">Address</label>
-                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Tarong (Purok Gumamela) Madridejos Cebu" oninput="handleInputCapitalize(event)" required="Please enter your complete address">
+                                                    <input type="text" id="address" name="address" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Tarong Madridejos Cebu" oninput="handleInputCapitalize(event)" required="Please enter your complete address">
                                                    
                                                     @if ($errors->has('address'))
                                                         <span class="invalid-feedback">
@@ -163,7 +196,7 @@
                                                 </div>
 
                                                 <div class="col-lg-6 col-sm-12 mb-4">
-                                                    <label for="contact_no" class="form-label">Contact No.</label>
+                                                    <label for="contact_no" class="form-label">Contact No. (Optional)</label>
                                                     <div class="input-group">
                                                         <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
                                                         <input type="text" id="contact_no" name="contact_no" class="form-control {{ $errors->has('contact_no') ? 'is-invalid' : '' }}" value="{{ old('contact_no') }}" placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">
@@ -180,7 +213,8 @@
                                             <div class="mb-4">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" id="password" name="password" class="form-control  {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-
+                                                <div id="password-strength-indicator" class="strength-indicator"></div>
+                                                
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
                                                         <strong>{{ $errors->first('password') }}</strong>
@@ -199,13 +233,12 @@
                                                 @endif
                                             </div>
 
-                                             
                                             <div class="alert alert-primary" role="alert">
                                                 <h5>Select your Role</h5>
                                                  <div class="col-12 mt-2 ml-2">
                                                    <small id="role_help" class="form-text text-muted">
-                                                    <li><span class="fw-bolder">Feminine</span> - If you are feminine</li>
-                                                    <li><span class="fw-bolder">Health Worker</span> - If you are health worker</li>
+                                                    <li><span class="fw-bolder">Female Residents</span> - If you are feminine</li>
+                                                    <li><span class="fw-bolder">Barangay Health Worker (BHW)</span> - If you are health worker</li>
                                                    </small>
                                                   </div>
                                             </div>  
@@ -214,8 +247,8 @@
                                         <label for="role">Role</label>
                                         <select id="role" name="role" class="form-control" required>
                                             <option value="">Select Role</option>
-                                            <option value="Health Worker">Health Worker</option>
-                                            <option value="Feminine">Feminine</option>
+                                            <option value="Feminine">Female Residents</option>
+                                            <option value="Health Worker">Barangay Health Worker (BHW)</option>                 
                                         </select>
                                     </div>
 
@@ -224,8 +257,8 @@
                                             <h5>Select your current menstruation status</h5>
                                             <div class="col-12 mt-2 ml-2">
                                                 <small id="menstruation_help" class="form-text text-muted">
-                                                    <li><span class="fw-bolder">Active</span> - Your menstruation is active and is not pregnant</li>
-                                                    <li><span class="fw-bolder">Inactive</span> - Your menstruation is not active and might be pregnant or delayed</li>
+                                                    <li><span class="fw-bolder">Regular</span> - Your menstruation is active and is not pregnant</li>
+                                                    <li><span class="fw-bolder">Irregular</span> - Your menstruation is not active and might be pregnant or delayed</li>
                                                 </small>
                                             </div>
                                         </div>
@@ -234,8 +267,8 @@
                                             <label for="menstruation_status" class="form-label">Menstruation Status</label>
                                             <select class="form-control" name="menstruation_status" id="menstruation_status">
                                                 <option value="" hidden>-- Select --</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Inactive</option>
+                                                <option value="1">Regular</option>
+                                                <option value="0">Irregular</option>
                                             </select>
 
                                             @if ($errors->has('menstruation_status'))
@@ -245,6 +278,33 @@
                                             @endif
                                         </div>
                                     </div>
+
+                                    <div class="form-group mt-2 mb-2">
+                                        <div class="captcha">
+                                            <span>{!! captcha_img('default') !!}</span>
+                                            <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <input type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
+                                        @error('captcha')
+                                            <label for="" class="text-danger">{{$message}}</label>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            I have read and accept the 
+                                            <a href="javascript:void(0);" id="terms-link">Terms and Conditions</a>
+                                        </label>
+                                        @if ($errors->has('terms'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('terms') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
 
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span>Already have an account? <a class="text-primary fw-bold " href="{{ route('login') }}">Sign in</a></span>
@@ -272,30 +332,11 @@
 
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/auth/js/sign_up_validation.js') }}"></script>
+    <script src="{{ asset('assets/auth/js/register.js') }}"></script>
 
     <script>
-        function handleInputCapitalize(e) {
-            let inputValue = e.target.value;
-            let words = inputValue.split(" ");
-            for (let i = 0; i < words.length; i++) {
-                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
-            }
-            inputValue = words.join(" ");
-            e.target.value = inputValue;
-        }
-        function formatPhoneNumber(input) {
-            let phoneNumber = input.value.replace(/\D/g, '');
-            if (phoneNumber.charAt(0) && phoneNumber.charAt(0) !== '9') {
-                phoneNumber = '9' + phoneNumber.substring(0, 9);
-            }
-            if (phoneNumber.length > 10) {
-                phoneNumber = phoneNumber.substring(0, 10);
-            }
-            input.value = phoneNumber;
-        }
-    </script>
- <script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function() {
             const roleSelect = document.getElementById('role');
             const menstruationFields = document.getElementById('menstruation-status-fields');
             const menstruationStatusSelect = document.getElementById('menstruation_status');
@@ -314,24 +355,13 @@
 
             roleSelect.dispatchEvent(new Event('change')); // Trigger change event initially
         });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const greetingElement = document.getElementById('greeting');
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    let greeting = 'Good morning';
 
-    if (currentHour >= 6 && currentHour < 12) {
-        greeting = 'Hello 👋, Good morning! Welcome to';
-    } else if (currentHour >= 12 && currentHour < 18) {
-        greeting = 'Hello 👋, Good afternoon! Welcome to';
-    } else {
-        greeting = 'Hello 👋, Good evening! Welcome to';
+
+        //close form
+        function closeForm() {
+        window.location.href = '/'; // Redirects to the main page or index page
     }
+    </script>
 
-    greetingElement.textContent = greeting;
-});
-</script>
 </body>
 </html>

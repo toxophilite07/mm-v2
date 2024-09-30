@@ -29,8 +29,6 @@
                      <i class="fa-solid fa-print"></i> Print
                    </button>
                 </div>
-
-
                   <p class="card-description mb-4 mt-2">This is your assigned feminine list, other feminine that are not under your care or assigned to you will not be displayed here.</p>
                     <div class="table-responsive">
                         <table id="feminine_table" class="table">
@@ -120,50 +118,58 @@
     }
 
     function printFeminineList() {
-        var table = document.getElementById('feminine_table');
-        var clonedTable = table.cloneNode(true);
-        var rows = clonedTable.rows;
+    var table = document.getElementById('feminine_table');
+    var clonedTable = table.cloneNode(true);
+    var rows = clonedTable.rows;
 
-        // Hide the "Account Status" and "Action" columns
-        for (var i = 0; i < rows.length; i++) {
-            rows[i].deleteCell(5);
-            rows[i].deleteCell(3);
-        }
-
-        // Create separate tables for the required columns
-        var headerTable = '<table border="1" style="width:100%; border-collapse: collapse; margin-bottom: 20px;"><thead><tr>';
-        headerTable += '<th>Name</th>';
-        headerTable += '<th>Menstruation Status</th>';
-        headerTable += '<th>Estimated Menstrual Status</th>';
-        headerTable += '</tr></thead><tbody>';
-
-        var nameTable = '';
-        for (var i = 1; i < rows.length; i++) {  // Start from 1 to skip the header row
-            nameTable += '<tr>';
-            nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
-            nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
-            nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
-            nameTable += '</tr>';
-        }
-
-        headerTable += nameTable + '</tbody></table>';
-
-        // Assuming you have variables for user information from the database
-        var newWindow = window.open('', '', 'height=500, width=800');
-        newWindow.document.write('<html><head><title>Assigned Feminine List</title>');
-        newWindow.document.write('<link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">');
-        newWindow.document.write('<style>');
-        newWindow.document.write('th.sorting::after, th.sorting_asc::after, th.sorting_desc::after { display: none !important; }');
-        newWindow.document.write('h2 { text-align: center; }');
-        newWindow.document.write('p { text-align: center; }');
-        newWindow.document.write('table { margin: 0 auto; }');
-        newWindow.document.write('</style>');
-        newWindow.document.write('</head><body>');
-        newWindow.document.write('<h2>Assigned Feminine List</h2>');
-        newWindow.document.write(headerTable);
-        newWindow.document.write('</body></html>');
-        newWindow.document.close();
-        newWindow.print();
+    // Hide the "Account Status" and "Action" columns
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].deleteCell(5);
+        rows[i].deleteCell(3);
     }
+
+    // Create the HTML for the print view
+    var headerTable = '<table border="1" style="width:100%; border-collapse: collapse; margin-bottom: 20px;"><thead><tr>';
+    headerTable += '<th>Name</th>';
+    headerTable += '<th>Menstruation Status</th>';
+    headerTable += '<th>Estimated Menstrual Status</th>';
+    headerTable += '</tr></thead><tbody>';
+
+    var nameTable = '';
+    for (var i = 1; i < rows.length; i++) {  // Start from 1 to skip the header row
+        nameTable += '<tr>';
+        nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
+        nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
+        nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
+        nameTable += '</tr>';
+    }
+
+    headerTable += nameTable + '</tbody></table>';
+
+    // Open new window and write the content
+    var newWindow = window.open('', '', 'height=500, width=800');
+    newWindow.document.write('<html><head><title>Assigned Feminine List</title>');
+    newWindow.document.write('<link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">');
+    newWindow.document.write('<style>');
+    newWindow.document.write('th.sorting::after, th.sorting_asc::after, th.sorting_desc::after { display: none !important; }');
+    newWindow.document.write('h2 { text-align: center; }');
+    newWindow.document.write('p { text-align: center; }');
+    newWindow.document.write('table { margin: 0 auto; }');
+    newWindow.document.write('body { position: relative; padding: 0 20px; }');
+    newWindow.document.write('.logo { position: absolute; top: 0px; }');
+    newWindow.document.write('.logo.left { left: 90px; width: 80px; }');
+    newWindow.document.write('.logo.right { right: 90px; width: 80px; }');
+    newWindow.document.write('</style>');
+    newWindow.document.write('</head><body>');
+    newWindow.document.write('<img src="' + '{{ asset('assets/images/mad.png') }}' + '" class="logo left" alt="Left Logo">');
+    newWindow.document.write('<img src="' + '{{ asset('assets/images/doh.png') }}' + '" class="logo right" alt="Right Logo">');
+    newWindow.document.write('<br><br><br><br>');
+    newWindow.document.write('<h2>Female Residents List</h2>');
+    newWindow.document.write(headerTable);
+    newWindow.document.write('</body></html>');
+    newWindow.document.close();
+    newWindow.print();
+}
+
 </script>
 

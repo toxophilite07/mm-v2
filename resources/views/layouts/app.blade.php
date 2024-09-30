@@ -95,10 +95,9 @@
     <script src="{{ asset('assets/template/vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('assets/template/js/template.js') }}"></script>
     <script src="{{ asset('assets/template/js/datepicker.js') }}"></script>
-
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
-
+    <script src="{{ asset('assets/js/notifications.js') }}"></script>
     <script>
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
