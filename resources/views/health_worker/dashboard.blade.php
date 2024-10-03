@@ -94,7 +94,7 @@
                 <div class="card-box shadow-sm" style="background-color: #FD5DA8;">
                     <div class="inner">
                         <h3 id="assigned_feminine_count">{{ $assign_feminine_count ?? 0 }}</h3>
-                        <p>Assigned Feminine</p>
+                        <p>Assigned Female</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-user-tag"></i>

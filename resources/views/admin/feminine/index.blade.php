@@ -23,6 +23,7 @@
                                     <th>Name</th>
                                     <th>Menstruation Status</th>
                                     <th>Assign Status</th>
+                                    <th>Address</th>
                                     <th>Account Status</th>
                                     <th>Action</th>
                                 </tr>

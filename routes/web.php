@@ -7,8 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangayHealthWorkerController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CookieConsentController;
-
-
+use App\Http\Controllers\ChatController;
+use OpenAI\Laravel\Facades\OpenAI;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +33,14 @@ Route::post('reset-password', [ForgotPasswordController::class, 'postResetPasswo
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
 Route::post('/accept-cookie-consent', [CookieConsentController::class, 'acceptConsent'])->name('accept.cookie.consent');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::post('/chat', [ChatController::class, 'getAIResponse']);
+Route::post('/chat', [ChatController::class, 'processChat']);
+// In routes/web.php or routes/api.php
+
+
+
+
 
 Route::group(['middleware' => 'auth'], function () {
     // Admin Routes

@@ -19,3 +19,9 @@
   border-left: 3px solid #fbbc06!important;
   background: #fffbf2!important
 }
+.card-box {
+    min-height: 100px; /* Set a minimum height for consistency */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content vertically */
+}

@@ -17,7 +17,7 @@
         }
     </style>
 @endsection
-
+@include('components.chatbox')
 @section('contents')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
@@ -48,7 +48,7 @@
     </div>
 
     @include('user.modal')
-    <button class="floating-icon" onclick="toggleChatbox()">
+    <!-- <button class="floating-icon" onclick="toggleChatbox()">
         <i class="fa-solid fa-robot"></i>
     </button>
 
@@ -58,14 +58,14 @@
             <button onclick="closeChatbox()">X</button>
         </div>
         <div class="chatbox-body" id="chatbox-body">
-            <!-- Chat content will go here -->
+             Chat content will go here 
             <p>Welcome! How can I assist you today?</p>
         </div>
         <div class="chatbox-footer">
             <input type="text" id="chatbox-input" placeholder="Type a message...">
             <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
-    </div>
+    </div> -->
 
 @endsection
 

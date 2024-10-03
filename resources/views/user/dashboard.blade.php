@@ -12,8 +12,9 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @endsection
-
+@include('components.chatbox')
 @section('contents')
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
             <h4 id="greeting" class="mb-3 mb-md-0">Good morning {{ Auth::user()->first_name }}!</h4>
@@ -109,25 +110,25 @@
 
     @include('user.modal')
 
-  <!-- Floating Icon and Chatbox -->
-  <button class="floating-icon" onclick="toggleChatbox()">
+  Floating Icon and Chatbox
+  <!-- <button class="floating-icon" onclick="toggleChatbox()">
         <i class="fa-solid fa-robot"></i>
     </button>
 
-    <div class="chatbox" id="chatbox">
+     <div class="chatbox" id="chatbox">
         <div class="chatbox-header">
             <span>AI Chatbox</span>
             <button onclick="closeChatbox()"><i class="fa-solid fa-times"></i></button>
         </div>
         <div class="chatbox-body" id="chatbox-body">
-            <!-- Chat content will go here -->
+            < Chat content will go here 
             <div class="chat-message ai-response">Welcome! How can I assist you today?</div>
         </div>
         <div class="chatbox-footer">
             <input type="text" id="chatbox-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
-    </div>
+    </div> --> 
 @endsection
 
 @section('scripts')

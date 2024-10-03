@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Define the route for checking notifications
 Route::get('/check-notifications', [NotificationController::class, 'checkNotifications']);
+
+Route::post('/chat', [ChatController::class, 'getAIResponse']);
+

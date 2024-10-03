@@ -97,7 +97,7 @@
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
                                                 <i id="showIcon" class="bi bi-eye"></i>
-                                                <i id="hideIcon" class="bi bi-eye" style="display:none;"></i>
+                                                <i id="hideIcon" class="bi bi-eye-slash" style="display:none;"></i>
                                             </button>
                                                 </div>
                                                 {{-- <label for="password" class="form-label">Password</label>

@@ -149,7 +149,7 @@
                                                 </div>
                                             </div>
 
-                                                                                        <div class="row">
+                                            <div class="row">
                                                     <div class="col-lg-8 col-sm-12 mb-3">
                                                         <label for="address" class="form-label">Address</label>
                                                         <!-- Input with datalist -->
@@ -180,6 +180,8 @@
                                                             </span>
                                                         @endif
                                                     </div>
+
+
     
                                                 <div class="col-lg-4 col-sm-12 mb-4">
                                                     <label for="birthdate" class="form-label">Birthdate</label>
@@ -383,15 +385,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     </script>
     <script>
-// Function to capitalize each word as user types
-function handleInputCapitalize(event) {
-    const input = event.target;
-    const capitalizedValue = input.value
-        .toLowerCase()
-        .replace(/\b\w/g, char => char.toUpperCase());
-    input.value = capitalizedValue;
-}
-</script>
+    // Function to capitalize each word as user types
+    function handleInputCapitalize(event) {
+        const input = event.target;
+        const capitalizedValue = input.value
+            .toLowerCase()
+            .replace(/\b\w/g, char => char.toUpperCase());
+        input.value = capitalizedValue;
+    }
+    </script>
 
 </body>
 </html>

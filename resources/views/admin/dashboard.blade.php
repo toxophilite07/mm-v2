@@ -90,7 +90,7 @@
                 <div class="card-box bg-pink shadow-sm" style="background-color: #FD5DA8;">
                     <div class="inner">
                         <h3 id="feminine_count">{{ $count['feminine_count'] }}</h3>
-                        <p>Total Feminine</p>
+                        <p>Total Female</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-user-friends"></i>
@@ -103,7 +103,7 @@
                  <div class="card-box bg-pink shadow-sm" style="background-color: #FD5DA8;">
                        <div class="inner">
                            <h3 id="active_count">{{$active_user_count}}</h3>
-                             <p>Verified Feminine</p>
+                             <p>Verified Female</p>
                         </div>
                  <div class="icon">
                    <i class="fa-solid fa-user-friends-check"></i>
@@ -183,13 +183,26 @@
                  <div class="card-box bg-red shadow-sm">
                        <div class="inner">
                            <h3 id="inactive_count">{{$inactive_user_count}}</h3>
-                             <p>Not Verified Feminine</p>
+                             <p>Not Verified Female</p>
                         </div>
                  <div class="icon">
                    <i class="fa-solid fa-user-slash"></i>
                      </div>
                       <a href="{{ URL::to('admin/feminine-list') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card-box bg-green shadow-sm">
+                        <div class="inner">
+                            <h3 id="unique_barangay_count">{{ $unique_barangay_count }}</h3> <!-- Display unique barangay count -->
+                            <p>Total Barangays</p> <!-- Description -->
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-map-marker-alt"></i> <!-- Use an appropriate icon -->
+                        </div>
+                        <!-- <a href="{{ URL::to('admin/barangay-list') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a> Link to barangay list -->
+                    </div> 
                 </div>
 
               </div>
@@ -215,6 +228,8 @@
             </div>
         </div>
     </div>  
+
+
 </div>
 
 

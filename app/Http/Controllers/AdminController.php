@@ -49,6 +49,11 @@ class AdminController extends Controller {
         $inactive_user_count = User::where('user_role_id', 2)->where('is_active', 0)->count();
         $active_user_count = User::where('user_role_id', 2)->where('is_active', 1)->count();
     
+        // Count of barangays
+        $unique_barangay_count = User::where('user_role_id', 2, 3) // Assuming '2' is the role ID for feminines
+        ->distinct('address') // Get distinct addresses
+        ->count('address'); // Ensure you have a Barangay model
+    
         // Pass data to the view
         return view('admin.dashboard', compact(
             'count', 
@@ -64,9 +69,11 @@ class AdminController extends Controller {
             'active_user_count',
             'hw_count',
             'verified_feminine_count',
-            'verified_users_count'
+            'verified_users_count',
+            'unique_barangay_count' // Include the barangay count
         ));
     }
+    
     
 
     public function pieChartData() {
@@ -401,7 +408,7 @@ class AdminController extends Controller {
 
 
             $full_name = $feminine['last_name'].', '.$feminine['first_name'].' '.$feminine['middle_name'];
-
+        
             $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
             $feminine_arr[$feminine_key]['full_name'] = $full_name;
             $feminine_arr[$feminine_key]['menstruation_status'] = '<span class="text-' . ($feminine['menstruation_status'] === 1 ? 'success' : 'danger') . '"><strong>&bull;</strong> ' . ($feminine['menstruation_status'] === 1 ? 'Regular' : 'Irregular') . '</span>';

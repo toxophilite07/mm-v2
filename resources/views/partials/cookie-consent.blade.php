@@ -3,7 +3,7 @@
 @if(session('show_cookie_consent'))
 <div id="cookie-consent" class="cookie-consent">
     <div class="cookie-consent-content">
-        <p>🍪This website uses cookies to enhance your experience. By clicking "Accept", you agree to our use of cookies. You can manage your preferences in the settings.🍪</p>
+        <p>🍪This website uses cookies to enhance your experience. By clicking "Accept", you agree to our use of cookies.🍪</p>
         <div class="cookie-consent-actions">
             <button id="accept-cookies" class="btn btn-primary">Accept</button>
             <button id="reject-cookies" class="btn btn-danger">Reject</button>          

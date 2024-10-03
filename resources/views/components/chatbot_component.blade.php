@@ -1,12 +1,12 @@
 @component('components.chatbot_component')
-<link rel="stylesheet" href="{{ asset('assets/css/ai.css') }}">
- <!-- Floating icon to open the chatbot -->
+<!-- <link rel="stylesheet" href="{{ asset('assets/css/ai.css') }}">
+ Floating icon to open the chatbot 
  <button class="floating-icon" id="open-chatbot" aria-label="Open chatbot">
     <i class="fa-solid fa-robot" aria-hidden="true"></i>
-</button>
+</button> -->
 
 <!-- Chatbox container -->
-<div class="chatbox" id="chatbox" aria-hidden="true">
+<!-- <div class="chatbox" id="chatbox" aria-hidden="true">
     <div class="chatbox-header">
         <h2>AI Chatbot</h2>
         <button id="close-chatbot" aria-label="Close chatbot">
@@ -14,8 +14,8 @@
         </button>
     </div>
     <div class="chatbox-body" id="chatbox-body">
-        <!-- Chat messages will be dynamically added here -->
-    </div>
+        < Chat messages will be dynamically added here -->
+    <!-- </div>
     <div class="chatbox-footer">
         <form id="chat-form">
             <input type="text" id="chatbox-input" placeholder="Type a message..." aria-label="Type a message">
@@ -24,10 +24,10 @@
             </button>
         </form>
     </div>
-</div>
+</div> -->
 
 <!-- <script src="{{ asset('assets/js/user/ai.js') }}"></script> -->
-<script>
+<!-- <script>
 function toggleChatbox() {
     const chatbox = document.getElementById('chatbox');
     chatbox.style.display = chatbox.style.display === 'none' || chatbox.style.display === '' ? 'flex' : 'none';
@@ -38,10 +38,10 @@ function closeChatbox() {
     const chatboxBody = document.getElementById('chatbox-body');
     chatbox.style.display = 'none';
     chatboxBody.innerHTML = '<div class="chat-message ai-response">Welcome! How can I assist you today?</div>';
-}
+} -->
 
 
-function sendMessage() {
+<!-- function sendMessage() {
     const chatboxInput = document.getElementById('chatbox-input');
     const chatboxBody = document.getElementById('chatbox-body');
     const message = chatboxInput.value.trim();
@@ -77,9 +77,9 @@ function sendMessage() {
             setTimeout(() => scrollToBottom(chatboxBody), 500); // Delay to ensure typing effect finishes
         }, 1500);
     }
-}
+} -->
 
-function typeEffect(element, text, speed = 10) {
+<!-- function typeEffect(element, text, speed = 10) {
     let i = 0;
     function type() {
         if (i < text.length) {
@@ -194,5 +194,5 @@ function getAIResponse(message) {
      return response;
  }
 
-</script>
+</script> --> 
 @endcomponent
