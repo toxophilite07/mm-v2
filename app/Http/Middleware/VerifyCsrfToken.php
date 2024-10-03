@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'webhook-endpoint', // Example endpoint that should bypass CSRF
+        'api/*',            // Exclude all API routes if you're handling CSRF differently
     ];
 }

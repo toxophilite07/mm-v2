@@ -1,3 +1,5 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
    <style>
         body {
@@ -274,7 +276,13 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-    function sendMessage() {
+    // Initialize the chat interface
+    document.addEventListener("DOMContentLoaded", function() {
+        const initialGreeting = document.getElementById('initial-greeting');
+        initialGreeting.textContent = getTimeBasedGreeting();
+    });
+
+    async function sendMessage() {
         const message = document.getElementById('chatbox-input').value;
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -299,23 +307,22 @@
         const typingIndicator = document.getElementById('typing-indicator');
         typingIndicator.style.display = 'block';
 
-        fetch('/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: JSON.stringify({ message: message }),
-        })
-        .then(response => {
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, // Include CSRF token if necessary
+                },
+                body: JSON.stringify({ message: message }) // Send message as JSON
+            });
+
             if (!response.ok) {
-                throw new Error('Failed to get a valid response from the server.');
+                throw new Error('Network response was not ok ' + response.statusText);
             }
-            return response.json();
-        })
-        .then(data => {
+
+            const data = await response.json();
             // Hide typing indicator
-            console.log(data); 
             typingIndicator.style.display = 'none';
 
             const aiResponse = document.createElement('div');
@@ -330,77 +337,72 @@
 
             chatboxBody.appendChild(aiResponse);
             chatboxBody.scrollTop = chatboxBody.scrollHeight;
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error:', error);
             const errorMessage = document.createElement('div');
             errorMessage.classList.add('chat-message', 'ai-response');
+            errorMessage.textContent = 'Error: Unable to process your request.';
             chatboxBody.appendChild(errorMessage);
 
             // Hide typing indicator in case of error
             typingIndicator.style.display = 'none';
-        });
-
-    }
-
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        function toggleChatbox() {
-            const chatbox = document.getElementById('chatbox');
-            chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'flex' : 'none';
-        }
-
-        function closeChatbox() {
-            document.getElementById('chatbox').style.display = 'none';
-        }
-
-        function toggleSendButton() {
-            const input = document.getElementById('chatbox-input');
-            const sendButton = document.getElementById('send-button');
-            sendButton.disabled = input.value.trim() === '';
-        }
-
-
-        function getTimeBasedGreeting() {
-            const hour = new Date().getHours();
-            let greeting;
-            
-            if (hour >= 5 && hour < 12) {
-                greeting = "Good morning";
-            } else if (hour >= 12 && hour < 17) {
-                greeting = "Good afternoon";
-            } else if (hour >= 17 && hour < 22) {
-                greeting = "Good evening";
-            } else {
-                greeting = "Hello";
-            }
-            
-            return `${greeting}! I'm NyxAI. How can I assist you today?`;
-        }
-
-        // Set initial greeting when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const initialGreeting = document.getElementById('initial-greeting');
-            initialGreeting.textContent = getTimeBasedGreeting();
-        });
-
-        function toggleFAQ() {
-        var faqSection = document.getElementById("faq-section");
-        if (faqSection.style.display === "none" || faqSection.style.display === "") {
-            faqSection.style.display = "block";
-        } else {
-            faqSection.style.display = "none";
         }
     }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function toggleChatbox() {
+        const chatbox = document.getElementById('chatbox');
+        chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'flex' : 'none';
+    }
+
+    function closeChatbox() {
+        document.getElementById('chatbox').style.display = 'none';
+    }
+
+    function toggleSendButton() {
+        const input = document.getElementById('chatbox-input');
+        const sendButton = document.getElementById('send-button');
+        sendButton.disabled = input.value.trim() === '';
+    }
+
+    function toggleFAQ() {
+        const faqSection = document.getElementById('faq-section');
+        faqSection.style.display = (faqSection.style.display === 'none' || faqSection.style.display === '') ? 'block' : 'none';
+    }
+
     function hideFAQ() {
-        var faqSection = document.getElementById("faq-section");
-        faqSection.style.display = "none";  // Hide the FAQ section
+        const faqSection = document.getElementById('faq-section');
+        faqSection.style.display = 'none';
     }
-    </script>
+
+    function getTimeBasedGreeting() {
+        const hour = new Date().getHours();
+        let greeting;
+
+        if (hour >= 5 && hour < 12) {
+            greeting = "Good morning";
+        } else if (hour >= 12 && hour < 17) {
+            greeting = "Good afternoon";
+        } else if (hour >= 17 && hour < 22) {
+            greeting = "Good evening";
+        } else {
+            greeting = "Hello";
+        }
+
+        return `${greeting}! I'm NyxAI. How can I assist you today?`;
+    }
+
+    // Set initial greeting when page loads
+    document.addEventListener("DOMContentLoaded", function() {
+        const initialGreeting = document.getElementById('initial-greeting');
+        initialGreeting.textContent = getTimeBasedGreeting();
+    });
+</script>
+
 </body>
 </html>
