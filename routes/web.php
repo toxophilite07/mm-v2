@@ -34,7 +34,7 @@ Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::cla
 Route::post('/accept-cookie-consent', [CookieConsentController::class, 'acceptConsent'])->name('accept.cookie.consent');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::get('/chat', [ChatController::class, 'getAIResponse']);
+Route::post('/chat', [ChatController::class, 'getAIResponse']);
 Route::get('/chat', [ChatController::class, 'processChat']);
 Route::get('/chat', [ChatController::class, 'chat']);
 Route::get('/chat', [ChatController::class, 'sendMessage']);
