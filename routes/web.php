@@ -37,7 +37,7 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::post('/chat', [ChatController::class, 'getAIResponse']);
 Route::post('/chat', [ChatController::class, 'processChat']);
 Route::post('/chat', [ChatController::class, 'chat']);
-Route::post'/chat', [ChatController::class, 'sendMessage']);
+Route::post('/chat', [ChatController::class, 'sendMessage']);
 Route::get('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
 // In routes/web.php or routes/api.php
 
