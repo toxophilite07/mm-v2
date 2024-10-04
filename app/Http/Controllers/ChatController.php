@@ -4,40 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
-use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
-    public function handleChat(Request $request)
+    public function getAIResponse(Request $request)
     {
-        $request->validate([
-            'message' => 'required|string|max:500',
-        ]);
+        // Input from user chat request
+        $userInput = $request->input('message');
 
         try {
+            // Make the OpenAI API call with gpt-3.5-turbo model
             $response = OpenAI::chat()->create([
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'You are a helpful assistant specialized in menstrual health.'],
-                    ['role' => 'user', 'content' => $request->message]
+                    ['role' => 'system', 'content' => 'You are a helpful assistant.'],
+                    ['role' => 'user', 'content' => $userInput],
                 ],
             ]);
 
-            $reply = $response->choices[0]->message->content;
-            return response()->json(['reply' => $reply]);
-        } catch (\Exception $e) {
-            Log::error('Error in ChatController', ['error' => $e->getMessage()]);
-            
-            // Check if the error is due to exceeding quota
-            if (strpos($e->getMessage(), 'exceeded your current quota') !== false) {
-                return response()->json([
-                    'reply' => "I'm sorry, but I'm temporarily unavailable due to high demand. Please try again later or contact support if this persists."
-                ], 503);
-            }
+            // Get the response from OpenAI
+            $aiResponse = $response['choices'][0]['message']['content'];
 
-            return response()->json([
-                'reply' => "I'm sorry, but I couldn't process your request at this time. Please try again later."
-            ], 500);
+            // Return the response to the frontend
+            return response()->json(['response' => $aiResponse]);
+
+        } catch (\Exception $e) {
+            // Log the error and send a friendly error message to the frontend
+            \Log::error("OpenAI API error: " . $e->getMessage());
+            return response()->json(['error' => 'OpenAI request failed. Please try again later.']);
         }
     }
 }
