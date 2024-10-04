@@ -35,10 +35,21 @@ Route::post('/accept-cookie-consent', [CookieConsentController::class, 'acceptCo
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 Route::post('/chat', [ChatController::class, 'getAIResponse']);
-Route::get('/chat', [ChatController::class, 'processChat']);
-Route::get('/chat', [ChatController::class, 'chat']);
-Route::get('/chat', [ChatController::class, 'sendMessage']);
-Route::get('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
+Route::post('/chat', [ChatController::class, 'processChat']);
+Route::post('/chat', [ChatController::class, 'chat']);
+Route::post('/chat', [ChatController::class, 'sendMessage']);
+Route::post('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
+
+Route::get('/chat',function(){
+    $returnValue = OpenAI::chat()->create([
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+            ['role' => 'user', 'content' => 'Hello!'],
+        ],
+    ]);
+   echo  $returnValue->choices[0]->message->content;
+});
+
 // In routes/web.php or routes/api.php
 
 

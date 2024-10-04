@@ -3,42 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use OpenAI; // Ensure this is the correct import for your OpenAI library
-use Log;
+use OpenAI\Laravel\Facades\OpenAI;
+use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
-    public function getAIResponse(Request $request)
+    public function handleChat(Request $request)
     {
-        // Validate input
         $request->validate([
-            'message' => 'required|string|max:1000', // Adjust max length as necessary
+            'message' => 'required|string|max:500',
         ]);
-
-        $userInput = $request->input('message');
 
         try {
             $response = OpenAI::chat()->create([
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'You are a helpful assistant.'],
-                    ['role' => 'user', 'content' => $userInput],
+                    ['role' => 'system', 'content' => 'You are a helpful assistant specialized in menstrual health.'],
+                    ['role' => 'user', 'content' => $request->message]
                 ],
             ]);
 
-            // Check if response structure is as expected
-            if (isset($response['choices'][0]['message']['content'])) {
-                $aiResponse = $response['choices'][0]['message']['content'];
-                return response()->json(['response' => $aiResponse]);
-            } else {
-                throw new \Exception("Unexpected response structure: " . json_encode($response));
+            $reply = $response->choices[0]->message->content;
+            return response()->json(['reply' => $reply]);
+        } catch (\Exception $e) {
+            Log::error('Error in ChatController', ['error' => $e->getMessage()]);
+            
+            // Check if the error is due to exceeding quota
+            if (strpos($e->getMessage(), 'exceeded your current quota') !== false) {
+                return response()->json([
+                    'reply' => "I'm sorry, but I'm temporarily unavailable due to high demand. Please try again later or contact support if this persists."
+                ], 503);
             }
 
-        } catch (\Exception $e) {
-            // Log detailed error message
-            Log::error("OpenAI API error: " . $e->getMessage());
-            Log::error("Full Exception: " . json_encode($e));
-            return response()->json(['error' => 'OpenAI request failed. Please try again later.']);
+            return response()->json([
+                'reply' => "I'm sorry, but I couldn't process your request at this time. Please try again later."
+            ], 500);
         }
     }
 }

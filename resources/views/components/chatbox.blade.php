@@ -277,101 +277,95 @@
     </div>
 
     <script>
-    const chatbox = document.getElementById('chatbox');
-    const chatboxBody = document.getElementById('chatbox-body');
-    const inputField = document.getElementById('chatbox-input');
-    const sendButton = document.getElementById('send-button');
-    const initialGreeting = document.getElementById('initial-greeting');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const faqSection = document.getElementById('faq-section');
+        const chatbox = document.getElementById('chatbox');
+        const chatboxBody = document.getElementById('chatbox-body');
+        const inputField = document.getElementById('chatbox-input');
+        const sendButton = document.getElementById('send-button');
+        const initialGreeting = document.getElementById('initial-greeting');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const faqSection = document.getElementById('faq-section');
 
-    const welcomeMessage = "Hello! I'm NyxAI, your health assistant. How can I help you today?";
-    initialGreeting.innerText = welcomeMessage;
+        const welcomeMessage = "Hello! I'm NyxAI, your health assistant. How can I help you today?";
+        initialGreeting.innerText = welcomeMessage;
 
-    function toggleChatbox() {
-        chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
-        if (chatbox.style.display === 'flex') {
+        function toggleChatbox() {
+            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
+            if (chatbox.style.display === 'flex') {
+                inputField.focus();
+            }
+        }
+
+        function closeChatbox() {
+            chatbox.style.display = 'none';
+        }
+
+        function toggleFAQ() {
+            faqSection.style.display = faqSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function hideFAQ() {
+            faqSection.style.display = 'none';
+        }
+
+        function toggleSendButton() {
+            sendButton.disabled = !inputField.value.trim();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const userMessage = inputField.value.trim();
+            if (!userMessage) return;
+
+            appendMessage(userMessage, 'user');
+            inputField.value = '';
+            toggleSendButton();
+            typingIndicator.style.display = 'block';
+
+            try {
+                console.log('Sending message to server:', userMessage);
+                const response = await axios.post('/chat', { message: userMessage });
+                console.log('Received response:', response.data);
+                appendMessage(response.data.reply, 'ai');
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.response) {
+                    console.error('Response data:', error.response.data);
+                    console.error('Response status:', error.response.status);
+                    console.error('Response headers:', error.response.headers);
+                } else if (error.request) {
+                    console.error('No response received:', error.request);
+                } else {
+                    console.error('Error setting up request:', error.message);
+                }
+                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
+            } finally {
+                typingIndicator.style.display = 'none';
+            }
+        }
+
+
+        function appendMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `chat-message ${sender}-response`;
+            messageElement.innerText = message;
+            chatboxBody.appendChild(messageElement);
+            chatboxBody.scrollTop = chatboxBody.scrollHeight; // Scroll to the bottom
+        }
+
+        // Auto-focus on the input when the chatbox is opened
+        chatbox.addEventListener('show', () => {
             inputField.focus();
-        }
-    }
+        });
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    </script>
 
-    function closeChatbox() {
-        chatbox.style.display = 'none';
-    }
-
-    function toggleFAQ() {
-        faqSection.style.display = faqSection.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function hideFAQ() {
-        faqSection.style.display = 'none';
-    }
-
-    function toggleSendButton() {
-        sendButton.disabled = !inputField.value.trim();
-    }
-
-    function handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendMessage();
-        }
-    }
-
-    async function sendMessage() {
-        const userMessage = inputField.value.trim();
-        if (!userMessage) return;
-
-        appendMessage(userMessage, 'user');
-        inputField.value = '';
-        toggleSendButton();
-        typingIndicator.style.display = 'block';
-
-        try {
-            console.log('Sending message to server:', userMessage);
-            const response = await axios.post('/chat', { message: userMessage });
-            console.log('Received response:', response.data);
-            if (response.data.error) {
-                console.error(response.data.error);
-                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
-            } else {
-                appendMessage(response.data.response, 'ai');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            if (error.response) {
-                console.error('Response data:', error.response.data);
-                console.error('Response status:', error.response.status);
-                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
-            } else if (error.request) {
-                console.error('No response received:', error.request);
-                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
-            } else {
-                console.error('Error setting up request:', error.message);
-                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
-            }
-        } finally {
-            typingIndicator.style.display = 'none';
-        }
-    }
-
-    function appendMessage(message, sender) {
-        const messageElement = document.createElement('div');
-        messageElement.className = `chat-message ${sender}-response`;
-        messageElement.innerText = message;
-        chatboxBody.appendChild(messageElement);
-        chatboxBody.scrollTop = chatboxBody.scrollHeight; // Scroll to the bottom
-    }
-
-    // Auto-focus on the input when the chatbox is opened
-    chatbox.addEventListener('show', () => {
-        inputField.focus();
-    });
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-</script>
-
-<!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
