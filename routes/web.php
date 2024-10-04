@@ -37,7 +37,19 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::post('/chat', [ChatController::class, 'getAIResponse']);
 Route::post('/chat', [ChatController::class, 'processChat']);
 Route::post('/chat', [ChatController::class, 'chat']);
-Route::post('/chat', [YourChatController::class, 'handleChat'])->name('chat.handle');
+Route::post('/chat', [ChatController::class, 'sendMessage']);
+Route::post('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
+
+Route::get('/chat',function(){
+    $returnValue = OpenAI::chat()->create([
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+            ['role' => 'user', 'content' => 'Hello!'],
+        ],
+    ]);
+   echo  $returnValue->choices[0]->message->content;
+});
+
 // In routes/web.php or routes/api.php
 
 

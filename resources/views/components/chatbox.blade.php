@@ -1,7 +1,14 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-<link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
-   <style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f2f5;
@@ -123,11 +130,11 @@
         }
 
         .chatbox-footer button:hover:not(:disabled) {
-            background-color: #333333;
+            /* background-color: #333333; */
         }
 
         .chatbox-footer button:disabled {
-            background-color: #cccccc;
+            /* background-color: #cccccc; */
             cursor: not-allowed;
         }
 
@@ -181,228 +188,184 @@
             75% { content: '...'; }
             100% { content: ''; }
         }
+
         .faq-toggle {
-        text-align: right;
-        padding: 5px;
-        margin-right: 10px;
-    }
+            text-align: right;
+            padding: 5px;
+            margin-right: 10px;
+        }
 
-    .faq-button {
-        background-color: #f0f0f0;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
+        .faq-button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-    .faq-section {
-        max-height: 200px;
-        overflow-y: auto;
-        background-color: #f9f9f9;
-        padding: 10px;
-        margin: 10px;
-        border-radius: 5px;
-    }
+        .faq-section {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
 
-    .faq-section h3 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
+        .faq-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-    .faq-section ul {
-        list-style: none;
-        padding: 0;
-    }
+        .faq-section ul {
+            list-style: none;
+            padding: 0;
+        }
 
-    .faq-section li {
-        margin-bottom: 10px;
-    }
+        .faq-section li {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
 
-    .faq-section li strong {
-        font-weight: bold;
-    }
-
-    .faq-section li {
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
+        .faq-section li strong {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <!--  -->
     <button class="floating-icon" onclick="toggleChatbox()">
-    <i class="fa-solid fa-comments"></i>
-</button>
+        <i class="fa-solid fa-comments"></i>
+    </button>
 
-<div class="chatbox" id="chatbox">
-    <div class="chatbox-header">
-        <span>NyxAI Assistance</span>
-        <button onclick="closeChatbox()"><i class="fa-solid fa-times"></i></button>
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            <span>NyxAI Assistance</span>
+            <button onclick="closeChatbox()"><i class="fa-solid fa-times"></i></button>
+        </div>
+
+        <div class="faq-toggle" onclick="toggleFAQ()">
+            <button class="faq-button">
+                <i class="fa-solid fa-question-circle"></i> FAQ
+            </button>
+        </div>
+
+        <div class="faq-section" id="faq-section" style="display: none;">
+            <h3>Menstruation FAQ</h3>
+            <ul>
+                <li><strong>What is menstruation?</strong> <br> Menstruation is the monthly shedding of the uterine lining when pregnancy does not occur.</li>
+                <li><strong>What is a normal menstrual cycle?</strong> <br> A normal menstrual cycle ranges from 21 to 35 days.</li>
+                <li><strong>What causes irregular periods?</strong> <br> Irregular periods can be caused by stress, hormonal imbalances, or health conditions.</li>
+                <li><strong>How can I manage period pain?</strong> <br> Period pain can be managed with over-the-counter pain relievers and heat therapy.</li>
+                <li><strong>Can stress affect my menstrual cycle?</strong> <br> Yes, stress can interfere with hormonal balance, causing missed or delayed periods.</li>
+                <li><strong>What is an irregular period cycle?</strong> <br> An irregular period cycle is when the timing, flow, or duration of menstruation varies significantly from one cycle to another.</li>
+                <li><strong>How does diet affect menstruation?</strong> <br> A balanced diet with essential nutrients helps regulate your menstrual cycle.</li>
+            </ul>
+        </div>
+
+        <div class="chatbox-body" id="chatbox-body">
+            <div class="chat-message ai-response" id="initial-greeting"></div>
+        </div>
+        
+        <div class="typing-indicator" id="typing-indicator" style="display: none;">NyxAI is thinking...</div>
+        
+        <div class="chatbox-footer">
+            <input type="text" id="chatbox-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)" oninput="toggleSendButton()" onfocus="hideFAQ()">
+            <button id="send-button" onclick="sendMessage()" disabled>
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="faq-toggle" onclick="toggleFAQ()">
-        <button class="faq-button">
-            <i class="fa-solid fa-question-circle"></i> FAQ
-        </button>
-    </div>
-
-    <!-- FAQ Section (Initially Hidden) -->
-    <div class="faq-section" id="faq-section" style="display: none;">
-        <h3>Menstruation FAQ</h3>
-        <ul>
-            <li><strong>What is menstruation?</strong> <br> Menstruation is the monthly shedding of the uterine lining when pregnancy does not occur.</li>
-            <li><strong>What is a normal menstrual cycle?</strong> <br> A normal menstrual cycle ranges from 21 to 35 days.</li>
-            <li><strong>What causes irregular periods?</strong> <br> Irregular periods can be caused by stress, hormonal imbalances, or health conditions.</li>
-            <li><strong>How can I manage period pain?</strong> <br> Period pain can be managed with over-the-counter pain relievers and heat therapy.</li>
-            <!-- Add more FAQs here as needed -->
-            <li><strong> Can stress affect my menstrual cycle?</strong> <br> Yes, stress can interfere with the hormonal balance, causing missed or delayed periods.</li>
-            <li><strong>What is an irregular period cycle?</strong> <br> An irregular period cycle is when the timing, flow, or duration of menstruation varies significantly from one cycle to another. Periods may be too frequent, infrequent, or completely absent.</li>
-            <li><strong>How does diet affect menstruation?</strong> <br> A balanced diet with essential nutrients helps regulate your menstrual cycle. Poor nutrition or extreme dieting can disrupt hormonal balance, leading to irregular periods.</li>
-        </ul>
-    </div>
-
-    <div class="chatbox-body" id="chatbox-body">
-        <div class="chat-message ai-response" id="initial-greeting"></div>
-    </div>
-    <div class="typing-indicator" id="typing-indicator">NyxAI is thinking</div>
-    <div class="chatbox-footer">
-        <input type="text" id="chatbox-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)" oninput="toggleSendButton()" onfocus="hideFAQ()">
-        <button id="send-button" onclick="sendMessage()" disabled>
-            <i class="fa-solid fa-paper-plane"></i>
-        </button>
-    </div>
-</div>
-
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-    // Initialize the chat interface
-    document.addEventListener("DOMContentLoaded", function() {
-        const initialGreeting = document.getElementById('initial-greeting');
-        initialGreeting.textContent = getTimeBasedGreeting();
-    });
-
-    async function sendMessage() {
-        const message = document.getElementById('chatbox-input').value;
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        if (!message.trim()) {
-            return; // Do not send empty messages
-        }
-
-        // Add user message to the chatbox
-        const chatboxBody = document.getElementById('chatbox-body');
-        const userMessage = document.createElement('div');
-        userMessage.classList.add('chat-message', 'user-response');
-        userMessage.textContent = message;
-        chatboxBody.appendChild(userMessage);
-
-        // Scroll to the bottom after adding the new message
-        chatboxBody.scrollTop = chatboxBody.scrollHeight;
-
-        // Clear the input field
-        document.getElementById('chatbox-input').value = '';
-
-        // Show typing indicator
-        const typingIndicator = document.getElementById('typing-indicator');
-        typingIndicator.style.display = 'block';
-
-        try {
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken, // Include CSRF token if necessary
-                },
-                body: JSON.stringify({ message: message }) // Send message as JSON
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-
-            const data = await response.json();
-            // Hide typing indicator
-            typingIndicator.style.display = 'none';
-
-            const aiResponse = document.createElement('div');
-            aiResponse.classList.add('chat-message', 'ai-response');
-
-            // Use the structured response format
-            if (data.error) {
-                aiResponse.textContent = 'Error: ' + data.error;
-            } else {
-                aiResponse.textContent = data.response; // Access the response correctly
-            }
-
-            chatboxBody.appendChild(aiResponse);
-            chatboxBody.scrollTop = chatboxBody.scrollHeight;
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('div');
-            errorMessage.classList.add('chat-message', 'ai-response');
-            errorMessage.textContent = 'Error: Unable to process your request.';
-            chatboxBody.appendChild(errorMessage);
-
-            // Hide typing indicator in case of error
-            typingIndicator.style.display = 'none';
-        }
-    }
-
-    function handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    }
-
-    function toggleChatbox() {
         const chatbox = document.getElementById('chatbox');
-        chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'flex' : 'none';
-    }
-
-    function closeChatbox() {
-        document.getElementById('chatbox').style.display = 'none';
-    }
-
-    function toggleSendButton() {
-        const input = document.getElementById('chatbox-input');
+        const chatboxBody = document.getElementById('chatbox-body');
+        const inputField = document.getElementById('chatbox-input');
         const sendButton = document.getElementById('send-button');
-        sendButton.disabled = input.value.trim() === '';
-    }
-
-    function toggleFAQ() {
+        const initialGreeting = document.getElementById('initial-greeting');
+        const typingIndicator = document.getElementById('typing-indicator');
         const faqSection = document.getElementById('faq-section');
-        faqSection.style.display = (faqSection.style.display === 'none' || faqSection.style.display === '') ? 'block' : 'none';
-    }
 
-    function hideFAQ() {
-        const faqSection = document.getElementById('faq-section');
-        faqSection.style.display = 'none';
-    }
+        const welcomeMessage = "Hello! I'm NyxAI, your health assistant. How can I help you today?";
+        initialGreeting.innerText = welcomeMessage;
 
-    function getTimeBasedGreeting() {
-        const hour = new Date().getHours();
-        let greeting;
-
-        if (hour >= 5 && hour < 12) {
-            greeting = "Good morning";
-        } else if (hour >= 12 && hour < 17) {
-            greeting = "Good afternoon";
-        } else if (hour >= 17 && hour < 22) {
-            greeting = "Good evening";
-        } else {
-            greeting = "Hello";
+        function toggleChatbox() {
+            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
+            if (chatbox.style.display === 'flex') {
+                inputField.focus();
+            }
         }
 
-        return `${greeting}! I'm NyxAI. How can I assist you today?`;
-    }
+        function closeChatbox() {
+            chatbox.style.display = 'none';
+        }
 
-    // Set initial greeting when page loads
-    document.addEventListener("DOMContentLoaded", function() {
-        const initialGreeting = document.getElementById('initial-greeting');
-        initialGreeting.textContent = getTimeBasedGreeting();
-    });
-</script>
+        function toggleFAQ() {
+            faqSection.style.display = faqSection.style.display === 'none' ? 'block' : 'none';
+        }
 
+        function hideFAQ() {
+            faqSection.style.display = 'none';
+        }
+
+        function toggleSendButton() {
+            sendButton.disabled = !inputField.value.trim();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const userMessage = inputField.value.trim();
+            if (!userMessage) return;
+
+            appendMessage(userMessage, 'user');
+            inputField.value = '';
+            toggleSendButton();
+            typingIndicator.style.display = 'block';
+
+            try {
+                console.log('Sending message to server:', userMessage);
+                const response = await axios.post('/chat', { message: userMessage });
+                console.log('Received response:', response.data);
+                appendMessage(response.data.reply, 'ai');
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.response) {
+                    console.error('Response data:', error.response.data);
+                    console.error('Response status:', error.response.status);
+                    console.error('Response headers:', error.response.headers);
+                } else if (error.request) {
+                    console.error('No response received:', error.request);
+                } else {
+                    console.error('Error setting up request:', error.message);
+                }
+                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
+            } finally {
+                typingIndicator.style.display = 'none';
+            }
+        }
+
+
+        function appendMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `chat-message ${sender}-response`;
+            messageElement.innerText = message;
+            chatboxBody.appendChild(messageElement);
+            chatboxBody.scrollTop = chatboxBody.scrollHeight; // Scroll to the bottom
+        }
+
+        // Auto-focus on the input when the chatbox is opened
+        chatbox.addEventListener('show', () => {
+            inputField.focus();
+        });
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

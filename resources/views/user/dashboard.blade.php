@@ -110,7 +110,7 @@
 
     @include('user.modal')
 
-  Floating Icon and Chatbox
+  
   <!-- <button class="floating-icon" onclick="toggleChatbox()">
         <i class="fa-solid fa-robot"></i>
     </button>
