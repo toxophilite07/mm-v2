@@ -277,6 +277,28 @@
     </div>
 
     <script>
+        const userMessage = "Hello, OpenAI!";
+
+fetch('/chat', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    },
+    body: JSON.stringify({ message: userMessage }),
+})
+.then(response => response.json())
+.then(data => {
+    if (data.error) {
+        console.error(data.error);
+        // Handle the error response on the frontend
+    } else {
+        console.log("AI Response:", data.response);
+        // Display AI response in the chat
+    }
+})
+.catch(error => console.error('Error:', error));
+
         const chatbox = document.getElementById('chatbox');
         const chatboxBody = document.getElementById('chatbox-body');
         const inputField = document.getElementById('chatbox-input');
