@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .form-control { border-radius: 2px !important; }
         .btn-primary {
@@ -222,6 +222,33 @@
             buttonText.classList.add('d-none');
             loadingSpinner.classList.remove('d-none');
         });
+
+
+            // Detect back button on mobile devices
+    window.addEventListener('popstate', function (event) {
+        event.preventDefault(); // Prevent the default behavior
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to close the application?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#F6A5BB',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, close it!',
+            cancelButtonText: 'No, stay here!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Allow the default behavior (close the app)
+                window.history.back(); // Go back in history
+            } else {
+                // User chose to stay
+                history.pushState(null, '', location.href); // Add a new history state
+            }
+        });
+    });
+    
+    // Prevent the default behavior on page load
+    history.pushState(null, '', location.href);
     </script>
 
         @include('auth.response')
