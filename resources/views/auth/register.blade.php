@@ -327,11 +327,13 @@
                                         @endif
                                     </div>
 
-
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <span>Already have an account? <a class="text-primary fw-bold " href="{{ route('login') }}">Sign in</a></span>
-                                                <button type="submit" class="btn btn-primary no-hover py-2 fs-4 rounded-1"><i class="fa-regular fa-circle-check mr-1"></i> Confirm Registration</button>
-                                            </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span>Already have an account? <a class="text-primary fw-bold" href="{{ route('login') }}">Sign in</a></span>
+                                        <button type="submit" id="submit-button" class="btn btn-primary no-hover py-2 fs-4 rounded-1">
+                                            <i class="fa-regular fa-circle-check mr-1"></i> Confirm Registration
+                                            <span id="loading-indicator" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
                                         </form>
                                    @endauth
                                 @endif
@@ -356,9 +358,10 @@
     <script src="{{ asset('assets/auth/js/sign_up_validation.js') }}"></script>
     <script src="{{ asset('assets/auth/js/register.js') }}"></script>
 
-    <script>
 
-document.addEventListener('DOMContentLoaded', function() {
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
             const roleSelect = document.getElementById('role');
             const menstruationFields = document.getElementById('menstruation-status-fields');
             const menstruationStatusSelect = document.getElementById('menstruation_status');
@@ -384,14 +387,40 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/'; // Redirects to the main page or index page
     }
     </script>
+
+    <!-- PASSWROD INDICATOR -->
     <script>
     // Function to capitalize each word as user types
-    function handleInputCapitalize(event) {
-        const input = event.target;
-        const capitalizedValue = input.value
-            .toLowerCase()
-            .replace(/\b\w/g, char => char.toUpperCase());
-        input.value = capitalizedValue;
+    function checkPasswordStrength(password) {
+        // Basic password strength checking logic
+        const strengthIndicator = document.getElementById('password-strength-indicator');
+        let strength = 'Weak';
+        if (password.length > 8) strength = 'Moderate';
+        if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength = 'Strong';
+        
+        strengthIndicator.textContent = strength;
+        strengthIndicator.style.color = strength === 'Strong' ? 'green' : (strength === 'Moderate' ? 'orange' : 'red');
+    }
+    </script>
+
+    <!-- LOADING FOR PRESSING BUTTON -->
+    <script>
+    function handleSubmit() {
+        const form = document.getElementById('sign_up_form');
+
+        // Check if the form is valid before proceeding
+        if (!form.checkValidity()) {
+            return true; // Allow submission if form is invalid (prevent loading)
+        }
+
+        // Show loading spinner and disable button
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const submitButton = document.getElementById('submit-button');
+        
+        loadingIndicator.classList.remove('d-none'); // Show loading spinner
+        submitButton.disabled = true; // Disable the submit button
+
+        return true; // Allow form submission
     }
     </script>
 

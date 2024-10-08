@@ -224,6 +224,8 @@ $(document).ready(function () {
     });
 
     $("#newHealthWorkerForm").validate(validation_options);
+
+    
     $("#editHealthWorkerForm").validate(validation_options);
 
     $("#editHealthWorkerModal").on("show.bs.modal", function (e) {

@@ -24,7 +24,7 @@
         <div class="col-lg-8 col-sm-12">
             <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" oninput="handleInputCapitalize(event)">
+                <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" oninput="handleInputCapitalize(event)" required>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
         </div>
         <div class="col-lg-6">
             <div class="form-group">
-                <label for="contact_no">Contact No.</label>
+                <label for="contact_no">Contact No. (Optional)</label>
                 <div class="input-group">
                     <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
                     <input type="text" id="contact_no" name="contact_no" class="form-control" placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">

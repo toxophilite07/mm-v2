@@ -82,54 +82,121 @@ class UserController extends Controller
         ]);
     }
 
+    // public function postMenstruationPeriod(Request $request)
+    // {
+    //     try {
+    //         if (Auth::check() && Auth::user()->id == $request->id) {
+
+    //             if (Auth::user()->menstruation_status == 0) return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
+
+    //             $menstruation_period = MenstruationPeriod::firstOrCreate([
+    //                 'user_id' => $request->id,
+    //                 'menstruation_date' => date('Y-m-d', strtotime($request->menstruation_period)),
+    //             ], [
+    //                 'remarks' => $request->remarks
+    //             ]);
+
+    //             $menstruation_period_list = $this->getMenstruationPeriods();
+    //             $estimated_next_period = $this->estimatedNextPeriod($menstruation_period_list->first()->menstruation_date, Auth::user()->birthdate);
+
+    //             return response()->json([
+    //                 'status' => 'success',
+    //                 'message' => 'Menstruation Period successfully added',
+    //                 'period_date' => date('Y-m-d', strtotime($request->menstruation_period)),
+    //                 'menstruation_period_list' => $menstruation_period_list->take(5),
+    //                 'menstruation_period_count' => count($menstruation_period_list),
+    //                 'latest_period_date' => date('F j, Y', strtotime($this->getMenstruationPeriods()->first()->menstruation_date)),
+    //                 'estimated_next_period' => $estimated_next_period ? date('F j, Y', strtotime($estimated_next_period)) : null
+    //             ]);
+    //         } else {
+    //             return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+    //         }
+    //     } catch (ModelNotFoundException $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+    //     }
+    // }
     public function postMenstruationPeriod(Request $request)
-    {
-        try {
-            if (Auth::check() && Auth::user()->id == $request->id) {
+{
+    try {
+        if (Auth::check() && Auth::user()->id == $request->id) {
 
-                if (Auth::user()->menstruation_status == 0) return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
-
-                $menstruation_period = MenstruationPeriod::firstOrCreate([
-                    'user_id' => $request->id,
-                    'menstruation_date' => date('Y-m-d', strtotime($request->menstruation_period)),
-                ], [
-                    'remarks' => $request->remarks
-                ]);
-
-                $menstruation_period_list = $this->getMenstruationPeriods();
-                $estimated_next_period = $this->estimatedNextPeriod($menstruation_period_list->first()->menstruation_date, Auth::user()->birthdate);
-
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Menstruation Period successfully added',
-                    'period_date' => date('Y-m-d', strtotime($request->menstruation_period)),
-                    'menstruation_period_list' => $menstruation_period_list->take(5),
-                    'menstruation_period_count' => count($menstruation_period_list),
-                    'latest_period_date' => date('F j, Y', strtotime($this->getMenstruationPeriods()->first()->menstruation_date)),
-                    'estimated_next_period' => $estimated_next_period ? date('F j, Y', strtotime($estimated_next_period)) : null
-                ]);
-            } else {
-                return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+            if (Auth::user()->menstruation_status == 0) {
+                return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
             }
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
-        } catch (\Exception $e) {
+
+            // Sanitize the remarks to prevent XSS
+            $sanitized_remarks = strip_tags($request->remarks);
+
+            $menstruation_period = MenstruationPeriod::firstOrCreate([
+                'user_id' => $request->id,
+                'menstruation_date' => date('Y-m-d', strtotime($request->menstruation_period)),
+            ], [
+                'remarks' => $sanitized_remarks
+            ]);
+
+            $menstruation_period_list = $this->getMenstruationPeriods();
+            $estimated_next_period = $this->estimatedNextPeriod($menstruation_period_list->first()->menstruation_date, Auth::user()->birthdate);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Menstruation Period successfully added',
+                'period_date' => date('Y-m-d', strtotime($request->menstruation_period)),
+                'menstruation_period_list' => $menstruation_period_list->take(5),
+                'menstruation_period_count' => count($menstruation_period_list),
+                'latest_period_date' => date('F j, Y', strtotime($this->getMenstruationPeriods()->first()->menstruation_date)),
+                'estimated_next_period' => $estimated_next_period ? date('F j, Y', strtotime($estimated_next_period)) : null
+            ]);
+        } else {
             return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
         }
+    } catch (ModelNotFoundException $e) {
+        return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
     }
+}
 
+
+    // public function updateMenstruationPeriod(Request $request)
+    // {
+    //     try {
+    //         if (Auth::check() && Auth::user()->id == $request->id) {
+
+    //             if (Auth::user()->menstruation_status == 0) return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
+
+    //             $post_update_period = MenstruationPeriod::findOrfail($request->menstruation_period_id);
+    //             $post_update_period->menstruation_date = date('Y-m-d', strtotime($request->menstruation_period));
+    //             $post_update_period->remarks = $request->remarks ?? null;
+    //             $post_update_period->save();
+
+    //             return response()->json(['status' => 'success', 'message' => 'Menstruation Period successfully updated']);
+    //         }
+    //     } catch (ModelNotFoundException $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'Something went wrong'], 500);
+    //     }
+    // }
     public function updateMenstruationPeriod(Request $request)
     {
         try {
             if (Auth::check() && Auth::user()->id == $request->id) {
-
-                if (Auth::user()->menstruation_status == 0) return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
-
-                $post_update_period = MenstruationPeriod::findOrfail($request->menstruation_period_id);
+    
+                if (Auth::user()->menstruation_status == 0) {
+                    return response()->json(['status' => 'error', 'message' => 'Your menstruation status is inactive, you\'re not allowed to save new record at the moment.'], 500);
+                }
+    
+                $post_update_period = MenstruationPeriod::findOrFail($request->menstruation_period_id);
                 $post_update_period->menstruation_date = date('Y-m-d', strtotime($request->menstruation_period));
-                $post_update_period->remarks = $request->remarks ?? null;
+    
+                // Sanitize the remarks field to prevent XSS
+                $sanitized_remarks = strip_tags($request->remarks);  // Removes any HTML or JavaScript tags
+    
+                $post_update_period->remarks = $sanitized_remarks ?? null;
                 $post_update_period->save();
-
+    
                 return response()->json(['status' => 'success', 'message' => 'Menstruation Period successfully updated']);
             }
         } catch (ModelNotFoundException $e) {

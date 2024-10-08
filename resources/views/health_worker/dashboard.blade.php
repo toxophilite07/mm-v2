@@ -150,8 +150,8 @@
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="card-title">12-Month Forecast</h5>
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-2 mb-sm-0">12-Month Forecast</h5>
                             <div class="btn-group" role="group" aria-label="Timeframe">
                                 <button type="button" class="btn btn-outline-primary" data-timeframe="3">3 Months</button>
                                 <button type="button" class="btn btn-outline-primary" data-timeframe="6">6 Months</button>
@@ -162,6 +162,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body">

@@ -190,7 +190,7 @@
                                 <p class="text-muted" id="view_email"></p>
                             </div>
                             <div class="mt-3">
-                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">Contact No.:</label>
+                                <label class="tx-11 font-weight-bold mb-0 text-uppercase">Contact No.(Optional):</label>
                                 <p class="text-muted" id="view_contact_no"></p>
                             </div>
                             <div class="mt-3">

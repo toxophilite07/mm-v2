@@ -67,7 +67,7 @@
                                         @endif
                                     @else
                                         <p class="text-center mb-4">Sign in using email or mobile # to your account to proceed</p>
-                                        <form method="POST" action="{{ route('login') }}" autocomplete="off">
+                                        <form method="POST" action="{{ route('login') }}" autocomplete="off" id="loginForm">
                                             @csrf
                                             <div class="mb-3" id="emailInput">
                                                 <label for="email" class="form-label">Email</label>
@@ -79,7 +79,7 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <div class="mb-3" id="mobileInput">
+                                            <!-- <div class="mb-3" id="mobileInput">
                                                 <label for="contact_no" class="form-label">Mobile # (Optional)</label>
                                                 <div class="input-group">
                                                     <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
@@ -90,32 +90,37 @@
                                                         <strong>{{ $errors->first('contact_no') }}</strong>
                                                     </span>
                                                 @endif
-                                            </div>
+                                            </div> -->
+
                                             <div class="mb-4">
                                                 <label for="password" class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-                                            <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
-                                                <i id="showIcon" class="bi bi-eye"></i>
-                                                <i id="hideIcon" class="bi bi-eye-slash" style="display:none;"></i>
-                                            </button>
+                                                    <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
+                                                        <i id="showIcon" class="bi bi-eye"></i>
+                                                        <i id="hideIcon" class="bi bi-eye-slash" style="display:none;"></i>
+                                                    </button>
                                                 </div>
-                                                {{-- <label for="password" class="form-label">Password</label>
-                                                <input type="password" id="password" name="password" class="form-control  {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required> --}}
-
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
                                                         <strong>{{ $errors->first('password') }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
+
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
                                                     <label class="form-check-label text-dark" for="remember">Remember me</label>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1">Sign In</button>
+
+
+                                            <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1" id="loginButton">
+                                                <span id="buttonText">Sign In</span>
+                                                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            </button>
+
                                             <div class="d-flex align-items-center justify-content-between mt-3">
                                                 @if(Route::has('register'))
                                                     <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
@@ -137,6 +142,8 @@
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
+
+    <!-- DISABLE EMAIL WHEN HAVE A NUMBER -->
     <script>
         const email = document.getElementById("email");
         const contact_no = document.getElementById("contact_no");
@@ -170,6 +177,8 @@
             input.value = phoneNumber;
         }
     </script>
+
+    <!-- PASSWORD HIDE AND UNHIDE -->
     <script>
     const passwordInput = document.getElementById('password');
     const togglePasswordBtn = document.getElementById('togglePasswordBtn');
@@ -186,24 +195,35 @@
     });
     </script>
 
+    <!-- GREETINGS -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const greetingElement = document.getElementById('greeting');
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    let greeting = 'Good morning';
+               $(document).ready(function() {
+            var greetingMessages = [
+                "Hello there! Ready to monitor your menstrual health?",
+                "Welcome back! Let’s track your cycle together!",
+                "Hi! We're here to help you with your menstrual health!",
+                "Greetings! Ready to take charge of your health?"
+            ];
+            var randomGreeting = greetingMessages[Math.floor(Math.random() * greetingMessages.length)];
+            $("#greeting").text(randomGreeting);
+        });
 
-    if (currentHour >= 6 && currentHour < 12) {
-        greeting = 'Hello 👋, Good morning! Welcome to';
-    } else if (currentHour >= 12 && currentHour < 18) {
-        greeting = 'Hello 👋, Good afternoon! Welcome to';
-    } else {
-        greeting = 'Hello 👋, Good evening! Welcome to';
-    }
+        // FOR LOADING
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
-    greetingElement.textContent = greeting;
-});
-</script>
-    @include('auth.response')
-</body>
-</html>
+        loginForm.addEventListener('submit', function() {
+            // Disable the button to prevent multiple submissions
+            loginButton.disabled = true;
+
+            // Show the loading spinner and hide the button text
+            buttonText.classList.add('d-none');
+            loadingSpinner.classList.remove('d-none');
+        });
+    </script>
+
+        @include('auth.response')
+    </body>
+    </html>

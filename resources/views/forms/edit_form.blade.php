@@ -51,7 +51,7 @@
         </div>
         <div class="col-lg-4">
             <div class="form-group">
-                <label for="edit_contact_no">Contact No.</label>
+                <label for="edit_contact_no">Contact No. (Optional)</label>
                 <div class="input-group">
                     <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
                     <input type="text" id="edit_contact_no" name="edit_contact_no" class="form-control" placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">

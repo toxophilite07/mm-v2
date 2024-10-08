@@ -159,36 +159,6 @@
             align-self: flex-end;
         }
 
-        .typing-indicator {
-            display: none;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            background-color: #f0f0f0;
-            border-radius: 15px;
-            align-self: flex-start;
-            font-size: 14px;
-            color: #333;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .typing-indicator::after {
-            content: '';
-            animation: typingDots 1.5s infinite;
-        }
-
-        @keyframes typingDots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-            100% { content: ''; }
-        }
-
         .faq-toggle {
             text-align: right;
             padding: 5px;
@@ -206,7 +176,7 @@
         .faq-section {
             max-height: 200px;
             overflow-y: auto;
-            background-color: #f9f9f9;
+            /* background-color: #f9f9f9; */
             padding: 10px;
             margin: 10px;
             border-radius: 5px;
@@ -245,7 +215,7 @@
 
         <div class="faq-toggle" onclick="toggleFAQ()">
             <button class="faq-button">
-                <i class="fa-solid fa-question-circle"></i> FAQ
+                <i class="fa-solid fa-question-circle"></i> 
             </button>
         </div>
 
@@ -257,113 +227,22 @@
                 <li><strong>What causes irregular periods?</strong> <br> Irregular periods can be caused by stress, hormonal imbalances, or health conditions.</li>
                 <li><strong>How can I manage period pain?</strong> <br> Period pain can be managed with over-the-counter pain relievers and heat therapy.</li>
                 <li><strong>Can stress affect my menstrual cycle?</strong> <br> Yes, stress can interfere with hormonal balance, causing missed or delayed periods.</li>
-                <li><strong>What is an irregular period cycle?</strong> <br> An irregular period cycle is when the timing, flow, or duration of menstruation varies significantly from one cycle to another.</li>
-                <li><strong>How does diet affect menstruation?</strong> <br> A balanced diet with essential nutrients helps regulate your menstrual cycle.</li>
             </ul>
         </div>
 
+
         <div class="chatbox-body" id="chatbox-body">
             <div class="chat-message ai-response" id="initial-greeting"></div>
-        </div>
-        
-        <div class="typing-indicator" id="typing-indicator" style="display: none;">NyxAI is thinking...</div>
+        </div>   
+        <div class="typing-indicator" id="typing-indicator"></div> <!-- Typing indicator -->
         
         <div class="chatbox-footer">
-            <input type="text" id="chatbox-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)" oninput="toggleSendButton()" onfocus="hideFAQ()">
+            <input type="text" id="chatbox-input" placeholder="Ask with Nyx..." onkeypress="handleKeyPress(event)" oninput="toggleSendButton()" onfocus="hideFAQ()">
             <button id="send-button" onclick="sendMessage()" disabled>
                 <i class="fa-solid fa-paper-plane"></i>
             </button>
         </div>
     </div>
-
-    <script>
-        const chatbox = document.getElementById('chatbox');
-        const chatboxBody = document.getElementById('chatbox-body');
-        const inputField = document.getElementById('chatbox-input');
-        const sendButton = document.getElementById('send-button');
-        const initialGreeting = document.getElementById('initial-greeting');
-        const typingIndicator = document.getElementById('typing-indicator');
-        const faqSection = document.getElementById('faq-section');
-
-        const welcomeMessage = "Hello! I'm NyxAI, your health assistant. How can I help you today?";
-        initialGreeting.innerText = welcomeMessage;
-
-        function toggleChatbox() {
-            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
-            if (chatbox.style.display === 'flex') {
-                inputField.focus();
-            }
-        }
-
-        function closeChatbox() {
-            chatbox.style.display = 'none';
-        }
-
-        function toggleFAQ() {
-            faqSection.style.display = faqSection.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function hideFAQ() {
-            faqSection.style.display = 'none';
-        }
-
-        function toggleSendButton() {
-            sendButton.disabled = !inputField.value.trim();
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                sendMessage();
-            }
-        }
-
-        async function sendMessage() {
-            const userMessage = inputField.value.trim();
-            if (!userMessage) return;
-
-            appendMessage(userMessage, 'user');
-            inputField.value = '';
-            toggleSendButton();
-            typingIndicator.style.display = 'block';
-
-            try {
-                console.log('Sending message to server:', userMessage);
-                const response = await axios.post('/chat', { message: userMessage });
-                console.log('Received response:', response.data);
-                appendMessage(response.data.reply, 'ai');
-            } catch (error) {
-                console.error('Error:', error);
-                if (error.response) {
-                    console.error('Response data:', error.response.data);
-                    console.error('Response status:', error.response.status);
-                    console.error('Response headers:', error.response.headers);
-                } else if (error.request) {
-                    console.error('No response received:', error.request);
-                } else {
-                    console.error('Error setting up request:', error.message);
-                }
-                appendMessage("Sorry, I couldn't process your request. Please try again later.", 'ai');
-            } finally {
-                typingIndicator.style.display = 'none';
-            }
-        }
-
-
-        function appendMessage(message, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.className = `chat-message ${sender}-response`;
-            messageElement.innerText = message;
-            chatboxBody.appendChild(messageElement);
-            chatboxBody.scrollTop = chatboxBody.scrollHeight; // Scroll to the bottom
-        }
-
-        // Auto-focus on the input when the chatbox is opened
-        chatbox.addEventListener('show', () => {
-            inputField.focus();
-        });
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    </script>
 
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

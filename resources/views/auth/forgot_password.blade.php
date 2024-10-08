@@ -12,25 +12,25 @@
     <style>
         .form-control { border-radius: 2px !important; }
         .btn-primary {
-    background-color: #F6A5BB;
-    border: none;
-}
-.floating-shadow {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.floating-shadow:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
-}
-.btn-primary.no-hover:hover {
-    background-color: #F6A5BB; /* Default Bootstrap primary color */
-    border-color: #0d6efd; /* Default Bootstrap primary color */
-}
-.card {
-    margin-top: 40px !important;
-    margin-bottom: 40px !important;
+        background-color: #F6A5BB;
+                border: none;
         }
+        .floating-shadow {
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .floating-shadow:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
+        }
+        .btn-primary.no-hover:hover {
+            background-color: #F6A5BB; /* Default Bootstrap primary color */
+            border-color: #0d6efd; /* Default Bootstrap primary color */
+        }
+        .card {
+            margin-top: 40px !important;
+            margin-bottom: 40px !important;
+                }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
@@ -56,9 +56,13 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between mt-3">
-                                            <button type="submit" class="btn btn-primary py-2 fs-4 rounded-1"><i class="fa-solid fa-paper-plane"></i> Send Password Reset Link</button>
-                                            <a href="{{ route('login') }}" class="btn btn-light py-2 fs-4 rounded-1"><i class="fa-solid fa-paper-plane"></i> Cancel</a>
+                                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between mt-3">
+                                            <button type="submit" class="btn btn-primary py-2 fs-5 w-100 mb-2 mb-md-0 me-md-2 rounded-1">
+                                                <i class="fa-solid fa-paper-plane"></i> Send Password Reset Link
+                                            </button>
+                                            <a href="{{ route('login') }}" class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                                                <i class="fa-solid fa-paper-plane"></i> Login
+                                            </a>
                                         </div>
                                     </form>
                                 @endif

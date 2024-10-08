@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CookieConsentController;
 use App\Http\Controllers\ChatController;
 use OpenAI\Laravel\Facades\OpenAI;
+use App\Http\Controllers\OpenAIController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,17 +39,10 @@ Route::post('/chat', [ChatController::class, 'getAIResponse']);
 Route::post('/chat', [ChatController::class, 'processChat']);
 Route::post('/chat', [ChatController::class, 'chat']);
 Route::post('/chat', [ChatController::class, 'sendMessage']);
-Route::post('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
+Route::get('/chat', [ChatController::class, 'handleChat'])->name('chat.handle');
 
-Route::get('/chat',function(){
-    $returnValue = OpenAI::chat()->create([
-        'model' => 'gpt-3.5-turbo',
-        'messages' => [
-            ['role' => 'user', 'content' => 'Hello!'],
-        ],
-    ]);
-   echo  $returnValue->choices[0]->message->content;
-});
+Route::post('/ai-response', [OpenAIController::class, 'getAIResponse']);
+Route::get('/ai-response', [OpenAIController::class, 'getAIResponse']);
 
 // In routes/web.php or routes/api.php
 

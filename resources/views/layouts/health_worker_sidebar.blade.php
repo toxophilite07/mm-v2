@@ -35,8 +35,17 @@
                     <span class="link-title">Settings</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="link-icon" data-feather="log-out"></i>
+                    <span class="link-title">Log Out</span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li> -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="event.preventDefault(); confirmLogout();">
                     <i class="link-icon" data-feather="log-out"></i>
                     <span class="link-title">Log Out</span>
                 </a>
@@ -47,3 +56,22 @@
         </ul>
     </div>
 </nav>
+
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Confirm Logout',
+            text: "Are you sure you want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, logout!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>

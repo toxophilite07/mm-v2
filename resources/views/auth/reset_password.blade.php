@@ -6,14 +6,34 @@
     <title>Mentrual Monitoring App :: Forgot Password ::</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/auth/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
-
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
 
     <style>
         .form-control { border-radius: 2px !important; }
+        .btn-primary {
+        background-color: #F6A5BB;
+                border: none;
+        }
+        .floating-shadow {
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .floating-shadow:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
+        }
+        .btn-primary.no-hover:hover {
+            background-color: #F6A5BB; /* Default Bootstrap primary color */
+            border-color: #0d6efd; /* Default Bootstrap primary color */
+        }
+        .card {
+            margin-top: 40px !important;
+            margin-bottom: 40px !important;
+                }
     </style>
 </head>
-<body style="background-color: #FAE6E7;">
+<body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
             <div class="d-flex align-items-center justify-content-center w-100">

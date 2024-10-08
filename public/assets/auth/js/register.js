@@ -30,21 +30,32 @@
         }
         
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const greetingElement = document.getElementById('greeting');
-            const currentTime = new Date();
-            const currentHour = currentTime.getHours();
-            let greeting = 'Good morning';
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const greetingElement = document.getElementById('greeting');
+        //     const currentTime = new Date();
+        //     const currentHour = currentTime.getHours();
+        //     let greeting = 'Good morning';
         
-            if (currentHour >= 6 && currentHour < 12) {
-                greeting = 'Hello 👋, Good morning! Welcome to';
-            } else if (currentHour >= 12 && currentHour < 18) {
-                greeting = 'Hello 👋, Good afternoon! Welcome to';
-            } else {
-                greeting = 'Hello 👋, Good evening! Welcome to';
-            }
+        //     if (currentHour >= 6 && currentHour < 12) {
+        //         greeting = 'Hello 👋, Good morning! Welcome to';
+        //     } else if (currentHour >= 12 && currentHour < 18) {
+        //         greeting = 'Hello 👋, Good afternoon! Welcome to';
+        //     } else {
+        //         greeting = 'Hello 👋, Good evening! Welcome to';
+        //     }
         
-            greetingElement.textContent = greeting;
+        //     greetingElement.textContent = greeting;
+        // });
+
+                $(document).ready(function() {
+            var greetingMessages = [
+                "Hello there! Ready to monitor your menstrual health?",
+                "Welcome back! Let’s track your cycle together!",
+                "Hi! We're here to help you with your menstrual health!",
+                "Greetings! Ready to take charge of your health?"
+            ];
+            var randomGreeting = greetingMessages[Math.floor(Math.random() * greetingMessages.length)];
+            $("#greeting").text(randomGreeting);
         });
 
 //    // Toggle password visibility for "password" input

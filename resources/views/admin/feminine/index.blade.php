@@ -47,6 +47,7 @@
 
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/form_validation.js') }}"></script>
+    <script src="{{ asset('assets/js/new_feminine.js') }}"></script>
     <script src="{{ asset('assets/js/edit_form_validation.js') }}"></script>
     <script src="{{ asset('assets/js/admin/feminine_list.js') }}"></script>
 @endsection

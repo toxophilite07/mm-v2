@@ -74,5 +74,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'cookie.consent' => \App\Http\Middleware\CookieConsent::class,
+
+        //bag o ge add
+        'csp' => \App\Http\Middleware\ContentSecurityPolicy::class,
     ];
 }

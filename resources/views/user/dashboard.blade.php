@@ -135,6 +135,7 @@
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/user/menstruation_period_validation.js') }}"></script>
     <script src="{{ asset('assets/js/user/ai.js') }}"></script>
+    <script src="{{ asset('assets/js/user/ai_response.js') }}"></script>
     <script src="{{ asset('assets/js/user/new_period_alerttt.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/moment/moment.min.js') }}"></script>

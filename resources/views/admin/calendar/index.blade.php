@@ -14,7 +14,7 @@
 @section('contents')
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-        <div>
+        <div class="w-100 w-md-auto">
             <h4 class="mb-3 mb-md-0">General Menstrual Calendar</h4>
         </div>
     </div>
@@ -39,10 +39,11 @@
                         <div id="fullcalendar"></div>
                     </div>
                 </div>
-                <div id="no_record"></div>
+                <div id="no_record" class="text-center mt-2"></div>
             </div>
         </div>
     </div>
+
 
 @endsection
 
