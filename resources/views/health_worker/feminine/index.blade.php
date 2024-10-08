@@ -4,6 +4,7 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feminine_list.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
 @endsection
 <style>
     .pdf-button:hover {

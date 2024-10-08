@@ -3,7 +3,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
-
+    <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
     <style>
         .card-title { font-size: 1rem !important; }
         .btn-sm i { font-size: 0.775rem !important; }

@@ -3,7 +3,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/template/vendors/fullcalendar/fullcalendar.min.css') }}">
-
+    <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
     <style>
         .fc-unthemed .fc-today {
             background: #f3f3fe !important;
