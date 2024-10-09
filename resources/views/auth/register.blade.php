@@ -15,6 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <style>
         .form-control { border-radius: 2px !important; }
         footer {
@@ -76,6 +79,33 @@
 
 .strength-indicator.strong {
     /* Styles for strong can be left empty as we set it in JavaScript */
+}
+
+
+.mb-4 {
+    position: relative; /* Ensure this parent is positioned */
+}
+
+.toggle-password {
+    position: absolute; /* Absolutely position the toggle icon */
+    right: 15px; /* Adjust this value to suit your design */
+    top: 61%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust to ensure centering */
+    cursor: pointer;
+    z-index: 10; /* Optional: ensures the icon is above the input */
+}
+
+/* Optional: Adjust the input padding */
+input[type="password"] {
+    padding-right: 40px; /* Give enough space for the icon */
+}
+
+
+@media (max-width: 768px) { /* Adjust the max-width as needed */
+    .toggle-password {
+        right: 10px; /* Reduce right margin on smaller screens */
+        top: 61%; /* Keep centered */
+    }
 }
 
 </style>
@@ -234,7 +264,7 @@
 
                                             <div class="mb-4">
                                                 <label for="password" class="form-label">Password</label>
-                                                <input type="password" id="password" name="password" class="form-control  {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
+                                                <input type="password" id="password" name="password" class="form-control  {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>                                          
                                                 <div id="password-strength-indicator" class="strength-indicator"></div>
                                                 
                                                 @if ($errors->has('password'))
@@ -303,7 +333,7 @@
 
                                     <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
-                                            <span>{!! captcha_img('default') !!}</span>
+                                            <span>{!! captcha_img('math') !!}</span>
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
                                         </div>
                                     </div>
@@ -422,6 +452,39 @@
 
         return true; // Allow form submission
     }
+    </script>
+
+        <!-- PASSWORD HIDE AND UNHIDE -->
+        <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        function togglePasswordConfirmationVisibility() {
+            const passwordConfirmationInput = document.getElementById('password_confirmation');
+            const toggleIcon = document.getElementById('togglePasswordConfirmation');
+
+            if (passwordConfirmationInput.type === 'password') {
+                passwordConfirmationInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordConfirmationInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
 
 </body>

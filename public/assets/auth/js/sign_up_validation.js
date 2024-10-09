@@ -98,14 +98,14 @@ $("#sign_up_form").validate({
             email: true,
             validateGmail: true // Custom method for Gmail validation
         },
-        contact_no: {
-            digits: true,
-            minlength: 10,
-            maxlength: 11,
-            required: function (element) {
-                return $("#email").val() === "";
-            }
-        },
+        // contact_no: {
+        //     digits: true,
+        //     minlength: 10,
+        //     maxlength: 11,
+        //     required: function (element) {
+        //         return $("#email").val() === "";
+        //     }
+        // },
         menstruation_status: {
             required: true,
         },
@@ -148,12 +148,12 @@ $("#sign_up_form").validate({
             email: "Please enter a valid email address",
             validateGmail: "The email must be a valid Gmail address (nelbanbetache@gmail.com)"
         },
-        contact_no: {
-            digits: "Please enter a valid contact number",
-            minlength: "Must be at least 10 digits",
-            maxlength: "Must not exceed 11 digits",
-            required: "Please enter your contact number",
-        },
+        // contact_no: {
+        //     digits: "Please enter a valid contact number",
+        //     minlength: "Must be at least 10 digits",
+        //     maxlength: "Must not exceed 11 digits",
+        //     required: "Please enter your contact number",
+        // },
         menstruation_status: {
             required: "Please select your current menstruation status",
         },

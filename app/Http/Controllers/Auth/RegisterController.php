@@ -86,7 +86,7 @@ class RegisterController extends Controller
                 }
                 // Ensure the email is a Gmail address
                 if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $value)) {
-                    $fail('The email must be a Gmail address.(nelbanbetache@gmai.com)');
+                    $fail('The email must be a Gmail address.(nelbanbetache@gmail.com)');
                 }
             }],
             'password' => [
@@ -193,7 +193,7 @@ class RegisterController extends Controller
 
     public function reloadCaptcha()
     {
-        return response()->json(['captcha'=> captcha_img('default')]);
+        return response()->json(['captcha'=> captcha_img('math')]);
     }
     
     // public function showRegistrationForm()

@@ -27,7 +27,7 @@
                         <div class="dropdown-body" id="period_notification_container">
                             @if(count($new_period_notification) != 0)
                                 @foreach($new_period_notification as $new_period)
-                                    <a href="{{ URL::to('admin/feminine-list') }}?p={{ $new_period->user_id }}" id="period_notification_body_{{ $new_period->user_id }}" class="dropdown-item">
+                                    <a href="{{ URL::to('health-worker/feminine-list') }}?p={{ $new_period->user_id }}" id="period_notification_body_{{ $new_period->user_id }}" class="dropdown-item">
                                         <div class="icon">
                                             <i data-feather="user-plus"></i>
                                         </div>

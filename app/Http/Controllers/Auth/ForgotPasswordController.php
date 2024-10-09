@@ -20,37 +20,94 @@ class ForgotPasswordController extends Controller {
         return view('auth.forgot_password');
     }
 
+    // public function postForgotPassword(Request $request) {
+    //     try {
+    //         $check_validation = Validator::make($request->all(), [ 
+    //             'email' => 'required|email|exists:users'
+    //         ]);
+
+    //         if ($check_validation->fails()) return back()->with('post-forgot-password-error', 'Email address does not exist, please try again.');
+
+    //         $token = Str::random(64);
+    //         $user = DB::table('users')
+    //             ->where('email', $request->email)
+    //             ->get(['email', 'first_name'])->last();
+
+    //         DB::table('password_resets')->insert([
+    //             'email' => $user->email, 
+    //             'token' => $token, 
+    //             'created_at' => Carbon::now()
+    //         ]);
+
+    //         Mail::send('email.forgot_password_mail', ['token' => $token, 'user' => $user], function($message) use ($request, $user) {
+    //             $message->from('nelbanbetache@gmail.com', 'Menstrual Monitoring App')
+    //                 ->to($user->email)
+    //                 ->subject('Reset Password');
+    //         });
+
+    //         return back()->with('post-forgot-password', 'We have sent you a password reset link, please check your email.');
+    //     } catch (Exception $e) {
+    //         \Log::error('Forgot password error: ' . $e->getMessage());
+    //         return back()->with('post-forgot-password-error', 'Something went wrong!');
+    //     }
+    // }
     public function postForgotPassword(Request $request) {
         try {
-            $check_validation = Validator::make($request->all(), [ 
+            // Validate the request
+            $check_validation = Validator::make($request->all(), [
                 'email' => 'required|email|exists:users'
             ]);
-
-            if ($check_validation->fails()) return back()->with('post-forgot-password-error', 'Email address does not exist, please try again.');
-
-            $token = Str::random(64);
+    
+            if ($check_validation->fails()) {
+                return back()->with('post-forgot-password-error', 'Email address does not exist, please try again.');
+            }
+    
+            // Get the user information
             $user = DB::table('users')
                 ->where('email', $request->email)
-                ->get(['email', 'first_name'])->last();
-
-            DB::table('password_resets')->insert([
-                'email' => $user->email, 
-                'token' => $token, 
-                'created_at' => Carbon::now()
-            ]);
-
-            Mail::send('email.forgot_password_mail', ['token' => $token, 'user' => $user], function($message) use ($request, $user) {
+                ->select('email', 'first_name')
+                ->first();
+    
+            // Check if a reset request already exists
+            $resetRequest = DB::table('password_resets')
+                ->where('email', $request->email)
+                ->first();
+    
+            // If a reset request exists, check the created_at time
+            if ($resetRequest) {
+                $createdAt = Carbon::parse($resetRequest->created_at);
+                // Use isFuture() method to check if the time is in the future
+                if ($createdAt->addHours(24)->isFuture()) {
+                    return back()->with('post-forgot-password-error', 'To enhance your account security, password reset requests are limited to once every 24 hours.');
+                }
+            }
+    
+            // Generate a new token
+            $token = Str::random(64);
+    
+            // Insert or update the password reset record
+            DB::table('password_resets')->updateOrInsert(
+                ['email' => $user->email],
+                ['token' => $token, 'created_at' => Carbon::now()]
+            );
+    
+            // Send the reset email
+            Mail::send('email.forgot_password_mail', ['token' => $token, 'user' => $user], function($message) use ($user) {
                 $message->from('nelbanbetache@gmail.com', 'Menstrual Monitoring App')
                     ->to($user->email)
                     ->subject('Reset Password');
             });
-
+    
             return back()->with('post-forgot-password', 'We have sent you a password reset link, please check your email.');
         } catch (Exception $e) {
             \Log::error('Forgot password error: ' . $e->getMessage());
             return back()->with('post-forgot-password-error', 'Something went wrong!');
         }
     }
+    
+    
+
+
 
     public function getResetPassword($token) {
         if (Auth::check()) return redirect()->back();

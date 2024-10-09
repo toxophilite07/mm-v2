@@ -31,7 +31,6 @@ $(function () {
                 { data: "full_name" },
                 { data: "menstruation_status" },
                 { data: "is_assigned" },
-                { data: "address" },
                 { data: "is_active" },
                 { data: "action" },
             ],

@@ -33,6 +33,13 @@
         margin-top: 40px !important;
         margin-bottom: 40px !important;
             }
+            .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 55%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
     </style>
 </head>
 @include('partials.cookie-consent')
@@ -96,10 +103,7 @@
                                                 <label for="password" class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-                                                    <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn">
-                                                        <i id="showIcon" class="bi bi-eye"></i>
-                                                        <i id="hideIcon" class="bi bi-eye-slash" style="display:none;"></i>
-                                                    </button>
+                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
                                                 </div>
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
@@ -180,19 +184,35 @@
 
     <!-- PASSWORD HIDE AND UNHIDE -->
     <script>
-    const passwordInput = document.getElementById('password');
-    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-    const showIcon = document.getElementById('showIcon');
-    const hideIcon = document.getElementById('hideIcon');
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
 
-    togglePasswordBtn.addEventListener('click', () => {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
 
-        // Toggle icon visibility
-        showIcon.style.display = type === 'password' ? 'block' : 'none';
-        hideIcon.style.display = type === 'password' ? 'none' : 'block';
-    });
+        function togglePasswordConfirmationVisibility() {
+            const passwordConfirmationInput = document.getElementById('password_confirmation');
+            const toggleIcon = document.getElementById('togglePasswordConfirmation');
+
+            if (passwordConfirmationInput.type === 'password') {
+                passwordConfirmationInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordConfirmationInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
 
     <!-- GREETINGS -->
