@@ -13,7 +13,6 @@ $(function () {
             { data: "full_name" },
             { data: "is_active" },
             { data: "assigning_action" },
-            { data: "password" },
             { data: "is_active_status" },
             { data: "action" },
         ],
