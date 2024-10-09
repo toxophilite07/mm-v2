@@ -435,57 +435,27 @@ input[type="password"] {
 
     <!-- LOADING FOR PRESSING BUTTON -->
     <script>
-    function handleSubmit() {
-        const form = document.getElementById('sign_up_form');
+    function handleFormSubmit(event) {
+        event.preventDefault(); // Prevent default form submission
 
-        // Check if the form is valid before proceeding
-        if (!form.checkValidity()) {
-            return true; // Allow submission if form is invalid (prevent loading)
-        }
-
-        // Show loading spinner and disable button
-        const loadingIndicator = document.getElementById('loading-indicator');
         const submitButton = document.getElementById('submit-button');
-        
-        loadingIndicator.classList.remove('d-none'); // Show loading spinner
-        submitButton.disabled = true; // Disable the submit button
+        const loadingIndicator = document.getElementById('loading-indicator');
 
-        return true; // Allow form submission
+        // Show loading indicator
+        loadingIndicator.classList.remove('d-none');
+        submitButton.disabled = true; // Disable the button to prevent multiple submissions
+
+        // Simulate form submission (replace this with your actual submission logic)
+        setTimeout(() => {
+            // After form submission logic, you can hide the loading indicator
+            loadingIndicator.classList.add('d-none');
+            submitButton.disabled = false; // Re-enable the button if needed
+
+            // You can handle any further logic here (e.g., redirect, update UI)
+        }, 2000); // Simulating a 2-second delay for demonstration
     }
     </script>
 
-        <!-- PASSWORD HIDE AND UNHIDE -->
-        <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('togglePassword');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-
-        function togglePasswordConfirmationVisibility() {
-            const passwordConfirmationInput = document.getElementById('password_confirmation');
-            const toggleIcon = document.getElementById('togglePasswordConfirmation');
-
-            if (passwordConfirmationInput.type === 'password') {
-                passwordConfirmationInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordConfirmationInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-    </script>
-
+    
 </body>
 </html>
