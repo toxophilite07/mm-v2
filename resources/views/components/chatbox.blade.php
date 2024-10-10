@@ -242,7 +242,7 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const API_URL = 'https://api.cohere.ai/v1/generate'; // Cohere API endpoint
-        const API_KEY = 'R5piDJyEOvvsKm6GsWzG91VArzjOtAlR2TSvmCaw'; // Replace with your actual Cohere API key
+        const API_KEY = ''; // Replace with your actual Cohere API key
 
         function toggleChatbox() {
             const chatbox = document.getElementById('chatbox');
