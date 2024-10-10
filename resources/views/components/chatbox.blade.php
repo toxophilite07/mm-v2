@@ -29,6 +29,7 @@
             font-size: 24px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
 
         .floating-icon:hover {
@@ -40,8 +41,8 @@
             position: fixed;
             bottom: 100px;
             right: 30px;
-            width: 350px;
-            max-width: 90%;
+            width: 500px;
+            max-width: 95%;
             background-color: white;
             border-radius: 15px;
             overflow: hidden;
@@ -49,6 +50,21 @@
             flex-direction: column;
             box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.1);
             animation: slideIn 0.3s forwards;
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .chatbox {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+                bottom: 70px;
+            }
+
+            .floating-icon {
+                right: 20px;
+                bottom: 20px;
+            }
         }
 
         @keyframes slideIn {
@@ -72,7 +88,7 @@
         }
 
         .chatbox-header span {
-            font-weight: bold;
+            /* font-weight: bold; */
             font-size: 15px;
         }
 
@@ -91,7 +107,7 @@
 
         .chatbox-body {
             padding: 20px;
-            max-height: 300px;
+            height: 400px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -103,16 +119,20 @@
             background-color: #f8f8f8;
         }
 
-        .chatbox-footer input {
+        .chatbox-footer textarea {
             flex-grow: 1;
             padding: 10px;
             border: 1px solid #e0e0e0;
             border-radius: 25px;
             font-size: 14px;
             transition: border-color 0.3s;
+            min-height: 20px;
+            max-height: 100px;
+            overflow-y: auto;
+            resize: none;
         }
 
-        .chatbox-footer input:focus {
+        .chatbox-footer textarea:focus {
             border-color: #4a4a4a;
             outline: none;
         }
@@ -130,11 +150,10 @@
         }
 
         .chatbox-footer button:hover:not(:disabled) {
-            /* background-color: #333333; */
+            background-color: #333333;
         }
 
         .chatbox-footer button:disabled {
-            /* background-color: #cccccc; */
             cursor: not-allowed;
         }
 
@@ -159,47 +178,41 @@
             align-self: flex-end;
         }
 
-        .faq-toggle {
-            text-align: right;
-            padding: 5px;
-            margin-right: 10px;
-        }
+        .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        background-color: #f0f0f0;
+        border-radius: 15px;
+        align-self: flex-start;
+        margin-bottom: 15px;
+        width: fit-content;
+    }
 
-        .faq-button {
-            background-color: #f0f0f0;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+    .typing-indicator span {
+        height: 8px;
+        width: 8px;
+        background-color: #4a4a4a;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+        animation: typing 1s infinite;
+    }
 
-        .faq-section {
-            max-height: 200px;
-            overflow-y: auto;
-            /* background-color: #f9f9f9; */
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-        }
+    .typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
 
-        .faq-section h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    .typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+        margin-right: 0;
+    }
 
-        .faq-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .faq-section li {
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        .faq-section li strong {
-            font-weight: bold;
-        }
+    @keyframes typing {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
     </style>
 </head>
 <body>
@@ -213,31 +226,12 @@
             <button onclick="closeChatbox()"><i class="fa-solid fa-times"></i></button>
         </div>
 
-        <div class="faq-toggle" onclick="toggleFAQ()">
-            <button class="faq-button">
-                <i class="fa-solid fa-question-circle"></i> 
-            </button>
-        </div>
-
-        <div class="faq-section" id="faq-section" style="display: none;">
-            <h3>Menstruation FAQ</h3>
-            <ul>
-                <li><strong>What is menstruation?</strong> <br> Menstruation is the monthly shedding of the uterine lining when pregnancy does not occur.</li>
-                <li><strong>What is a normal menstrual cycle?</strong> <br> A normal menstrual cycle ranges from 21 to 35 days.</li>
-                <li><strong>What causes irregular periods?</strong> <br> Irregular periods can be caused by stress, hormonal imbalances, or health conditions.</li>
-                <li><strong>How can I manage period pain?</strong> <br> Period pain can be managed with over-the-counter pain relievers and heat therapy.</li>
-                <li><strong>Can stress affect my menstrual cycle?</strong> <br> Yes, stress can interfere with hormonal balance, causing missed or delayed periods.</li>
-            </ul>
-        </div>
-
-
         <div class="chatbox-body" id="chatbox-body">
-            <div class="chat-message ai-response" id="initial-greeting"></div>
+            <div class="chat-message ai-response" id="initial-greeting">Hello! I'm Nyx, your virtual assistant for menstrual health. How can I help you today?</div>
         </div>   
-        <div class="typing-indicator" id="typing-indicator"></div> <!-- Typing indicator -->
         
         <div class="chatbox-footer">
-            <input type="text" id="chatbox-input" placeholder="Ask with Nyx..." onkeypress="handleKeyPress(event)" oninput="toggleSendButton()" onfocus="hideFAQ()">
+            <textarea id="chatbox-input" placeholder="Ask with Nyx..." onkeypress="handleKeyPress(event)" oninput="adjustInputHeight(this)"></textarea>
             <button id="send-button" onclick="sendMessage()" disabled>
                 <i class="fa-solid fa-paper-plane"></i>
             </button>
@@ -246,5 +240,109 @@
 
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        const API_URL = 'https://api.cohere.ai/v1/generate'; // Cohere API endpoint
+        const API_KEY = 'R5piDJyEOvvsKm6GsWzG91VArzjOtAlR2TSvmCaw'; // Replace with your actual Cohere API key
+
+        function toggleChatbox() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function closeChatbox() {
+            document.getElementById('chatbox').style.display = 'none';
+        }
+
+        function toggleSendButton() {
+            const input = document.getElementById('chatbox-input');
+            const sendButton = document.getElementById('send-button');
+            sendButton.disabled = input.value.trim() === '';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function adjustInputHeight(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+            toggleSendButton();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatbox-input');
+            const message = input.value.trim();
+            if (message === '') return;
+
+            // Display user message
+            displayMessage(message, 'user-response');
+
+            // Clear input and reset height
+            input.value = '';
+            input.style.height = 'auto';
+            toggleSendButton();
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            try {
+                // Call the Cohere API
+                const response = await axios.post(API_URL, {
+                    prompt: message,
+                    max_tokens: 150, // Adjust max tokens as needed
+                    temperature: 0.7 // Adjust temperature as needed
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Get AI response text
+                const aiResponse = response.data.generations[0].text.trim();
+                displayMessage(aiResponse, 'ai-response');
+            } catch (error) {
+                console.error('Error calling Cohere API:', error);
+                displayMessage("Sorry, I'm having trouble responding right now.", 'ai-response');
+            } finally {
+                // Hide typing indicator
+                hideTypingIndicator();
+            }
+        }
+
+        function displayMessage(message, className) {
+            const chatboxBody = document.getElementById('chatbox-body');
+            const messageElement = document.createElement('div');
+            messageElement.className = `chat-message ${className}`;
+            messageElement.textContent = message;
+            chatboxBody.appendChild(messageElement);
+            chatboxBody.scrollTop = chatboxBody.scrollHeight; // Scroll to the bottom
+        }
+
+   function showTypingIndicator() {
+        const chatboxBody = document.getElementById('chatbox-body');
+        let typingIndicator = document.getElementById('typing-indicator');
+        
+        if (!typingIndicator) {
+            typingIndicator = document.createElement('div');
+            typingIndicator.id = 'typing-indicator';
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+        }
+        
+        chatboxBody.appendChild(typingIndicator);
+        chatboxBody.scrollTop = chatboxBody.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator && typingIndicator.parentNode) {
+            typingIndicator.parentNode.removeChild(typingIndicator);
+        }
+    }
+    </script>
 </body>
 </html>

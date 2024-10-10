@@ -431,66 +431,85 @@ function getAIResponse(message) {
          "can stress affect my menstrual cycle?" : "Yes, stress can interfere with hormonal balance, causing missed or delayed periods.",
          "can stress affect my menstrual cycle" : "Yes, stress can interfere with hormonal balance, causing missed or delayed periods.",
          "When to tell that I am pregnant?" : "Pregnancy is typically confirmed through several signs and medical tests. Here are some key indicators of pregnancy: •Missed Period One of the earliest and most common signs of pregnancy is a missed menstrual period. If your period is late, especially if your cycles are usually regular, it may be a sign of pregnancy. •Home Pregnancy Test Home pregnancy tests can detect pregnancy as early as the first day of a missed period by measuring the level of human chorionic gonadotropin (hCG), a hormone produced after a fertilized egg attaches to the uterus. For best results, take the test a few days after your missed period. •Early Pregnancy Symptoms Fatigue: Feeling more tired than usual. Nausea/Morning Sickness: This can start around 4-6 weeks into pregnancy. Breast Changes: Tenderness or swelling of the breasts is common. Frequent Urination: Pregnancy hormones can make you feel like you need to pee more often. Mood Swings: Hormonal changes can lead to emotional fluctuations.",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
-         "" : "",
+         "Why is menstrual tracking important?" : "Menstrual tracking is important because it helps individuals monitor their reproductive health, understand their cycles, identify patterns and irregularities, manage symptoms, and enhance fertility awareness, ultimately promoting informed health decisions.",
+         "why is menstrual tracking important?" : "Menstrual tracking is important because it helps individuals monitor their reproductive health, understand their cycles, identify patterns and irregularities, manage symptoms, and enhance fertility awareness, ultimately promoting informed health decisions.",
+         "Why is menstrual tracking important" : "Menstrual tracking is important because it helps individuals monitor their reproductive health, understand their cycles, identify patterns and irregularities, manage symptoms, and enhance fertility awareness, ultimately promoting informed health decisions.",
+         "why is menstrual tracking important?" : "Menstrual tracking is important because it helps individuals monitor their reproductive health, understand their cycles, identify patterns and irregularities, manage symptoms, and enhance fertility awareness, ultimately promoting informed health decisions.",
+         "why is menstrual tracking important" : "Menstrual tracking is important because it helps individuals monitor their reproductive health, understand their cycles, identify patterns and irregularities, manage symptoms, and enhance fertility awareness, ultimately promoting informed health decisions.",
+         "How can I track my cycle if I have irregular cycles?" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "how can I track my cycle if I have irregular cycles?" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "How can I track my cycle if I have irregular cycles" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "how can I track my cycle if i have irregular cycles?" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "how can I track my cycle if I have irregular cycles" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "how can I track my cycle if i have irregular cycles" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "how can i track my cycle if i have irregular cycles" : "To track your cycle with irregular periods, record the start and end dates of each cycle, note any symptoms, and use a calendar or app to identify patterns over time, even if those patterns are inconsistent.",
+         "What are common menstrual disorders? " : "Common menstrual disorders include dysmenorrhea (painful periods), amenorrhea (absence of menstruation), menorrhagia (heavy bleeding), oligomenorrhea (infrequent periods), and premenstrual syndrome (PMS) each affecting individuals in different ways.",
+         "what are common menstrual disorders? " : "Common menstrual disorders include dysmenorrhea (painful periods), amenorrhea (absence of menstruation), menorrhagia (heavy bleeding), oligomenorrhea (infrequent periods), and premenstrual syndrome (PMS) each affecting individuals in different ways.",
+         "What are common menstrual disorders" : "Common menstrual disorders include dysmenorrhea (painful periods), amenorrhea (absence of menstruation), menorrhagia (heavy bleeding), oligomenorrhea (infrequent periods), and premenstrual syndrome (PMS) each affecting individuals in different ways.",
+         "what are common menstrual disorders" : "Common menstrual disorders include dysmenorrhea (painful periods), amenorrhea (absence of menstruation), menorrhagia (heavy bleeding), oligomenorrhea (infrequent periods), and premenstrual syndrome (PMS) each affecting individuals in different ways.",
+         "how are you?" : "I’m doing well, thank you! How about you? How's your Laravel project coming along?"
+         };
 
-    };
+    //      const lowerCaseMessage = message.toLowerCase();
 
-    const lowerCaseMessage = message.toLowerCase();
-
-    // Function to calculate the relevance score of a key to the message
-    function calculateRelevance(key, message) {
-        const keyWords = key.toLowerCase().split(' ');
-        const messageWords = message.split(' ');
-        let score = 0;
-        for (let keyWord of keyWords) {
-            if (message.includes(keyWord)) {
-                score += 1;
-            }
-        }
-        // Bonus for exact match
-        if (message === key.toLowerCase()) {
-            score += 10;
-        }
-        // Bonus for matching word order
-        let orderScore = 0;
-        for (let i = 0; i < messageWords.length - keyWords.length + 1; i++) {
-            if (messageWords.slice(i, i + keyWords.length).join(' ') === key.toLowerCase()) {
-                orderScore = 5;
-                break;
-            }
-        }
-        return score + orderScore;
-    }
-
-    // Find the best matching response
-    let bestMatch = '';
-    let bestScore = 0;
-    for (const key in responses) {
-        const score = calculateRelevance(key, lowerCaseMessage);
-        if (score > bestScore) {
-            bestMatch = key;
-            bestScore = score;
-        }
-    }
-
-    if (bestScore > 0) {
-        console.log("Responding with:", responses[bestMatch]);
-        return responses[bestMatch];
-    }
-
-    console.log("Responding with default message");
-    return "I'm not quite sure about that. Could you please ask something related to menstrual health or rephrase your question?";
-}
+    //      // Function to calculate the relevance score of a key to the message
+    //      function calculateRelevance(key, message) {
+    //          const keyWords = key.toLowerCase().split(' ');
+    //          let score = 0;
+     
+    //          // Check if the message contains the keyword
+    //          for (let keyWord of keyWords) {
+    //              if (message.includes(keyWord)) {
+    //                  score += 1; // Increment score for each keyword found
+    //              }
+    //          }
+     
+    //          // Bonus for exact match
+    //          if (message === key.toLowerCase()) {
+    //              score += 10;
+    //          }
+     
+    //          // Bonus for matching word order
+    //          let orderScore = 0;
+    //          const messageWords = message.split(' ');
+    //          for (let i = 0; i <= messageWords.length - keyWords.length; i++) {
+    //              if (messageWords.slice(i, i + keyWords.length).join(' ') === key.toLowerCase()) {
+    //                  orderScore = 5; // Increment order score for correct sequence
+    //                  break;
+    //              }
+    //          }
+     
+    //          return score + orderScore;
+    //      }
+     
+    //      // Find the best matching response
+    //      let bestMatch = '';
+    //      let bestScore = 0;
+     
+    //      for (const key in responses) {
+    //          const score = calculateRelevance(key, lowerCaseMessage);
+    //          console.log(`Checking key: "${key}" with score: ${score}`); // Debugging line
+    //          if (score > bestScore) {
+    //              bestMatch = key;
+    //              bestScore = score;
+    //          }
+    //      }
+     
+    //      // Only respond if there's a relevant match and the best score is greater than a threshold
+    //      if (bestScore > 1) { // Adjust this threshold as needed
+    //          console.log("Responding with:", responses[bestMatch]); // Debugging line
+    //          return responses[bestMatch];
+    //      }
+     
+    //      console.log("Responding with default message"); // Debugging line
+    //      return "I'm not quite sure about that. Could you please ask something related to menstrual health or rephrase your question?";
+    //  }
+     
+    //  // Example usage
+    //  const userMessage1 = "What causes a delayed period?"; // Test with a relevant question
+    //  const reply1 = getAIResponse(userMessage1);
+    //  console.log("Final response:", reply1);
+     
+    //  const userMessage2 = "Tell me about the weather."; // Test with an unrelated question
+    //  const reply2 = getAIResponse(userMessage2);
+    //  console.log("Final response:", reply2);

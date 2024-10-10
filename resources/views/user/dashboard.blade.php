@@ -65,12 +65,13 @@
             <div class="col-lg-3 col-sm-6">
                 <div class="card-box bg-green shadow-sm">
                     <div class="inner">
-                        <h3 id="latest_period_date" class="{{ count($menstruation_period_list) !== 0 ?: 'font-weight-light' }}">{{ count($menstruation_period_list) !== 0 ? date('F j, Y', strtotime($menstruation_period_list->first()->menstruation_date)) : 'No recorded data yet' }}</h3>
+                        <h3 id="latest_period_date" class="{{ count($menstruation_period_list) !== 0 ?: 'font-weight-light' }}">{{ count($menstruation_period_list) !== 0 ? date('F j, Y', strtotime($menstruation_period_list->first()->menstruation_date)) : 'No recorded data' }}</h3>
                         <p>Last Period Date</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-heart-circle-check"></i>
                     </div>
+                     <a href="{{ URL::to('user/menstrual') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
