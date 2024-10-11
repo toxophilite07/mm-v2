@@ -222,7 +222,7 @@
 
     <div class="chatbox" id="chatbox">
         <div class="chatbox-header">
-            <span>NyxAI Assistance</span>
+            <span>NyxAI Assistance BETA</span>
             <button onclick="closeChatbox()"><i class="fa-solid fa-times"></i></button>
         </div>
 
