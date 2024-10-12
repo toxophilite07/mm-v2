@@ -106,7 +106,7 @@
                              <p>Verified Female</p>
                         </div>
                  <div class="icon">
-                   <i class="fa-solid fa-user-friends-check"></i>
+                   <i class="fa-solid fa-user-check"></i>
                      </div>
                       <a href="{{ URL::to('admin/feminine-list') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
