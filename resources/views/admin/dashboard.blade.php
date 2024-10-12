@@ -116,7 +116,7 @@
                 <div class="card-box bg-green shadow-sm">
                     <div class="inner">
                         <h3 id="active_feminine_count">{{ $count['active_feminine_count'] }}</h3>
-                        <p>Active Period</p>
+                        <p>Regular Period</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-user-check"></i>
@@ -129,7 +129,7 @@
                 <div class="card-box bg-cyan shadow-sm">
                     <div class="inner">
                         <h3 id="inactive_feminine_count">{{ $count['inactive_feminine_count'] }}</h3>
-                        <p>Inactive Period</p>
+                        <p>Irregular Period</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-user-xmark"></i>
