@@ -51,6 +51,7 @@ class ForgotPasswordController extends Controller {
     //         return back()->with('post-forgot-password-error', 'Something went wrong!');
     //     }
     // }
+
     public function postForgotPassword(Request $request) {
         try {
             // Validate the request
@@ -105,10 +106,6 @@ class ForgotPasswordController extends Controller {
         }
     }
     
-    
-
-
-
     public function getResetPassword($token) {
         if (Auth::check()) return redirect()->back();
 
