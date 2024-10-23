@@ -70,10 +70,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 @endsection
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
 <script>
+
 $(function () {
     if (!$.fn.DataTable.isDataTable('#feminine_table')) {
         $("#feminine_table").DataTable({
@@ -84,7 +82,7 @@ $(function () {
             iDisplayLength: 10,
             sAjaxSource: "../health-worker/feminine-data",
             columns: [
-                { data: "row_count" },
+                { data: "row_count" }, // Adds numbering to rows
                 { data: "full_name" },
                 { data: "menstruation_status" },
                 { data: "is_active" },
@@ -93,7 +91,28 @@ $(function () {
             ],
             drawCallback: function (settings) {
                 updateTotals(settings.json.data);
-            }
+            },
+            columnDefs: [
+                { 
+                    targets: [2, 4], // Menstruation Status and Estimated Menstrual Status columns
+                    createdCell: function (td, cellData) {
+                        $(td).css("list-style", "none"); // Removes any bullet styling
+                    }
+                }
+            ]
+        });
+        $("#feminine_table").each(function () {
+            var datatable = $(this);
+            var search_input = datatable
+                .closest(".dataTables_wrapper")
+                .find("div[id$=_filter] input");
+            search_input.attr("placeholder", "Search");
+            search_input.removeClass("form-control-sm");
+
+            var length_sel = datatable
+                .closest(".dataTables_wrapper")
+                .find("div[id$=_length] select");
+            length_sel.removeClass("form-control-sm");
         });
     }
 });
@@ -114,52 +133,52 @@ function updateTotals(data) {
 
 function printFeminineList() {
     var table = document.getElementById('feminine_table');
-    
-    // Clone the table and remove the unwanted columns (Account Status and Action)
     var clonedTable = table.cloneNode(true);
     var rows = clonedTable.rows;
 
+    // Hide the "Account Status" and "Action" columns
     for (var i = 0; i < rows.length; i++) {
-        // Remove 'Account Status' and 'Action' columns
-        if (rows[i].cells.length >= 6) {
-            rows[i].deleteCell(5); // Action column
-            rows[i].deleteCell(3); // Account Status column
-        }
+        rows[i].deleteCell(5);
+        rows[i].deleteCell(3);
     }
 
-    // Mobile PDF generation logic
+    // Create the HTML for the print view
+    var headerTable = '<table border="1" style="width:100%; border-collapse: collapse; margin-bottom: 20px;"><thead><tr>';
+    headerTable += '<th>No.</th>'; // Add numbering
+    headerTable += '<th>Name</th>';
+    headerTable += '<th>Menstruation Status</th>';
+    headerTable += '<th>Estimated Menstrual Status</th>';
+    headerTable += '</tr></thead><tbody>';
+
+    var nameTable = '';
+    for (var i = 1; i < rows.length; i++) {  // Start from 1 to skip the header row
+        nameTable += '<tr>';
+        nameTable += '<td>' + i + '</td>'; // Add row numbering
+        nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
+        nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
+        nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
+        nameTable += '</tr>';
+    }
+
+    headerTable += nameTable + '</tbody></table>';
+
+    // Detect if it's a mobile device
     if (/Mobi|Android/i.test(navigator.userAgent)) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        // Adding title to PDF
-        doc.setFontSize(18);
+        // Generate and download PDF on mobile
+        var doc = new jsPDF(); // Use jsPDF library to create PDF
         doc.text('Female Residents List', 10, 10);
-
-        // Use jsPDF's autoTable to convert the HTML table to PDF
-        doc.autoTable({
-            html: clonedTable, // Pass the cloned table for autoTable
-            startY: 20,
-            theme: 'striped', // Optional theme for styling
-            styles: {
-                fontSize: 10, // Make text smaller for mobile view
-                cellPadding: 2
-            },
-            headStyles: {
-                fillColor: [255, 0, 0] // Optional: Add a custom color for header
-            }
-        });
-
-        // Save the generated PDF on mobile
-        doc.save('Feminine_List.pdf');
+        doc.autoTable({ html: clonedTable }); // Create a table from the HTML table
+        doc.save('Feminine_List.pdf'); // Trigger download of the PDF
     } else {
-        // Desktop print view (Open a new window and print)
+        // Open new window and write the content (for desktop printing)
         var newWindow = window.open('', '', 'height=500, width=800');
         newWindow.document.write('<html><head><title>Assigned Feminine List</title>');
         newWindow.document.write('<link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">');
         newWindow.document.write('<style>');
         newWindow.document.write('th.sorting::after, th.sorting_asc::after, th.sorting_desc::after { display: none !important; }');
         newWindow.document.write('h2 { text-align: center; }');
+        newWindow.document.write('h3 { text-align: center; }');
+        newWindow.document.write('p { text-align: center; }');
         newWindow.document.write('table { margin: 0 auto; }');
         newWindow.document.write('body { position: relative; padding: 0 20px; }');
         newWindow.document.write('.logo { position: absolute; top: 0px; }');
@@ -167,8 +186,12 @@ function printFeminineList() {
         newWindow.document.write('.logo.right { right: 100px; width: 90px; }');
         newWindow.document.write('</style>');
         newWindow.document.write('</head><body>');
+        newWindow.document.write('<img src="' + '{{ asset('assets/images/mad.png') }}' + '" class="logo left" alt="Left Logo">');
+        newWindow.document.write('<h3>Republic of the Philippines<br>Region VII-Northern Visayas<br> Province of Cebu<br>Municipality of Madridejos<b></h3>');
+        newWindow.document.write('<img src="' + '{{ asset('assets/images/doh.png') }}' + '" class="logo right" alt="Right Logo">');
+        newWindow.document.write('<br>');
         newWindow.document.write('<h2>Female Residents List</h2>');
-        newWindow.document.write(clonedTable.outerHTML); // Output cloned table HTML
+        newWindow.document.write(headerTable);
         newWindow.document.write('</body></html>');
         newWindow.document.close();
         newWindow.print();
