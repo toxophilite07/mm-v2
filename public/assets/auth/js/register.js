@@ -116,50 +116,48 @@
     //     function closeForm() {
     //     window.location.href = '/'; // Redirects to the main page or index page
     // }
-document.getElementById('sign_up_form').addEventListener('submit', function(event) {
-    let isValid = true;
-    let errorMessage = '';
 
-    // Check required fields
-    const requiredFields = ['first_name', 'last_name', 'address', 'birthdate', 'email', 'password', 'password_confirmation', 'role'];
-    requiredFields.forEach(field => {
-        const input = document.getElementById(field);
-        if (!input.value) {
-            isValid = false;
-            input.classList.add('is-invalid'); // Add invalid class for empty fields
-        } else {
-            input.classList.remove('is-invalid'); // Remove invalid class if filled
-        }
-    });
-
-    // Check if passwords match
-    const password = document.getElementById('password').value;
-    const passwordConfirmation = document.getElementById('password_confirmation').value;
-    if (password !== passwordConfirmation) {
-        isValid = false;
-        errorMessage += 'Passwords do not match.<br>'; // Append error message
-        document.getElementById('password').classList.add('is-invalid');
-        document.getElementById('password_confirmation').classList.add('is-invalid');
-    }
-
-    // If the form is invalid, prevent submission and show SweetAlert with custom animated icon
-    if (!isValid) {
-        event.preventDefault(); // Prevent form submission
-        Swal.fire({
-            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
-            imageWidth: 120, // Adjust image width as needed
-            imageHeight: 120, // Adjust image height as needed
-            imageClass: 'animated-icon', // Add the animation class here
-            title: 'Please double-check your credentials before submitting the form',
-            html: errorMessage || 'Make sure all required fields are filled in correctly.',
-            confirmButtonText: 'OK'
+    document.getElementById('sign_up_form').addEventListener('submit', function(event) {
+        let isValid = true;
+        let errorMessage = '';
+    
+        // Check required fields
+        const requiredFields = ['first_name', 'last_name', 'address', 'birthdate', 'email', 'password', 'password_confirmation', 'role'];
+        requiredFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value) {
+                isValid = false;
+                input.classList.add('is-invalid'); // Add invalid class for empty fields
+            } else {
+                input.classList.remove('is-invalid'); // Remove invalid class if filled
+            }
         });
-    }
-});
-
-
-
-
+    
+        // Check if passwords match
+        // const password = document.getElementById('password').value;
+        // const passwordConfirmation = document.getElementById('password_confirmation').value;
+        // if (password !== passwordConfirmation) {
+        //     isValid = false;
+        //     errorMessage += 'Passwords do not match.<br>'; // Append error message
+        //     document.getElementById('password').classList.add('is-invalid');
+        //     document.getElementById('password_confirmation').classList.add('is-invalid');
+        // }
+    
+        // If the form is invalid, prevent submission and show SweetAlert
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+            Swal.fire({
+                imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+                imageWidth: 120, // Adjust image width as needed
+                imageHeight: 120, // Adjust image height as needed
+                imageClass: 'animated-icon', // Add the animation class here
+                title: 'Please double-check your credentials before submitting the form',
+                html: errorMessage || 'Make sure all required fields are filled in correctly.',
+                confirmButtonText: 'OK'
+            });
+        }
+        
+    });
     
     
 

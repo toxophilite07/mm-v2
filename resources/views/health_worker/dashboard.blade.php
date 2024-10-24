@@ -144,7 +144,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 mb-4">
-                <h2 class="text-primary">Female Health Forecast</h2>
+                <h2 class="text-primary">Feminine Health Forecast</h2>
             </div>
         </div>
         <div class="row">

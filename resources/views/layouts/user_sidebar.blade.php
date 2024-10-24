@@ -120,7 +120,7 @@ function hideLoading() {
 }
 
 
-    function confirmLogout() {
+function confirmLogout() {
     Swal.fire({
         title: 'Confirm Logout',
         text: "Are you sure you want to logout?",
@@ -131,12 +131,25 @@ function hideLoading() {
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, logout!',
-        cancelButtonText: 'Cancel'
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            const image = Swal.getImage(); // Get the image element
+            
+            if (image) {
+                // Set the initial opacity and transition
+                image.style.opacity = 0;
+                image.style.transition = 'opacity 0.5s ease'; // Fade-in over 0.5 seconds
+                
+                // Ensure the transition occurs after a short delay
+                setTimeout(() => {
+                    image.style.opacity = 1;
+                }, 100); // Add a slight delay for smoother effect
+            }
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('logout-form').submit();
         }
     });
 }
-
 </script>

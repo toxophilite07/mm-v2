@@ -214,7 +214,9 @@ $(document).ready(function () {
         Swal.fire({
             title: "Unassigned Feminine?",
             text: "You won't be able to revert this!",
-            icon: "warning",
+            imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom icon URL
+            imageWidth: 100,  // Adjust the width as needed
+            imageHeight: 100, // Adjust the height as needed
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",

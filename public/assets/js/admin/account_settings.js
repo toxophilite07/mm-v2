@@ -38,7 +38,10 @@ $(function () {
         Swal.fire({
             title: 'Reset Password',
             html: "Confirm reset password for: <strong>" + $(this).data('full_name') + "</strong>?",
-            icon: 'warning',
+            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+            imageWidth: 120, // Adjust image width as needed
+            imageHeight: 120, // Adjust image height as needed
+            imageClass: 'animated-icon', // Add the animation class here
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',

@@ -107,19 +107,6 @@ input[type="password"] {
         top: 61%; /* Keep centered */
     }
 }
-/* Define a simple animation (e.g., rotate) */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.animated-icon {
-  animation: spin 2s linear infinite; /* Apply animation to spin the icon */
-}
 
 </style>
 </head>

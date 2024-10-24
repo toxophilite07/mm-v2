@@ -306,7 +306,10 @@ $(document).ready(function () {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to remove this feminine from the health worker's list?",
-            icon: "warning",
+            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+            imageWidth: 120, // Adjust image width as needed
+            imageHeight: 120, // Adjust image height as needed
+            imageClass: 'animated-icon', // Add the animation class here
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -461,7 +464,10 @@ $(document).ready(function () {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
-            icon: "warning",
+            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+            imageWidth: 120, // Adjust image width as needed
+            imageHeight: 120, // Adjust image height as needed
+            imageClass: 'animated-icon', // Add the animation class here
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -569,7 +575,10 @@ $(document).on("click", ".verify_account", function (e) {
     Swal.fire({
         title: "Confirmation",
         html: "Confirm and verify <strong>" + full_name + "'s</strong> account!",
-        icon: "warning",
+        imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom image URL
+        imageWidth: 120, // Adjust image width as needed
+        imageHeight: 120, // Adjust image height as needed
+        imageClass: 'animated-icon', // Add the animation class here
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
