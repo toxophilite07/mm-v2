@@ -154,7 +154,7 @@
                     <p>${errorMessage || 'Make sure all required fields are filled in correctly.'}</p>
                     <img src="https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png" 
                          alt="Close" 
-                         style="width: 30px; height: 30px; cursor: pointer;" 
+                         style="width: 70px; height: 60px; cursor: pointer;" 
                          id="customCloseButton" />
                 </div>
             `,
