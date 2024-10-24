@@ -133,15 +133,6 @@
             }
         });
     
-        // Check if passwords match
-        // const password = document.getElementById('password').value;
-        // const passwordConfirmation = document.getElementById('password_confirmation').value;
-        // if (password !== passwordConfirmation) {
-        //     isValid = false;
-        //     errorMessage += 'Passwords do not match.<br>'; // Append error message
-        //     document.getElementById('password').classList.add('is-invalid');
-        //     document.getElementById('password_confirmation').classList.add('is-invalid');
-        // }
     
         // If the form is invalid, prevent submission and show SweetAlert
         if (!isValid) {
