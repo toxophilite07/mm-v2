@@ -143,20 +143,31 @@
         document.getElementById('password_confirmation').classList.add('is-invalid');
     }
 
-    // If the form is invalid, prevent submission and show SweetAlert
+    // If the form is invalid, prevent submission and show SweetAlert with custom close button
     if (!isValid) {
         event.preventDefault(); // Prevent form submission
         Swal.fire({
-            imageUrl: 'https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png', // Add your image URL here
-            imageWidth: 50, // Adjust width according to your icon size
-            imageHeight: 50, // Adjust height according to your icon size
-            icon: 'error', // Optional error icon
+            icon: 'error',
             title: 'Please double-check your credentials before submitting the form',
-            html: errorMessage || 'Make sure all required fields are filled in correctly.',
-            confirmButtonText: 'OK'
+            html: `
+                <div>
+                    <p>${errorMessage || 'Make sure all required fields are filled in correctly.'}</p>
+                    <img src="https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png" 
+                         alt="Close" 
+                         style="width: 30px; height: 30px; cursor: pointer;" 
+                         id="customCloseButton" />
+                </div>
+            `,
+            showConfirmButton: false, // Hide the default confirm button
+        });
+
+        // Add event listener to custom close button
+        document.getElementById('customCloseButton').addEventListener('click', function() {
+            Swal.close(); // Close the alert when the custom close button is clicked
         });
     }
 });
+
 
     
     
