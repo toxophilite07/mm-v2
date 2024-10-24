@@ -147,7 +147,7 @@ document.getElementById('sign_up_form').addEventListener('submit', function(even
     if (!isValid) {
         event.preventDefault(); // Prevent form submission
         Swal.fire({
-            imageUrl: 'https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png', // Custom image URL
+            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
             imageWidth: 120, // Adjust image width as needed
             imageHeight: 120, // Adjust image height as needed
             title: 'Please double-check your credentials before submitting the form',
