@@ -117,7 +117,7 @@
     //     window.location.href = '/'; // Redirects to the main page or index page
     // }
 
-    document.getElementById('sign_up_form').addEventListener('submit', function(event) {
+document.getElementById('sign_up_form').addEventListener('submit', function(event) {
     let isValid = true;
     let errorMessage = '';
 
@@ -143,27 +143,16 @@
         document.getElementById('password_confirmation').classList.add('is-invalid');
     }
 
-    // If the form is invalid, prevent submission and show SweetAlert with custom close button
+    // If the form is invalid, prevent submission and show SweetAlert with custom icon
     if (!isValid) {
         event.preventDefault(); // Prevent form submission
         Swal.fire({
-            icon: 'error',
+            imageUrl: 'https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png', // Custom image URL
+            imageWidth: 100, // Adjust image width as needed
+            imageHeight: 100, // Adjust image height as needed
             title: 'Please double-check your credentials before submitting the form',
-            html: `
-                <div>
-                    <p>${errorMessage || 'Make sure all required fields are filled in correctly.'}</p>
-                    <img src="https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png" 
-                         alt="Close" 
-                         style="width: 70px; height: 60px; cursor: pointer;" 
-                         id="customCloseButton" />
-                </div>
-            `,
-            showConfirmButton: false, // Hide the default confirm button
-        });
-
-        // Add event listener to custom close button
-        document.getElementById('customCloseButton').addEventListener('click', function() {
-            Swal.close(); // Close the alert when the custom close button is clicked
+            html: errorMessage || 'Make sure all required fields are filled in correctly.',
+            confirmButtonText: 'OK'
         });
     }
 });
