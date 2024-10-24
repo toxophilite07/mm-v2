@@ -116,7 +116,6 @@
     //     function closeForm() {
     //     window.location.href = '/'; // Redirects to the main page or index page
     // }
-
 document.getElementById('sign_up_form').addEventListener('submit', function(event) {
     let isValid = true;
     let errorMessage = '';
@@ -143,19 +142,21 @@ document.getElementById('sign_up_form').addEventListener('submit', function(even
         document.getElementById('password_confirmation').classList.add('is-invalid');
     }
 
-    // If the form is invalid, prevent submission and show SweetAlert with custom icon
+    // If the form is invalid, prevent submission and show SweetAlert with custom animated icon
     if (!isValid) {
         event.preventDefault(); // Prevent form submission
         Swal.fire({
             imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
             imageWidth: 120, // Adjust image width as needed
             imageHeight: 120, // Adjust image height as needed
+            imageClass: 'animated-icon', // Add the animation class here
             title: 'Please double-check your credentials before submitting the form',
             html: errorMessage || 'Make sure all required fields are filled in correctly.',
             confirmButtonText: 'OK'
         });
     }
 });
+
 
 
 
