@@ -4,53 +4,59 @@
     </a>
     <div class="navbar-content">
         <!-- <img class="img-fluid" alt="logo" src="{{ asset('assets/images/blood.jpg') }}" /> -->
-        <ul class="navbar-nav">
-            @if(Auth::user()->user_role_id == 1 || Auth::user()->user_role_id == 3)
-                <li class="nav-item dropdown nav-notifications">
-                    <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i data-feather="calendar"></i>
-                        @if(count($new_period_notification) != 0)
-                            <div class="indicator" id="period_notification_indicator">
-                                <div class="circle"></div>
+<ul class="navbar-nav">
+    @if(Auth::user()->user_role_id == 1 || Auth::user()->user_role_id == 3)
+        <li class="nav-item dropdown nav-notifications">
+            <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i data-feather="calendar"></i>
+                @if(count($new_period_notification) != 0)
+                    <div class="indicator" id="period_notification_indicator">
+                        <div class="circle"></div>
+                    </div>
+                @endif
+            </a>
+            <div class="dropdown-menu" aria-labelledby="notificationDropdown">
+                <div class="dropdown-header d-flex align-items-center justify-content-between">
+                    @if(count($new_period_notification) != 0)
+                        <p class="mb-0 font-weight-medium period_notification_count">{{ count($new_period_notification) }} New Menstrual Period Recorded</p>
+                    @else
+                        <p class="mb-0 font-weight-medium period_notification_count">No Notifications</p>
+                    @endif
+                </div>
+                <div class="dropdown-body" id="period_notification_container">
+                    @if(count($new_period_notification) != 0)
+                        @foreach($new_period_notification as $new_period)
+                            @if(Auth::user()->user_role_id == 1) <!-- Admin -->
+                                <a href="{{ URL::to('admin/feminine-list') }}?p={{ $new_period->user_id }}" id="period_notification_body_{{ $new_period->user_id }}" class="dropdown-item">
+                            @elseif(Auth::user()->user_role_id == 3) <!-- Health Worker -->
+                                <a href="{{ URL::to('health-worker/feminine-list') }}?p={{ $new_period->user_id }}" id="period_notification_body_{{ $new_period->user_id }}" class="dropdown-item">
+                            @endif
+                                <div class="icon">
+                                    <i data-feather="user-plus"></i>
+                                </div>
+                                <div class="content">
+                                    <p>{{ $new_period->first_name.' '.$new_period->last_name }}</p>
+                                    <p class="sub-text text-muted">New Record: {{ $new_period->formatted_menstruation_date }}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    @else
+                        <a href="javascript:;" class="dropdown-item">
+                            <div class="icon">
+                                <i data-feather="coffee"></i>
                             </div>
-                        @endif
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                        <div class="dropdown-header d-flex align-items-center justify-content-between">
-                            @if(count($new_period_notification) != 0)
-                                <p class="mb-0 font-weight-medium period_notification_count">{{ count($new_period_notification) }} New Menstrual Period Recorded</p>
-                            @else
-                                <p class="mb-0 font-weight-medium period_notification_count">No Notifications</p>
-                            @endif
-                        </div>
-                        <div class="dropdown-body" id="period_notification_container">
-                            @if(count($new_period_notification) != 0)
-                                @foreach($new_period_notification as $new_period)
-                                    <a href="{{ URL::to('health-worker/feminine-list') }}?p={{ $new_period->user_id }}" id="period_notification_body_{{ $new_period->user_id }}" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="user-plus"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>{{ $new_period->first_name.' '.$new_period->last_name }}</p>
-                                            <p class="sub-text text-muted">New Record: {{ $new_period->formatted_menstruation_date }}</p>
-                                        </div>
-                                    </a>
-                                @endforeach
-                            @else
-                                <a href="javascript:;" class="dropdown-item">
-                                    <div class="icon">
-                                        <i data-feather="coffee"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>No notifications have a coffee</p>
-                                    </div>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                    </div>
-                </li>
+                            <div class="content">
+                                <p>No notifications, have a coffee!</p>
+                            </div>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </li>
+    @endif
+</ul>
+
 
                 @if(Auth::user()->user_role_id == 1)
                     <li class="nav-item dropdown nav-notifications">
