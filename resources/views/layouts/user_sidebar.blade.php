@@ -121,19 +121,22 @@ function hideLoading() {
 
 
     function confirmLogout() {
-        Swal.fire({
-            title: 'Confirm Logout',
-            text: "Are you sure you want to logout?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, logout!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('logout-form').submit();
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Confirm Logout',
+        text: "Are you sure you want to logout?",
+        imageUrl: 'https://i.ibb.co/18m5xsL/question.png', // Custom icon URL
+        imageWidth: 100,  // Adjust the width as needed
+        imageHeight: 100, // Adjust the height as needed
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, logout!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('logout-form').submit();
+        }
+    });
+}
+
 </script>
