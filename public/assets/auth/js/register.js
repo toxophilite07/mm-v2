@@ -118,43 +118,46 @@
     // }
 
     document.getElementById('sign_up_form').addEventListener('submit', function(event) {
-        let isValid = true;
-        let errorMessage = '';
-    
-        // Check required fields
-        const requiredFields = ['first_name', 'last_name', 'address', 'birthdate', 'email', 'password', 'password_confirmation', 'role'];
-        requiredFields.forEach(field => {
-            const input = document.getElementById(field);
-            if (!input.value) {
-                isValid = false;
-                input.classList.add('is-invalid'); // Add invalid class for empty fields
-            } else {
-                input.classList.remove('is-invalid'); // Remove invalid class if filled
-            }
-        });
-    
-        // Check if passwords match
-        // const password = document.getElementById('password').value;
-        // const passwordConfirmation = document.getElementById('password_confirmation').value;
-        // if (password !== passwordConfirmation) {
-        //     isValid = false;
-        //     errorMessage += 'Passwords do not match.<br>'; // Append error message
-        //     document.getElementById('password').classList.add('is-invalid');
-        //     document.getElementById('password_confirmation').classList.add('is-invalid');
-        // }
-    
-        // If the form is invalid, prevent submission and show SweetAlert
-        if (!isValid) {
-            event.preventDefault(); // Prevent form submission
-            Swal.fire({
-                icon: 'error',
-                title: 'Please double-check your credentials before submitting the form',
-                html: errorMessage || 'Make sure all required fields are filled in correctly.',
-                confirmButtonText: 'OK'
-            });
+    let isValid = true;
+    let errorMessage = '';
+
+    // Check required fields
+    const requiredFields = ['first_name', 'last_name', 'address', 'birthdate', 'email', 'password', 'password_confirmation', 'role'];
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value) {
+            isValid = false;
+            input.classList.add('is-invalid'); // Add invalid class for empty fields
+        } else {
+            input.classList.remove('is-invalid'); // Remove invalid class if filled
         }
-        
     });
+
+    // Check if passwords match
+    const password = document.getElementById('password').value;
+    const passwordConfirmation = document.getElementById('password_confirmation').value;
+    if (password !== passwordConfirmation) {
+        isValid = false;
+        errorMessage += 'Passwords do not match.<br>'; // Append error message
+        document.getElementById('password').classList.add('is-invalid');
+        document.getElementById('password_confirmation').classList.add('is-invalid');
+    }
+
+    // If the form is invalid, prevent submission and show SweetAlert
+    if (!isValid) {
+        event.preventDefault(); // Prevent form submission
+        Swal.fire({
+            imageUrl: 'https://i.ibb.co/4W5pPwN/images-3-removebg-preview.png', // Add your image URL here
+            imageWidth: 50, // Adjust width according to your icon size
+            imageHeight: 50, // Adjust height according to your icon size
+            icon: 'error', // Optional error icon
+            title: 'Please double-check your credentials before submitting the form',
+            html: errorMessage || 'Make sure all required fields are filled in correctly.',
+            confirmButtonText: 'OK'
+        });
+    }
+});
+
     
     
 
