@@ -209,7 +209,7 @@
                     </div>
                     <div class="col-lg-5 pb-2">
                         <div class="alert alert-icon-secondary mt-3 mb-0" role="alert">
-                            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Assigned Feminine List:</label>
+                            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Assigned Female List:</label>
                             <div id="view_feminnine_assign"></div>
                         </div>
                     </div>
@@ -226,7 +226,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="assignFeminineLbl">Assign Feminine</h5>
+                <h5 class="modal-title" id="assignFeminineLbl">Assign Female</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

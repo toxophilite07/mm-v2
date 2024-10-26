@@ -1,3 +1,4 @@
+@csrf
 <div class="modal fade" id="menstrualPeriodModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newMenstruationPeriodLbl" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

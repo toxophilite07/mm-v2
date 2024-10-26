@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="content">
                                             <p>{{ $notification->first_name.' '.$notification->last_name }}</p>
-                                            <p class="sub-text text-muted">Feminine user for verification</p>
+                                            <p class="sub-text text-muted">Female user for verification</p>
                                         </div>
                                     </a>
                                 @empty

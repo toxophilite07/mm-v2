@@ -32,6 +32,7 @@
 </div>
    </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
+        @csrf
          <!-- <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0" data-toggle="modal" data-target="#{{ Auth::user()->menstruation_status == 1 ? 'menstrualPeriodModal' : '404' }}" {{ Auth::user()->menstruation_status == 0 ? 'disabled' : '' }} >
                 <i class="btn-icon-prepend fa-solid fa-file-circle-plus"></i>
                 Add New Menstruation Period
@@ -48,34 +49,39 @@
     </div>
 
     <div class="stretch-card">
-        <div class="row flex-grow">
-            <div class="col-lg-3 col-sm-6">
-                <div class="card-box bg-blue shadow-sm">
-                    <div class="inner">
-                        <h3 id="menstruation_period_count">{{ count($menstruation_period_list) }}</h3>
-                        <p>Recorded Period Dates</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa-solid fa-calendar-week"></i>
-                    </div>
-                    <a href="{{ URL::to('user/menstrual') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+    <div class="row flex-grow">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-blue shadow-sm">
+                <div class="inner">
+                    <h3 id="menstruation_period_count" style="font-size: 1.5rem;">{{ count($menstruation_period_list) }}</h3>
+                    <p>Recorded Period Dates</p>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-sm-6">
-                <div class="card-box bg-green shadow-sm">
-                    <div class="inner">
-                        <h3 id="latest_period_date" class="{{ count($menstruation_period_list) !== 0 ?: 'font-weight-light' }}">{{ count($menstruation_period_list) !== 0 ? date('F j, Y', strtotime($menstruation_period_list->first()->menstruation_date)) : 'No recorded data' }}</h3>
-                        <p>Last Period Date</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa-solid fa-heart-circle-check"></i>
-                    </div>
-                     <a href="{{ URL::to('user/menstrual') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+                <div class="icon">
+                    <i class="fa-solid fa-calendar-week"></i>
                 </div>
+                <a href="{{ URL::to('user/menstrual') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="card-box bg-green shadow-sm">
+                <div class="inner">
+                    <h3 id="latest_period_date" 
+                        class="{{ count($menstruation_period_list) !== 0 ? '' : 'font-weight-light' }}" 
+                        style="font-size: 1.2rem; line-height: 1.5;  padding: 0 10px;">
+                        {{ count($menstruation_period_list) !== 0 ? date('F j, Y', strtotime($menstruation_period_list->first()->menstruation_date)) : 'No recorded data' }}
+                    </h3>
+                    <p>Last Period Date</p>
+                </div>
+                <div class="icon">
+                    <i class="fa-solid fa-heart-circle-check"></i>
+                </div>
+                <a href="{{ URL::to('user/menstrual') }}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        </div>
     </div>
+
     
     <div class="stretch-card mt-3">
         <div class="row flex-grow">

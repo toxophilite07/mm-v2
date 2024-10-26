@@ -63,6 +63,7 @@ $(document).ready(function () {
                     ? "• Active"
                     : "• Inactive"
             );
+            
 
         if (last_period_dates.length != 0) {
             $.each(last_period_dates, function (i, value) {
@@ -155,6 +156,10 @@ $(document).ready(function () {
                 modal
                     .find(".modal-body #view_estimated_periods")
                     .text(button.data("estimated_next_period"));
+                
+                modal
+                    .find(".modal-body #view_remarks")
+                    .text(button.data("remarks"));
             });
         } else {
             modal
@@ -212,7 +217,7 @@ $(document).ready(function () {
 
     $(document).on("click", ".delete_record", function (e) {
         Swal.fire({
-            title: "Unassigned Feminine?",
+            title: "Unassigned Female?",
             text: "You won't be able to revert this!",
             imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom icon URL
             imageWidth: 100,  // Adjust the width as needed

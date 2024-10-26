@@ -26,7 +26,7 @@
                     <i class="m-0" data-feather="alert-circle"></i>
                     <strong>Information:</strong>
                 </p>
-                Displays all of your assigned feminine's last recorded menstrual period in the calendar.
+                Displays all of your assigned female's last recorded menstrual period in the calendar.
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newFeminineLbl">Register New Feminine</h5>
+                <h5 class="modal-title" id="newFeminineLbl">Register New Female</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,7 +11,7 @@
                 <div class="col-12">
                     <div class="alert alert-info" role="alert">
                         <h4 class="alert-heading">Heads up!</h4>
-                        <p>When you add a new feminine, this will automatically be assigned to you and will be listed to your feminine list.</p>
+                        <p>When you add a new female, this will automatically be assigned to you and will be listed to your female list.</p>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -122,7 +122,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newFeminineLbl">Edit Feminine Data</h5>
+                <h5 class="modal-title" id="newFeminineLbl">Edit Female Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -273,6 +273,10 @@
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">Next Estimated Menstrual Date:</label>
                             <div class="text-muted ml-2" id="view_estimated_periods"></div>
                         </div>
+                        <div class="mt-3">
+                            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Note for the current menstruation cycle:</label>
+                            <div class="text-muted ml-2" id="view_remarks"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -287,7 +291,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="assignFeminineLbl">Assign Feminine</h5>
+                <h5 class="modal-title" id="assignFeminineLbl">Assign Female</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -295,7 +299,7 @@
             <div class="modal-body pt-0">
                 <div class="col-md-12 pb-2">
                     <div class="form-group mt-3 mb-0">
-                        <label>Select Unassigned Feminine</label>
+                        <label>Select Unassigned Female</label>
                         <select id="assign_feminine" multiple="multiple" style="width: 100%;" aria-describedby="assign_help">
                             <option></option>
                         </select>

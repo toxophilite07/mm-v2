@@ -130,7 +130,7 @@
                         <p>Irregular Period</p>
                     </div>
                     <div class="icon">
-                        <i class="fa-solid fa-user-tag"></i>
+                        <i class="fa-solid fa-user-xmark"></i>
                     </div>
                     <a href="{{ URL::to('health-worker/feminine-list') }}" class="card-box-footer">
                         View More <i class="fa fa-arrow-circle-right"></i>

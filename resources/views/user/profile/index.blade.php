@@ -109,7 +109,7 @@
                                     <div class="row">
                                         <div class="col mb-3">
                                             <div class="form-group">
-                                                <label for="remarks">Remarks</label>
+                                                <label for="remarks">Add a note for the new menstruation to keep your Barangay Health Worker (BHW) updated.</label>
                                                 <textarea class="form-control" id="remarks" name="remarks" rows="5" placeholder="Enter any remarks or notes...">{{ $user->remarks }}</textarea>
                                             </div>
                                         </div>

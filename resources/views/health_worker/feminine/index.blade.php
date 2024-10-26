@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     </div>
-                  <p class="card-description mb-4 mt-2">This is your assigned feminine list, other feminine that are not under your care or assigned to you will not be displayed here.</p>
+                  <p class="card-description mb-4 mt-2">This is your assigned female list, other female that are not under your care or assigned to you will not be displayed here.</p>
                     <div class="table-responsive">
                         <table id="feminine_table" class="table">
                             <thead>
