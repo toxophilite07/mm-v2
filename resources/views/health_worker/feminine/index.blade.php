@@ -19,13 +19,13 @@
             <div class="card">
                 <div class="card-body">
                 <div class="d-flex align-items-baseline flex-wrap mb-md-3" style="margin-bottom: 0 !important;">
-                    <h6 class="card-title flex-grow-1 mb-2 mb-md-0">Assigned Feminine List</h6>
+                    <h6 class="card-title flex-grow-1 mb-2 mb-md-0">Assigned Female List</h6>
                     <div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="flex-wrap: wrap;">
                         <button type="button" class="btn btn-outline-primary mr-2 mb-2" data-toggle="modal" data-target="#assignFeminineModal">
-                        <i class="fa-solid fa-user-tag"></i> Assign Feminine
+                        <i class="fa-solid fa-user-tag"></i> Assign Female
                         </button>
                         <button type="button" class="btn btn-primary mr-2 mb-2" data-toggle="modal" data-target="#newFeminineModal">
-                        <i class="fa-solid fa-plus"></i> Add New Feminine
+                        <i class="fa-solid fa-plus"></i> Add New Female
                         </button>
                         <button type="button" class="btn btn-danger pdf-button mb-2" onclick="printFeminineList()">
                         <i class="fa-solid fa-print"></i> Print

@@ -44,7 +44,7 @@
                     @csrf
                 </form>
             </li> -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); confirmLogout();">
                     <i class="link-icon" data-feather="log-out"></i>
                     <span class="link-title">Log Out</span>
@@ -52,7 +52,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
-            </li>
+            </li> -->
         </ul>
     </div>
 </nav>
