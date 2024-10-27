@@ -233,7 +233,7 @@
 </div>
 
 
-    <<div class="modal fade" id="newFeminineModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newFeminineLbl" aria-hidden="true">
+    <div class="modal fade" id="newFeminineModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newFeminineLbl" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -249,7 +249,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
 @endsection
 
