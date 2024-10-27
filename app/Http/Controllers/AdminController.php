@@ -517,7 +517,6 @@ class AdminController extends Controller {
     ]);
 }
 
-
    //OLD w/ SATNITIZED// 
     // public function postnewfeminine(Request $request)
     // {
@@ -604,20 +603,10 @@ class AdminController extends Controller {
     
     
     public function calendarIndex() {
-        // $new_notification = $this->signupNotification();
-        // $new_period_notification = $this->newMenstrualPeriodNotification();
-        // return view('admin/calendar/index', compact('new_notification', 'new_period_notification'));
-        $new_notification = $this->signupNotification() ?? [];
-        $new_period_notification = $this->newMenstrualPeriodNotification() ?? [];
-        $new_health_worker_notification = $this->healthWorkerSignupNotification() ?? [];
-        
-        $new_notification = $new_notification->sortByDesc('created_at');
-        $new_health_worker_notification = $new_health_worker_notification->sortByDesc('created_at');
-    
-        \Log::info('New Notifications: ', $new_notification->toArray());
-        \Log::info('New Health Worker Notifications: ', $new_health_worker_notification->toArray());
-        
-        return view('admin/health_worker/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
+        $new_notification = $this->signupNotification();
+        $new_period_notification = $this->newMenstrualPeriodNotification();
+        $new_health_worker_notification = $this->healthWorkerSignupNotification();
+        return view('admin/calendar/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
     }
 
     public function calendarData() {
@@ -719,20 +708,11 @@ class AdminController extends Controller {
     }
 
     public function accountSettings() {
-        // $new_notification = $this->signupNotification();
-        // $new_period_notification = $this->newMenstrualPeriodNotification();
-        // return view('admin/account_settings/index', compact('new_notification', 'new_period_notification'));
-        $new_notification = $this->signupNotification() ?? [];
-        $new_period_notification = $this->newMenstrualPeriodNotification() ?? [];
-        $new_health_worker_notification = $this->healthWorkerSignupNotification() ?? [];
-        
-        $new_notification = $new_notification->sortByDesc('created_at');
-        $new_health_worker_notification = $new_health_worker_notification->sortByDesc('created_at');
-    
-        \Log::info('New Notifications: ', $new_notification->toArray());
-        \Log::info('New Health Worker Notifications: ', $new_health_worker_notification->toArray());
-        
-        return view('admin/health_worker/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
+        $new_notification = $this->signupNotification();
+        $new_period_notification = $this->newMenstrualPeriodNotification();
+        $new_health_worker_notification = $this->healthWorkerSignupNotification();
+        return view('admin/account_settings/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
+
     }
 
     public function accountReset(Request $request) {
@@ -991,7 +971,6 @@ class AdminController extends Controller {
         return $this->postHealthWorkerForm($sanitizedData);
     }
     
-
     public function deleteHealthWorker(Request $request) {
         try {
             $user = User::findOrFail($request->id);
