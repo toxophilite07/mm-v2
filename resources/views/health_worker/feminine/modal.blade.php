@@ -38,12 +38,36 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-8 col-sm-12">
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" oninput="handleInputCapitalize(event)">
-                                </div>
-                            </div>
+                        <div class="col-lg-8 col-sm-12 mb-3">
+                                                        <label for="address" class="form-label">Address</label>
+                                                        <!-- Input with datalist -->
+                                                        <input type="text" id="address" name="address" list="addressOptions" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Type or select your address" oninput="handleInputCapitalize(event)" required>
+                                                        
+                                                        <!-- Datalist for address options -->
+                                                        <datalist id="addressOptions">
+                                                            <option value="Tarong Madridejos Cebu"></option>
+                                                            <option value="Bunakan Madridejos Cebu"></option>
+                                                            <option value="Kangwayan Madridejos Cebu"></option>
+                                                            <option value="Kaongkod Madridejos Cebu"></option>
+                                                            <option value="Kodia Madridejos Cebu"></option>
+                                                            <option value="Maalat Madridejos Cebu"></option>
+                                                            <option value="Malbago Madridejos Cebu"></option>
+                                                            <option value="Mancilang Madridejos Cebu"></option>
+                                                            <option value="Pili Madridejos Cebu"></option>
+                                                            <option value="Poblacion Madridejos Cebu"></option>
+                                                            <option value="San Agustin Madridejos Cebu"></option>
+                                                            <option value="Tabagak Madridejos Cebu"></option>
+                                                            <option value="Talangnan Madridejos Cebu"></option>
+                                                            <option value="Tugas Madridejos Cebu"></option>
+                                                        </datalist>
+
+                                                        <!-- Display error message if validation fails -->
+                                                        @if ($errors->has('address'))
+                                                            <span class="invalid-feedback">
+                                                                <strong>{{ $errors->first('address') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
 
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group">
@@ -315,3 +339,4 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('assets/auth/js/register.js') }}"></script>
