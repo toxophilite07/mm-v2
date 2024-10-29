@@ -103,8 +103,10 @@
                                                 <label for="password" class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
-                                                </div>
+                                                    <span class="input-group-text">
+                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                                                </span>
+                                             </div>
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
                                                         <strong>{{ $errors->first('password') }}</strong>

@@ -210,9 +210,6 @@ input[type="password"] {
                                                             </span>
                                                         @endif
                                                     </div>
-
-
-    
                                                 <div class="col-lg-4 col-sm-12 mb-4">
                                                     <label for="birthdate" class="form-label">Birthdate</label>
                                                     <div class="input-group date datepicker" id="birthdate_datepicker">

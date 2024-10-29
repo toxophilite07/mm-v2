@@ -168,8 +168,9 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', true),
-    'http_only' => true,
+    'secure' => env('SESSION_SECURE_COOKIE', true), // Enforces cookies over HTTPS
+    'http_only' => true,                            // Makes cookies inaccessible to JavaScript
+    'same_site' => 'Strict',                        // Limits cookies to same-site requests
 
 
     /*

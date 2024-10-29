@@ -35,13 +35,6 @@
         .password-container {
             position: relative;
         }
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 75%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
@@ -52,18 +45,22 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
-                                @if(Route::has('login'))
+                            @if(Route::has('login'))
                                     <p class="text-center fw-bolder mb-2 h4">Reset Password</p>
                                     <p class="text-center mb-4">Enter a new password for your account.</p>
-                                    <form action="{{ URL::to('reset-password') }}" method="POST">
+                                    <form id="resetPasswordForm" action="{{ URL::to('reset-password') }}" method="POST" onsubmit="return validateForm()">
                                         @csrf
                                         <input type="hidden" name="token" value="{{ $token }}">
                                         <input type="hidden" name="email" value="{{ $user->email }}">
+
                                         <div class="mb-4 password-container">
                                             <label for="password" class="form-label">New Password</label>
-                                            <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" required>
-                                            <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
-
+                                            <div class="input-group">
+                                                <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" required>
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                                                </span>
+                                            </div>
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback">
                                                     <strong>{{ $errors->first('password') }}</strong>
@@ -73,9 +70,12 @@
 
                                         <div class="mb-4 password-container">
                                             <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" required>
-                                            <i class="fas fa-eye-slash toggle-password" id="togglePasswordConfirmation" onclick="togglePasswordConfirmationVisibility()"></i>
-
+                                            <div class="input-group">
+                                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" required>
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-eye-slash toggle-password" id="togglePasswordConfirmation" onclick="togglePasswordVisibility('password_confirmation', 'togglePasswordConfirmation')"></i>
+                                                </span>
+                                            </div>
                                             @if ($errors->has('password_confirmation'))
                                                 <span class="invalid-feedback">
                                                     <strong>{{ $errors->first('password_confirmation') }}</strong>
@@ -97,38 +97,57 @@
     <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function togglePasswordVisibility(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
 
-    <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('togglePassword');
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const passwordConfirmation = document.getElementById('password_confirmation').value;
+        
+        // Password requirements: at least 10 characters, one uppercase letter, one lowercase letter, one number, and one special character.
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$/;
 
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
+        if (!passwordRegex.test(password)) {
+            Swal.fire({
+                imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+                imageWidth: 120, // Adjust image width as needed
+                imageHeight: 120, // Adjust image height as needed
+                imageClass: 'animated-icon', // Add the animation class here
+                title: 'Invalid Password',
+                text: 'Password must be at least 10 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character.',
+            });
+            return false;
         }
 
-        function togglePasswordConfirmationVisibility() {
-            const passwordConfirmationInput = document.getElementById('password_confirmation');
-            const toggleIcon = document.getElementById('togglePasswordConfirmation');
-
-            if (passwordConfirmationInput.type === 'password') {
-                passwordConfirmationInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordConfirmationInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
+        if (password !== passwordConfirmation) {
+            Swal.fire({
+                imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+                imageWidth: 120, // Adjust image width as needed
+                imageHeight: 120, // Adjust image height as needed
+                imageClass: 'animated-icon', // Add the animation class here
+                title: 'Password Mismatch',
+                text: 'Passwords do not match. Please try again.',
+            });
+            return false;
         }
-    </script>
+
+        return true; // Allow form submission if all validations pass
+    }
+</script>
 
     @include('auth.response')
 </body>
