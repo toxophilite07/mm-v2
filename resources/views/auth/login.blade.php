@@ -235,36 +235,35 @@
             $("#greeting").text(randomGreeting);
         });
 
-        // FOR LOADING
+      // Get references to the elements
         const loginForm = document.getElementById('loginForm');
         const loginButton = document.getElementById('loginButton');
         const buttonText = document.getElementById('buttonText');
         const loadingSpinner = document.getElementById('loadingSpinner');
+        const captchaError = document.getElementById('captcha-error');
 
-        loginForm.addEventListener('submit', function() {
-            // Disable the button to prevent multiple submissions
-            loginButton.disabled = true;
-
-            // Show the loading spinner and hide the button text
-            buttonText.classList.add('d-none');
-            loadingSpinner.classList.remove('d-none');
-        });
-
-        ///RECAPTCHA SUBMIT VALIDATION
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
+        // Add event listener to the form submit event
+        loginForm.addEventListener('submit', function(event) {
             // Check if reCAPTCHA is completed
             const recaptchaResponse = grecaptcha.getResponse();
-            const captchaError = document.getElementById("captcha-error");
 
+            // If reCAPTCHA is not checked, prevent form submission
             if (recaptchaResponse.length === 0) {
-                // Prevent form submission and show error message
-                event.preventDefault();
-                captchaError.style.display = "block";
+                event.preventDefault();  // Stop form submission
+                captchaError.style.display = "block";  // Show error message
             } else {
                 // Hide the error message if reCAPTCHA is completed
                 captchaError.style.display = "none";
+
+                // Disable the submit button to prevent multiple submissions
+                loginButton.disabled = true;
+
+                // Show the loading spinner and hide the button text
+                buttonText.classList.add('d-none');
+                loadingSpinner.classList.remove('d-none');
             }
         });
+
 
     </script>
 
