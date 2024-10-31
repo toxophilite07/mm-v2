@@ -74,7 +74,7 @@
                                             <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @endif
                                     @else
-                                        <p class="text-center mb-4">Sign in using email or mobile # to your account to proceed</p>
+                                        <p class="text-center mb-4">Sign in with your registered email to proceed.</p>
                                         <form method="POST" action="{{ route('login') }}" autocomplete="off" id="loginForm">
                                             @csrf
                                             <div class="mb-3" id="emailInput">
