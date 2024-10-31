@@ -34,7 +34,6 @@
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="printFeminineList()"><i class="fa-solid fa-print"></i> Print List</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadCSV()"><i class="fa-solid fa-file-csv"></i> Download as CSV</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadExcel()"><i class="fa-solid fa-file-excel"></i> Download as Excel</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download as PDF</a></li>
                             </ul>     
                     </div>
                     </div>
@@ -237,14 +236,6 @@ function downloadCSV() {
 function downloadExcel() {
     var workbook = XLSX.utils.table_to_book(document.getElementById('feminine_table'), { sheet: "Sheet1" });
     XLSX.writeFile(workbook, 'feminine_list.xlsx'); // Trigger download
-}
-function downloadPDF() {
-    var doc = new jsPDF();
-    var table = document.getElementById('feminine_table');
-
-    doc.text('Female Residents List', 10, 10);
-    doc.autoTable({ html: table }); // Create a table from the HTML table
-    doc.save('Feminine_List.pdf'); // Trigger download of the PDF
 }
 
 </script>
