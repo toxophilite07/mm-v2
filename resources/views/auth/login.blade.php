@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
+
     <style>
         .form-control { border-radius: 2px !important; }
         .btn-primary {
@@ -113,14 +114,18 @@
                                                     </span>
                                                 @endif
                                             </div>
-
+                                            <div class="form-group">
+                                            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
+                                                </div>
+                                                <p id="captcha-error">
+                                                Please verify that you are not a robot
+                                                </p>
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
                                                     <label class="form-check-label text-dark" for="remember">Remember me</label>
                                                 </div>
                                             </div>
-
 
                                             <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1" id="loginButton">
                                                 <span id="buttonText">Sign In</span>
@@ -148,7 +153,7 @@
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- DISABLE EMAIL WHEN HAVE A NUMBER -->
     <script>
         const email = document.getElementById("email");
