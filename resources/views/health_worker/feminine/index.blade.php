@@ -208,13 +208,20 @@ function printFeminineList() {
 
 function downloadCSV() {
     var csv = [];
+    
+    // Define the headers
+    var headers = ['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Status'];
+    csv.push(headers.join(",")); // Add headers to the first row
+
     var rows = document.querySelectorAll("#feminine_table tr");
 
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
+    for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+        var row = [i]; // Add row number
+        var cols = rows[i].querySelectorAll("td");
 
+        // Assuming the columns are in the same order as defined in headers
         for (var j = 0; j < cols.length; j++) {
-            row.push(cols[j].innerText);
+            row.push(cols[j].innerText); // Add cell data
         }
 
         csv.push(row.join(",")); // Join each row's cells with commas
@@ -233,9 +240,37 @@ function downloadCSV() {
     document.body.removeChild(downloadLink); // Cleanup
 }
 
+
 function downloadExcel() {
-    var workbook = XLSX.utils.table_to_book(document.getElementById('feminine_table'), { sheet: "Sheet1" });
-    XLSX.writeFile(workbook, 'feminine_list.xlsx'); // Trigger download
+    // Create an array to hold the data for the workbook
+    var data = [];
+    
+    // Define the headers
+    data.push(['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Status']); // Add headers
+
+    var rows = document.querySelectorAll("#feminine_table tr");
+
+    for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+        var row = [i]; // Add row number
+        var cols = rows[i].querySelectorAll("td");
+
+        // Assuming the columns are in the same order as defined in headers
+        for (var j = 0; j < cols.length; j++) {
+            row.push(cols[j].innerText); // Add cell data
+        }
+
+        data.push(row); // Push the row data to the data array
+    }
+
+    // Create a worksheet from the data array
+    var worksheet = XLSX.utils.aoa_to_sheet(data);
+    var workbook = XLSX.utils.book_new();
+    
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Feminine List");
+
+    // Trigger download of the Excel file
+    XLSX.writeFile(workbook, 'feminine_list.xlsx'); 
 }
 
 </script>

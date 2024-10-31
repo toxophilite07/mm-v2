@@ -16,6 +16,7 @@
                 </div>
                 <div class="col-md-12">
                     <form autocomplete="off" id="newFeminineForm" novalidate="novalidate">
+                    @csrf
                         <div class="row">
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group">

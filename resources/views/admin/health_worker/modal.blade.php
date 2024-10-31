@@ -10,6 +10,7 @@
             <div class="modal-body">
                 <div class="col-md-12">
                     <form autocomplete="off" id="newHealthWorkerForm" novalidate="novalidate">
+                    @csrf
                         <input type="hidden" class="action" value="0">
                         <div class="row">
                             <div class="col-lg-4 col-sm-12">
@@ -118,6 +119,7 @@
             <div class="modal-body">
                 <div class="col-md-12">
                     <form autocomplete="off" id="editHealthWorkerForm" novalidate="novalidate">
+                    @csrf
                         <input type="hidden" class="action" value="1">
                         <div class="row">
                             <div class="col-lg-4 col-sm-12">

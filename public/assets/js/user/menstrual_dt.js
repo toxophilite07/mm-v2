@@ -40,7 +40,10 @@ $(document).on('click', '.delete_menstrual', function (e) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        imageUrl: 'https://i.ibb.co/jWC9HNL/tiger.png', // Custom image URL
+        imageWidth: 120, // Adjust image width as needed
+        imageHeight: 120, // Adjust image height as needed
+        imageClass: 'animated-icon', // Add the animation class here
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',

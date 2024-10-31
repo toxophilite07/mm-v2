@@ -149,7 +149,6 @@ input[type="password"] {
                                         <p class="text-center mb-4">Please fill-up the form to create an account.</p>
                                         <form id="sign_up_form" method="POST" action="{{ route('register') }}" autocomplete="off">
                                             @csrf
-
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-12 mb-3">
                                                     <label for="first_name" class="form-label">First Name</label>

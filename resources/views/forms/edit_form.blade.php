@@ -1,4 +1,5 @@
 <form autocomplete="off" id="editFeminineForm" novalidate="novalidate">
+@csrf
     <input type="hidden" id="edit_id">
     <input type="hidden" id="edit_menstruation_period_id">
     <div class="row">

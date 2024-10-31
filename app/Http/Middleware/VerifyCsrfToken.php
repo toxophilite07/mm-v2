@@ -15,4 +15,10 @@ class VerifyCsrfToken extends Middleware
         'webhook-endpoint', // Example endpoint that should bypass CSRF
         'api/*',            // Exclude all API routes if you're handling CSRF differently
     ];
+
+    // public function handle($request, Closure $next)
+    // {
+    //     return $next($request)
+    //         ->header('Content-Security-Policy', "default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';");
+    // }
 }
