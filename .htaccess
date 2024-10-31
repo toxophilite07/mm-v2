@@ -9,3 +9,24 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ /public/$1 
 RewriteRule ^(/)?$ public/index.php [L]
 </IfModule>
+
+# Add security headers
+<IfModule mod_headers.c>
+    # Content Security Policy (adjust based on your needs)
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self';"
+
+    # HTTP Strict Transport Security (HSTS)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking
+    Header set X-Frame-Options "DENY"
+
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer Policy
+    Header set Referrer-Policy "no-referrer"
+</IfModule>
