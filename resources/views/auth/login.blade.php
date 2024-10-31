@@ -249,6 +249,23 @@
             buttonText.classList.add('d-none');
             loadingSpinner.classList.remove('d-none');
         });
+
+        ///RECAPTCHA SUBMIT VALIDATION
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            // Check if reCAPTCHA is completed
+            const recaptchaResponse = grecaptcha.getResponse();
+            const captchaError = document.getElementById("captcha-error");
+
+            if (recaptchaResponse.length === 0) {
+                // Prevent form submission and show error message
+                event.preventDefault();
+                captchaError.style.display = "block";
+            } else {
+                // Hide the error message if reCAPTCHA is completed
+                captchaError.style.display = "none";
+            }
+        });
+
     </script>
 
         @include('auth.response')
