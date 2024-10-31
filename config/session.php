@@ -155,7 +155,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => env('SESSION_DOMAIN', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -168,9 +168,10 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', true), // Enforces cookies over HTTPS
+    // 'secure' => env('SESSION_SECURE_COOKIE', true), // Enforces cookies over HTTPS
+    'secure' => true,
     'http_only' => true,                            // Makes cookies inaccessible to JavaScript
-    'same_site' => 'Strict',                        // Limits cookies to same-site requests
+    'same_site' => 'strict',                        // Limits cookies to same-site requests
 
 
     /*
