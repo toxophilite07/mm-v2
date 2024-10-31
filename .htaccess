@@ -13,10 +13,21 @@ RewriteRule ^(/)?$ public/index.php [L]
 
 
 <IfModule mod_headers.c>
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;"
+    # Content Security Policy (adjust based on your needs)
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://www.gstatic.com;"
+
+    # HTTP Strict Transport Security (HSTS)
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Prevent MIME type sniffing
     Header set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking
     Header set X-Frame-Options "DENY"
+
+    # XSS Protection
     Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer Policy
     Header set Referrer-Policy "no-referrer"
 </IfModule>
