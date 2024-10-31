@@ -41,37 +41,6 @@
             transform: translateY(-50%);
             cursor: pointer;
         }
-        .recaptcha-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .g-recaptcha {
-            transform: scale(0.85); /* Adjusts the reCAPTCHA size */
-            transform-origin: 0 0; /* Keeps it aligned from the top-left */
-        }
-
-        .captcha-error {
-            color: red;
-            font-size: 0.9rem; /* Adjust font size for mobile */
-            text-align: center;
-            display: none; /* Default to hidden */
-        }
-
-        /* Responsive scaling for smaller screens */
-        @media (max-width: 600px) {
-            .g-recaptcha {
-                transform: scale(0.75);
-                transform-origin: 0 0;
-            }
-
-            .captcha-error {
-                font-size: 0.8rem;
-            }
-        }
-      
     </style>
 </head>
 @include('partials.cookie-consent')
@@ -145,7 +114,7 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <div class="form-group recaptcha-container">
+                                            <div class="form-group">
                                                 <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
