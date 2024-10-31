@@ -13,8 +13,12 @@ RewriteRule ^(/)?$ public/index.php [L]
 
 
 <IfModule mod_headers.c>
-    # Content Security Policy (adjust based on your needs)
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://www.gstatic.com;"
+    # Content Security Policy (adjust as necessary)
+    Header set Content-Security-Policy "default-src 'self'; 
+        script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com https://use.fontawesome.com; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://use.fontawesome.com; 
+        font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com; 
+        img-src 'self' data: https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com;"
 
     # HTTP Strict Transport Security (HSTS)
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
