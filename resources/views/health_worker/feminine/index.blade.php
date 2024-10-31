@@ -27,9 +27,15 @@
                         <button type="button" class="btn btn-primary mr-2 mb-2" data-toggle="modal" data-target="#newFeminineModal">
                         <i class="fa-solid fa-plus"></i> Add New Female
                         </button>
-                        <button type="button" class="btn btn-danger pdf-button mb-2" onclick="printFeminineList()">
-                        <i class="fa-solid fa-print"></i> Print
-                        </button>
+                            <button type="button" class="btn btn-danger pdf-button mb-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-print"></i> Print
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="printFeminineList()"><i class="fa-solid fa-print"></i> Print List</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadCSV()"><i class="fa-solid fa-file-csv"></i> Download as CSV</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadExcel()"><i class="fa-solid fa-file-excel"></i> Download as Excel</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download as PDF</a></li>
+                            </ul>     
                     </div>
                     </div>
                   <p class="card-description mb-4 mt-2">This is your assigned female list, other female that are not under your care or assigned to you will not be displayed here.</p>
@@ -69,7 +75,8 @@
     <script src="{{ asset('assets/js/health_worker/feminine_dt.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 @endsection
 <script>
@@ -199,4 +206,45 @@ function printFeminineList() {
         newWindow.print();
     }
 }
+
+function downloadCSV() {
+    var csv = [];
+    var rows = document.querySelectorAll("#feminine_table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            row.push(cols[j].innerText);
+        }
+
+        csv.push(row.join(",")); // Join each row's cells with commas
+    }
+
+    // Create a CSV Blob
+    var csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+
+    // Create a link to download
+    var downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(csvFile);
+    downloadLink.download = "feminine_list.csv"; // Filename
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click(); // Trigger the download
+    document.body.removeChild(downloadLink); // Cleanup
+}
+
+function downloadExcel() {
+    var workbook = XLSX.utils.table_to_book(document.getElementById('feminine_table'), { sheet: "Sheet1" });
+    XLSX.writeFile(workbook, 'feminine_list.xlsx'); // Trigger download
+}
+function downloadPDF() {
+    var doc = new jsPDF();
+    var table = document.getElementById('feminine_table');
+
+    doc.text('Female Residents List', 10, 10);
+    doc.autoTable({ html: table }); // Create a table from the HTML table
+    doc.save('Feminine_List.pdf'); // Trigger download of the PDF
+}
+
 </script>
