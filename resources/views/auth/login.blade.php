@@ -41,27 +41,6 @@
             transform: translateY(-50%);
             cursor: pointer;
         }
-            /* FOR HCAPTCHA */
- /* Make hCaptcha fit the form width */
-    .captcha-container #hcaptcha {
-        width: 100% !important;
-        max-width: 100%;
-    }
-
-    /* Optional: Add margin adjustments */
-    .form-group {
-        margin-bottom: 1rem;
-    }
-
-    /* Adjust padding/margins for mobile */
-    @media (max-width: 768px) {
-        .form-group {
-            padding: 0 1rem;
-        }
-        .captcha-container #hcaptcha {
-            width: calc(100% - 2rem); /* Compensate for padding */
-        }
-    }
     </style>
 </head>
 @include('partials.cookie-consent')
@@ -135,14 +114,14 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <!-- <div class="mb-4">
+                                            <!-- <div class="form-group">
                                                 <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
                                                 </p>
                                             </div>    -->
-                                            <div class="form-group mb-4 captcha-container">
-                                                <div class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+                                            <div class="col-12 col-md-6 mb-4">
+                                                <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
                                                 </p>
@@ -264,7 +243,35 @@
             $("#greeting").text(randomGreeting);
         });
 
-          // Get references to the elements
+      // Get references to the elements
+        // const loginForm = document.getElementById('loginForm');
+        // const loginButton = document.getElementById('loginButton');
+        // const buttonText = document.getElementById('buttonText');
+        // const loadingSpinner = document.getElementById('loadingSpinner');
+        // const captchaError = document.getElementById('captcha-error');
+
+        // // Add event listener to the form submit event
+        // loginForm.addEventListener('submit', function(event) {
+        //     // Check if reCAPTCHA is completed
+        //     const recaptchaResponse = grecaptcha.getResponse();
+
+        //     // If reCAPTCHA is not checked, prevent form submission
+        //     if (recaptchaResponse.length === 0) {
+        //         event.preventDefault();  // Stop form submission
+        //         captchaError.style.display = "block";  // Show error message
+        //     } else {
+        //         // Hide the error message if reCAPTCHA is completed
+        //         captchaError.style.display = "none";
+
+        //         // Disable the submit button to prevent multiple submissions
+        //         loginButton.disabled = true;
+
+        //         // Show the loading spinner and hide the button text
+        //         buttonText.classList.add('d-none');
+        //         loadingSpinner.classList.remove('d-none');
+        //     }
+        // });
+
 // Get references to the elements
 const loginForm = document.getElementById('loginForm');
 const loginButton = document.getElementById('loginButton');
