@@ -41,6 +41,10 @@
             transform: translateY(-50%);
             cursor: pointer;
         }
+            /* Ensure hCaptcha matches form field widths */
+    .captcha-container #hcaptcha {
+        width: 100% !important;
+    }
     </style>
 </head>
 @include('partials.cookie-consent')
