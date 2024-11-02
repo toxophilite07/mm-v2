@@ -120,7 +120,7 @@
                                                     Please verify that you are not a robot
                                                 </p>
                                             </div>    -->
-                                            <div class="mb-4">
+                                            <div class="col-12 col-md-6 mb-4">
                                                 <div class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
