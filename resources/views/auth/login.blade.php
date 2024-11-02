@@ -114,7 +114,7 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <!-- <div class="form-group">
+                                            <!-- <div class="mb-4">
                                                 <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
