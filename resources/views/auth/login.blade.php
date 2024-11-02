@@ -114,12 +114,12 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <div class="form-group">
-                                                <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
+                                                 <div class="form-group">
+                                                <div class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
                                                 </p>
-                                            </div>   
+                                            </div> 
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
