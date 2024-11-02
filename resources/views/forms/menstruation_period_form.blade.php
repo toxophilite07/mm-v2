@@ -1,4 +1,6 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <form autocomplete="off" id="menstrualPeriodForm" novalidate="novalidate">
+    @csrf
     <input type="hidden" id="id" value="{{ Auth::user()->id }}">
     <input type="hidden" id="menstruation_period_id">
     <input type="hidden" id="form_action">

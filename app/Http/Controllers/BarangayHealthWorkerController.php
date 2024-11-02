@@ -135,7 +135,8 @@ class BarangayHealthWorkerController extends Controller
                 'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
                 'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
                 'remarks' => htmlspecialchars($feminine->remarks ?? null),
-                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
+                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date
+                )->format('m/d/Y') : null,
                 'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
             ]
         ]);
