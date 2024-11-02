@@ -13,12 +13,27 @@ RewriteRule ^(/)?$ public/index.php [L]
 <IfModule mod_headers.c>
     Header set Content-Security-Policy "
         default-src 'self';
-        script-src 'self' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://use.fontawesome.com;
-        style-src 'self' https://fonts.googleapis.com https://use.fontawesome.com;
-        font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com;
-        img-src 'self' data: https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com;
-        object-src 'none';  # Disallow all plugins
-        base-uri 'self';    # Only allow the same origin
+        
+        # Allow scripts from trusted sources
+        script-src 'self' https://cdnjs.cloudflare.com https://ajax.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net;
+        
+        # Allow styles from trusted sources
+        style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://use.fontawesome.com https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net;
+        
+        # Allow fonts from trusted sources
+        font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+        
+        # Allow images from trusted sources and inline images
+        img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://cdn.example.com https://images.unsplash.com https://cdn.pixabay.com;
+        
+        # Disallow all plugins
+        object-src 'none';
+        
+        # Only allow base URI from the same origin
+        base-uri 'self';
+        
+        # Prevent embedding from external sources (Clickjacking protection)
+        frame-ancestors 'self';
     "
 
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
@@ -27,5 +42,6 @@ RewriteRule ^(/)?$ public/index.php [L]
     Header set X-XSS-Protection "1; mode=block"
     Header set Referrer-Policy "no-referrer"
 
+    # Secure cookies with HttpOnly and Secure flags
     Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
 </IfModule>
