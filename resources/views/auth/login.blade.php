@@ -273,46 +273,52 @@
         // });
 
     // Get references to the elements
-    const loginForm = document.getElementById('loginForm');
-    const loginButton = document.getElementById('loginButton');
-    const buttonText = document.getElementById('buttonText');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const captchaError = document.getElementById('captcha-error');
+const loginForm = document.getElementById('loginForm');
+const loginButton = document.getElementById('loginButton');
+const buttonText = document.getElementById('buttonText');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const captchaError = document.getElementById('captcha-error');
 
-    // Add event listener to the form submit event
-    loginForm.addEventListener('submit', function(event) {
-        // Check if hCaptcha is completed
-        const hcaptchaResponse = hcaptcha.getResponse();
+// Add event listener to the form submit event
+loginForm.addEventListener('submit', function(event) {
+    // Check if hCaptcha is completed
+    const hcaptchaResponse = hcaptcha.getResponse();
 
-        // If hCaptcha is not completed, prevent form submission
-        if (hcaptchaResponse.length === 0) {
-            event.preventDefault();  // Stop form submission
-            
-            // Show error message
-            captchaError.style.display = "block";  
-            captchaError.textContent = "Please complete the captcha to proceed."; // Clear error message
-            
-            // Reset the hCaptcha for user to try again
-            hcaptcha.reset();
+    // If hCaptcha is not completed, prevent form submission
+    if (hcaptchaResponse.length === 0) {
+        event.preventDefault();  // Stop form submission
 
-            // Enable the submit button to allow for retrying
-            loginButton.disabled = false;
+        // Show error message
+        captchaError.style.display = "block";  
+        captchaError.textContent = "Please complete the captcha to proceed."; // Display error message
 
-            // Show the button text again and hide the loading spinner
-            buttonText.classList.remove('d-none');
-            loadingSpinner.classList.add('d-none');
-        } else {
-            // Hide the error message if hCaptcha is completed
-            captchaError.style.display = "none";
+        // Reset the hCaptcha for user to try again
+        hcaptcha.reset();
 
-            // Disable the submit button to prevent multiple submissions
-            loginButton.disabled = true;
+        // Enable the submit button to allow for retrying
+        loginButton.disabled = false;
 
-            // Show the loading spinner and hide the button text
-            buttonText.classList.add('d-none');
-            loadingSpinner.classList.remove('d-none');
-        }
-    });
+        // Show the button text again and hide the loading spinner
+        buttonText.classList.remove('d-none');
+        loadingSpinner.classList.add('d-none');
+    } else {
+        // Hide the error message if hCaptcha is completed
+        captchaError.style.display = "none";
+
+        // Disable the submit button to prevent multiple submissions
+        loginButton.disabled = true;
+
+        // Show the loading spinner and hide the button text
+        buttonText.classList.add('d-none');
+        loadingSpinner.classList.remove('d-none');
+
+        // Optionally, submit the form programmatically after a brief delay
+        // setTimeout(() => {
+        //     loginForm.submit();
+        // }, 1000); // Adjust the delay as needed
+    }
+});
+
     </script>
 
         @include('auth.response')
