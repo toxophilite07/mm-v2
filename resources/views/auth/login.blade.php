@@ -41,9 +41,26 @@
             transform: translateY(-50%);
             cursor: pointer;
         }
-            /* Ensure hCaptcha matches form field widths */
+            /* FOR HCAPTCHA */
+ /* Make hCaptcha fit the form width */
     .captcha-container #hcaptcha {
         width: 100% !important;
+        max-width: 100%;
+    }
+
+    /* Optional: Add margin adjustments */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    /* Adjust padding/margins for mobile */
+    @media (max-width: 768px) {
+        .form-group {
+            padding: 0 1rem;
+        }
+        .captcha-container #hcaptcha {
+            width: calc(100% - 2rem); /* Compensate for padding */
+        }
     }
     </style>
 </head>
@@ -124,7 +141,7 @@
                                                     Please verify that you are not a robot
                                                 </p>
                                             </div>    -->
-                                            <div class="col-12 col-md-6 mb-4">
+                                            <div class="form-group mb-4 captcha-container">
                                                 <div class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
