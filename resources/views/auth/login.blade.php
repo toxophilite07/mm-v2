@@ -60,93 +60,78 @@
                                <h4 id="greeting" class="mb-3 mb-md-0" style="text-align: center;"></h4>
                                   </div>
                                 <br>
-                                @if(Route::has('login'))
-                                    <p class="text-center fw-bolder mb-1 h4">Menstrual Monitoring App</p>
-                                    @auth
-                                        @if(Auth::user()->user_role_id == 1)
-                                            <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
-                                        @elseif(Auth::user()->user_role_id == 3)
-                                            <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
-                                        @else
-                                            <p class="text-center mb-4">Leaving already? click below to return to dashboard</p>
-                                            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
-                                        @endif
-                                    @else
-                                        <p class="text-center mb-4">Sign in using email or mobile # to your account to proceed</p>
-                                        <form method="POST" action="{{ route('login') }}" autocomplete="off" id="loginForm">
-                                            @csrf
-                                            <div class="mb-3" id="emailInput">
-                                                <label for="email" class="form-label">Email</label>
-                                                <input type="email" id="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="Enter email ex: juany@sample.com" required autofocus>
+@if(Route::has('login'))
+    <p class="text-center fw-bolder mb-1 h4">Menstrual Monitoring App</p>
+    @auth
+        @if(Auth::user()->user_role_id == 1)
+            <p class="text-center mb-4">Leaving already? Click below to return to the dashboard</p>
+            <a href="{{ URL::to('admin/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+        @elseif(Auth::user()->user_role_id == 3)
+            <p class="text-center mb-4">Leaving already? Click below to return to the dashboard</p>
+            <a href="{{ URL::to('health-worker/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+        @else
+            <p class="text-center mb-4">Leaving already? Click below to return to the dashboard</p>
+            <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
+        @endif
+    @else
+        <p class="text-center mb-4">Sign in using email or mobile # to your account to proceed</p>
+        <form method="POST" action="{{ route('login') }}" autocomplete="off" id="loginForm">
+            @csrf
+            <div class="mb-3" id="emailInput">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="Enter email ex: juany@sample.com" required autofocus>
 
-                                                @if ($errors->has('email'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('email') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <!-- <div class="mb-3" id="mobileInput">
-                                                <label for="contact_no" class="form-label">Mobile # (Optional)</label>
-                                                <div class="input-group">
-                                                    <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
-                                                    <input type="text" id="contact_no" name="contact_no" class="form-control" required autofocus placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">
-                                                </div>
-                                                @if ($errors->has('contact_no'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('contact_no') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div> -->
+                @if ($errors->has('email'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                                            <div class="mb-4">
-                                                <label for="password" class="form-label">Password</label>
-                                                <div class="input-group">
-                                                    <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
-                                                    <span class="input-group-text">
-                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
-                                                </span>
-                                             </div>
-                                                @if ($errors->has('password'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('password') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <!-- <div class="form-group">
-                                                <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
-                                                <p id="captcha-error" style="color: red; display: none;">
-                                                    Please verify that you are not a robot
-                                                </p>
-                                            </div>    -->
-                                            <div class="col-12 col-md-6 mb-4">
-                                                <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                                <p id="captcha-error" style="color: red; display: none;">
-                                                    Please verify that you are not a robot
-                                                </p>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                    <label class="form-check-label text-dark" for="remember">Remember me</label>
-                                                </div>
-                                            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
+                    <span class="input-group-text">
+                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                </span>
+             </div>
+                @if ($errors->has('password'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                                            <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1" id="loginButton">
-                                                <span id="buttonText">Sign In</span>
-                                                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                            </button>
+            <div class="col-12 col-md-6 mb-4">
+                <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+                <p id="captcha-error" style="color: red; display: none;">
+                    Please verify that you are not a robot
+                </p>
+            </div>
 
-                                            <div class="d-flex align-items-center justify-content-between mt-3">
-                                                @if(Route::has('register'))
-                                                    <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
-                                                @endif
-                                                <a class="text-primary fw-bold" href="{{ URL::to('forgot-password') }}">Forgot Password</a>
-                                            </div>
-                                        </form>
-                                    @endauth
-                                @endif
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="form-check">
+                    <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label text-dark" for="remember">Remember me</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1" id="loginButton">
+                <span id="buttonText">Sign In</span>
+                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
+
+            <div class="d-flex align-items-center justify-content-between mt-3">
+                @if(Route::has('register'))
+                    <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
+                @endif
+                <a class="text-primary fw-bold" href="{{ URL::to('forgot-password') }}">Forgot Password</a>
+            </div>
+        </form>
+    @endauth
+@endif
+
                             </div>
                         </div>
                     </div>
@@ -312,7 +297,7 @@ loginForm.addEventListener('submit', function(event) {
         buttonText.classList.add('d-none');
         loadingSpinner.classList.remove('d-none');
 
-        // Optionally, submit the form programmatically after a brief delay
+        // Optionally, you can submit the form programmatically
         // setTimeout(() => {
         //     loginForm.submit();
         // }, 1000); // Adjust the delay as needed
