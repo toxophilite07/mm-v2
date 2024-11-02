@@ -244,33 +244,34 @@
         });
 
           // Get references to the elements
-        const loginForm = document.getElementById('loginForm');
-        const loginButton = document.getElementById('loginButton');
-        const buttonText = document.getElementById('buttonText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const captchaError = document.getElementById('captcha-error');
+// Get references to the elements
+const loginForm = document.getElementById('loginForm');
+const loginButton = document.getElementById('loginButton');
+const buttonText = document.getElementById('buttonText');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const captchaError = document.getElementById('captcha-error');
 
-        // Add event listener to the form submit event
-        loginForm.addEventListener('submit', function(event) {
-            // Check if reCAPTCHA is completed
-            const hcaptchaResponse = ghcaptcha.getResponse();
+// Add event listener to the form submit event
+loginForm.addEventListener('submit', function(event) {
+    // Check if hCaptcha is completed
+    const hcaptchaResponse = hcaptcha.getResponse();
 
-            // If reCAPTCHA is not checked, prevent form submission
-            if (hcaptchaResponse.length === 0) {
-                event.preventDefault();  // Stop form submission
-                captchaError.style.display = "block";  // Show error message
-            } else {
-                // Hide the error message if reCAPTCHA is completed
-                captchaError.style.display = "none";
+    // If hCaptcha is not completed, prevent form submission
+    if (hcaptchaResponse.length === 0) {
+        event.preventDefault();  // Stop form submission
+        captchaError.style.display = "block";  // Show error message
+    } else {
+        // Hide the error message if hCaptcha is completed
+        captchaError.style.display = "none";
 
-                // Disable the submit button to prevent multiple submissions
-                loginButton.disabled = true;
+        // Disable the submit button to prevent multiple submissions
+        loginButton.disabled = true;
 
-                // Show the loading spinner and hide the button text
-                buttonText.classList.add('d-none');
-                loadingSpinner.classList.remove('d-none');
-            }
-        });
+        // Show the loading spinner and hide the button text
+        buttonText.classList.add('d-none');
+        loadingSpinner.classList.remove('d-none');
+    }
+});
 
     </script>
 
