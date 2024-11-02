@@ -243,7 +243,7 @@
             $("#greeting").text(randomGreeting);
         });
 
-      // Get references to the elements
+          // Get references to the elements
         const loginForm = document.getElementById('loginForm');
         const loginButton = document.getElementById('loginButton');
         const buttonText = document.getElementById('buttonText');
@@ -253,10 +253,10 @@
         // Add event listener to the form submit event
         loginForm.addEventListener('submit', function(event) {
             // Check if reCAPTCHA is completed
-            const recaptchaResponse = grecaptcha.getResponse();
+            const hcaptchaResponse = ghcaptcha.getResponse();
 
             // If reCAPTCHA is not checked, prevent form submission
-            if (recaptchaResponse.length === 0) {
+            if (hcaptchaResponse.length === 0) {
                 event.preventDefault();  // Stop form submission
                 captchaError.style.display = "block";  // Show error message
             } else {
@@ -271,7 +271,6 @@
                 loadingSpinner.classList.remove('d-none');
             }
         });
-
 
     </script>
 
