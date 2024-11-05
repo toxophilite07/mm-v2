@@ -41,6 +41,16 @@
         transform: translateY(-50%);
         cursor: pointer;
         }
+                .g-recaptcha{
+            transform: scale(0.85);
+            transform-origin: 0 0;
+        }
+        @media{
+            g-recaptcha{
+                transform: scale(0.85);
+                transform-origin: 0 0;  
+            }
+        }
     </style>
 </head>
 @include('partials.cookie-consent')
