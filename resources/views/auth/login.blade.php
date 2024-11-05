@@ -41,17 +41,6 @@
         transform: translateY(-50%);
         cursor: pointer;
         }
-    .h-captcha {
-        width: 100% !important; /* Force full width */
-        max-width: 400px !important; /* Set maximum width */
-        margin: 0 auto !important; /* Center it */
-        height: auto !important; /* Allow height to auto adjust */
-    }
-    @media (max-width: 768px) {
-    .h-captcha {
-            width: 90%; /* Adjust width for mobile */
-        }
-    }
     </style>
 </head>
 @include('partials.cookie-consent')
