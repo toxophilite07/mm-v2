@@ -42,12 +42,12 @@
         cursor: pointer;
         }
                 .g-recaptcha{
-            transform: scale(0.85);
+            transform: scale(0.90);
             transform-origin: 0 0;
         }
         @media{
             g-recaptcha{
-                transform: scale(0.85);
+                transform: scale(0.90);
                 transform-origin: 0 0;  
             }
         }
