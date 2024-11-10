@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Log;  // Import Log
+use Illuminate\Support\Facades\Log; // Import Log
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -39,10 +39,11 @@ class LoginController extends Controller
         Log::info("Throttle Key: $throttleKey");
         Log::info("Current Attempts: " . RateLimiter::attempts($throttleKey));
 
+        // Check if too many attempts have been made
         if (RateLimiter::tooManyAttempts($throttleKey, $this->maxAttempts)) {
             $remainingTime = RateLimiter::availableIn($throttleKey);
             $formattedTime = gmdate("i:s", $remainingTime);
-            Session::flash('login-error', "Too many login attempts. Please wait $formattedTime minutes.");
+            Session::flash('login-error', "Too many login attempts. Please wait $formattedTime before trying again.");
             return redirect()->route('login.page');
         }
 
@@ -51,8 +52,9 @@ class LoginController extends Controller
         $credentials[$multi_user_field] = $request->input($multi_user_field);
         $remember = $request->filled('remember');
 
+        // Attempt to log the user in
         if ($this->auth->attempt($credentials, $remember)) {
-            // Reset the attempts after successful login
+            // Clear the attempts counter if login is successful
             RateLimiter::clear($throttleKey);
 
             $user = $this->auth->user();
@@ -92,10 +94,10 @@ class LoginController extends Controller
                 // Lockout condition
                 $remainingTime = RateLimiter::availableIn($throttleKey);
                 $formattedTime = gmdate("i:s", $remainingTime);
-                Session::flash('login-error', "Too many login attempts. Please wait $formattedTime minutes.");
+                Session::flash('login-error', "Too many login attempts. Please wait $formattedTime before trying again.");
             } else {
                 // Remaining attempts
-                Session::flash('login-error', "Invalid credentials. You have $remainingAttempts attempts left.");
+                Session::flash('login-error', "Invalid credentials. You have $remainingAttempts attempt(s) left.");
             }
 
             return redirect()->route('login.page');
