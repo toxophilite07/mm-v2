@@ -168,8 +168,8 @@
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <!-- <script src="https://hcaptcha.com/1/api.js" async defer></script> -->
+    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
 
 
     <!-- DISABLE EMAIL WHEN HAVE A NUMBER -->
