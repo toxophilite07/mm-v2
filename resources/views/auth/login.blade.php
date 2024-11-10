@@ -41,12 +41,12 @@
         transform: translateY(-50%);
         cursor: pointer;
         }
-        .g-recaptcha{
+        .h-captcha{
             transform: scale(0.90);
             transform-origin: 0 0;
         }
         @media{
-            g-recaptcha{
+            h-captcha{
                 transform: scale(0.90);
                 transform-origin: 0 0;  
             }
