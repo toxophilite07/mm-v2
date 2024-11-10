@@ -41,7 +41,7 @@
         transform: translateY(-50%);
         cursor: pointer;
         }
-                .g-recaptcha{
+        .g-recaptcha{
             transform: scale(0.90);
             transform-origin: 0 0;
         }
@@ -124,18 +124,18 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                           <-- <div class="col-12 col-md-6 mb-4">
+                                            <!-- <div class="col-12 col-md-6 mb-4">
                                                 <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
                                                 </p>
-                                            </div> -->  
+                                            </div>    -->
                                             <div class="col-12 col-md-6 mb-4">
                                                 <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
                                                 <p id="captcha-error" style="color: red; display: none;">
                                                     Please verify that you are not a robot
                                                 </p>
-                                            </div> 
+                                            </div>
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -143,9 +143,8 @@
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary no-hover w-100 py-2 fs-4 rounded-1" id="loginButton">
-                                                <span id="buttonText">Sign In</span>
-                                                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <button type="submit" class="btn btn-primary w-100 py-2 fs-4 rounded-1" id="loginButton" {{ session('login-error') && str_contains(session('login-error'), 'Too many login attempts') ? 'disabled' : '' }}>
+                                                Sign In
                                             </button>
 
                                             <div class="d-flex align-items-center justify-content-between mt-3">
@@ -255,33 +254,33 @@
         });
 
       // Get references to the elements
-       // const loginForm = document.getElementById('loginForm');
-        //const loginButton = document.getElementById('loginButton');
-        //const buttonText = document.getElementById('buttonText');
-        //const loadingSpinner = document.getElementById('loadingSpinner');
-        //const captchaError = document.getElementById('captcha-error');
+        // const loginForm = document.getElementById('loginForm');
+        // const loginButton = document.getElementById('loginButton');
+        // const buttonText = document.getElementById('buttonText');
+        // const loadingSpinner = document.getElementById('loadingSpinner');
+        // const captchaError = document.getElementById('captcha-error');
 
-        // Add event listener to the form submit event
-        //loginForm.addEventListener('submit', function(event) {
-            // Check if reCAPTCHA is completed
-           // const recaptchaResponse = grecaptcha.getResponse();
+        // // Add event listener to the form submit event
+        // loginForm.addEventListener('submit', function(event) {
+        //     // Check if reCAPTCHA is completed
+        //     const recaptchaResponse = grecaptcha.getResponse();
 
-            // If reCAPTCHA is not checked, prevent form submission
-            //if (recaptchaResponse.length === 0) {
-             //   event.preventDefault();  // Stop form submission
-               // captchaError.style.display = "block";  // Show error message
-            //} else {
-                // Hide the error message if reCAPTCHA is completed
-              //  captchaError.style.display = "none";
+        //     // If reCAPTCHA is not checked, prevent form submission
+        //     if (recaptchaResponse.length === 0) {
+        //         event.preventDefault();  // Stop form submission
+        //         captchaError.style.display = "block";  // Show error message
+        //     } else {
+        //         // Hide the error message if reCAPTCHA is completed
+        //         captchaError.style.display = "none";
 
-                // Disable the submit button to prevent multiple submissions
-                //loginButton.disabled = true;
+        //         // Disable the submit button to prevent multiple submissions
+        //         loginButton.disabled = true;
 
-                // Show the loading spinner and hide the button text
-                //buttonText.classList.add('d-none');
-                //loadingSpinner.classList.remove('d-none');
-            //}
-        //});
+        //         // Show the loading spinner and hide the button text
+        //         buttonText.classList.add('d-none');
+        //         loadingSpinner.classList.remove('d-none');
+        //     }
+        // });
 
     // // Get references to the elements
     const loginForm = document.getElementById('loginForm');
@@ -290,40 +289,40 @@
     const loadingSpinner = document.getElementById('loadingSpinner');
     const captchaError = document.getElementById('captcha-error');
 
-    // // Add event listener to the form submit event
+    // Add event listener to the form submit event
     loginForm.addEventListener('submit', function(event) {
-    //     // Check if hCaptcha is completed
-         const hcaptchaResponse = hcaptcha.getResponse();
+        // Check if hCaptcha is completed
+        const hcaptchaResponse = hcaptcha.getResponse();
 
-    //     // If hCaptcha is not completed, prevent form submission
-         if (hcaptchaResponse.length === 0) {
-             event.preventDefault();  // Stop form submission
+        // If hCaptcha is not completed, prevent form submission
+        if (hcaptchaResponse.length === 0) {
+            event.preventDefault();  // Stop form submission
             
-    //         // Show error message
-             captchaError.style.display = "block";  
-             captchaError.textContent = "Please complete the captcha to proceed."; // Clear error message
+            // Show error message
+            captchaError.style.display = "block";  
+            captchaError.textContent = "Please complete the captcha to proceed."; // Clear error message
             
-    //         // Reset the hCaptcha for user to try again
-             hcaptcha.reset();
+            // Reset the hCaptcha for user to try again
+            hcaptcha.reset();
 
-    //         // Enable the submit button to allow for retrying
-             loginButton.disabled = false;
+            // Enable the submit button to allow for retrying
+            loginButton.disabled = false;
 
-    //         // Show the button text again and hide the loading spinner
-          buttonText.classList.remove('d-none');
-             loadingSpinner.classList.add('d-none');
-         } else {
-             // Hide the error message if hCaptcha is completed
-             captchaError.style.display = "none";
+            // Show the button text again and hide the loading spinner
+            buttonText.classList.remove('d-none');
+            loadingSpinner.classList.add('d-none');
+        } else {
+            // Hide the error message if hCaptcha is completed
+            captchaError.style.display = "none";
 
-    //         // Disable the submit button to prevent multiple submissions
-             loginButton.disabled = true;
+            // Disable the submit button to prevent multiple submissions
+            loginButton.disabled = true;
 
-    //         // Show the loading spinner and hide the button text
-             buttonText.classList.add('d-none');
-             loadingSpinner.classList.remove('d-none');
-         }
-     });
+            // Show the loading spinner and hide the button text
+            buttonText.classList.add('d-none');
+            loadingSpinner.classList.remove('d-none');
+        }
+    });
     </script>
 
         @include('auth.response')
