@@ -3,65 +3,109 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\Guard; // Make sure this is included
-use Session;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Log;  // Import Log
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $auth; // Declare the auth property
+    protected $maxAttempts = 3; // Limit to 3 login attempts
+    protected $decayMinutes = 5; // Lockout time in minutes
 
-    public function __construct(Guard $auth) {
-        $this->auth = $auth; // Assign the injected Guard instance to the property
+    public function __construct(Guard $auth)
+    {
+        $this->auth = $auth;
         $this->middleware('guest')->except('logout');
-
-        \Artisan::call('optimize:clear');
     }
 
-    public function login(Request $request) {
+    /**
+     * Handle an incoming login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $throttleKey = $this->getThrottleKey($request);
+        
+        // Debugging: Log throttle attempts and key
+        Log::info("Throttle Key: $throttleKey");
+        Log::info("Current Attempts: " . RateLimiter::attempts($throttleKey));
+
+        if (RateLimiter::tooManyAttempts($throttleKey, $this->maxAttempts)) {
+            $remainingTime = RateLimiter::availableIn($throttleKey);
+            $formattedTime = gmdate("i:s", $remainingTime);
+            Session::flash('login-error', "Too many login attempts. Please wait $formattedTime minutes.");
+            return redirect()->route('login.page');
+        }
+
         $credentials = $request->only('password');
         $multi_user_field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'contact_no';
-    
         $credentials[$multi_user_field] = $request->input($multi_user_field);
-
-        // Check if the "Remember Me" checkbox is selected
         $remember = $request->filled('remember');
-    
+
         if ($this->auth->attempt($credentials, $remember)) {
+            // Reset the attempts after successful login
+            RateLimiter::clear($throttleKey);
+
             $user = $this->auth->user();
-    
-            if($user->user_role_id == 1) {
+
+            // Redirect based on user roles
+            if ($user->user_role_id == 1) {
                 return redirect()->route('admin.dashboard');
-            }
-            elseif($user->user_role_id == 3) {  // Health Worker
-                if($user->is_active == 1) {
+            } elseif ($user->user_role_id == 3) {
+                if ($user->is_active == 1) {
                     return redirect()->route('health-worker.dashboard');
                 } else {
                     $this->logout($request);
                     Session::flash('account-verification-error', 'Your account is not verified by the admin yet. Please come back later.');
                     return redirect()->route('login.page');
                 }
-            }
-            else {  // Feminine user
-                if($user->is_active == 1) {
+            } else {
+                if ($user->is_active == 1) {
                     return redirect()->route('user.dashboard');
-                }
-                else {
+                } else {
                     $this->logout($request);
                     Session::flash('account-verification-error', 'Your account is not verified by the admin yet. Please come back later.');
                     return redirect()->route('login.page');
                 }
             }
-        }
-        else {
-            $this->logout($request);
-            Session::flash('login-error', 'Invalid user credential, please try again.');
+        } else {
+            // Increment attempts after each failed login
+            RateLimiter::hit($throttleKey, $this->decayMinutes * 60);
+
+            $currentAttempts = RateLimiter::attempts($throttleKey);
+            $remainingAttempts = $this->maxAttempts - $currentAttempts;
+
+            // Debugging: Log remaining attempts and throttle status
+            Log::info("Remaining Attempts: $remainingAttempts");
+            Log::info("Attempts Left: " . ($this->maxAttempts - RateLimiter::attempts($throttleKey)));
+
+            if ($remainingAttempts <= 0) {
+                // Lockout condition
+                $remainingTime = RateLimiter::availableIn($throttleKey);
+                $formattedTime = gmdate("i:s", $remainingTime);
+                Session::flash('login-error', "Too many login attempts. Please wait $formattedTime minutes.");
+            } else {
+                // Remaining attempts
+                Session::flash('login-error', "Invalid credentials. You have $remainingAttempts attempts left.");
+            }
+
             return redirect()->route('login.page');
         }
+    }
+
+    // Function to get throttle key for rate limiting
+    protected function getThrottleKey(Request $request)
+    {
+        // Use the email or phone number with IP address for throttle key
+        return Str::lower($request->input('email')) . '|' . $request->ip();
     }
 }
