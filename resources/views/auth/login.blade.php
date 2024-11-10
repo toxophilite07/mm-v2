@@ -142,9 +142,9 @@
                                                     <label class="form-check-label text-dark" for="remember">Remember me</label>
                                                 </div>
                                             </div>
-
                                             <button type="submit" class="btn btn-primary w-100 py-2 fs-4 rounded-1" id="loginButton" {{ session('login-error') && str_contains(session('login-error'), 'Too many login attempts') ? 'disabled' : '' }}>
-                                                Sign In
+                                                <span id="buttonText">Sign In</span>
+                                                <span id="timerText" class="d-none"></span>
                                             </button>
 
                                             <div class="d-flex align-items-center justify-content-between mt-3">
@@ -324,6 +324,47 @@
         }
     });
     </script>
+    <script>
+    // Check if there's a lockout message with the time remaining
+    @if(session('login-error') && str_contains(session('login-error'), 'Too many login attempts'))
+        // Extract the time from the session message
+        const message = "{{ session('login-error') }}";
+        const timeLeftMatch = message.match(/\d{1,2}:\d{2}/); // e.g., "05:30"
+        
+        if (timeLeftMatch) {
+            const timeLeft = timeLeftMatch[0];
+            const [minutes, seconds] = timeLeft.split(':');
+            
+            // Show the timer text and hide the default button text
+            document.getElementById('buttonText').classList.add('d-none');
+            const timerText = document.getElementById('timerText');
+            timerText.classList.remove('d-none');
+            timerText.textContent = `Please wait ${timeLeft} before trying again.`;
+
+            let countdownMinutes = parseInt(minutes);
+            let countdownSeconds = parseInt(seconds);
+
+            // Function to update the timer every second
+            const countdownInterval = setInterval(() => {
+                if (countdownSeconds === 0 && countdownMinutes > 0) {
+                    countdownMinutes--;
+                    countdownSeconds = 59;
+                } else if (countdownSeconds > 0) {
+                    countdownSeconds--;
+                }
+
+                // Format the countdown time (mm:ss)
+                const formattedTime = `${countdownMinutes.toString().padStart(2, '0')}:${countdownSeconds.toString().padStart(2, '0')}`;
+                timerText.textContent = `Please wait ${formattedTime} before trying again.`;
+
+                // Stop the timer when it reaches 00:00
+                if (countdownMinutes === 0 && countdownSeconds === 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000); // Update every second
+        }
+    @endif
+</script>
 
         @include('auth.response')
     </body>
