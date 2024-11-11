@@ -33,6 +33,11 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        $captchaResponse = $request->input('h-captcha-response');
+        if (!$captchaResponse || !$this->validateCaptcha($captchaResponse)) {
+            return redirect()->route('login.page')->with('captcha-error', 'Please verify that you are not a robot.');
+        }
+
         $throttleKey = $this->getThrottleKey($request);
         
         // Debugging: Log throttle attempts and key
@@ -110,4 +115,15 @@ class LoginController extends Controller
         // Use the email or phone number with IP address for throttle key
         return Str::lower($request->input('email')) . '|' . $request->ip();
     }
+
+    protected function validateCaptcha($captchaResponse)
+{
+    $secretKey = env('HCAPTCHA_SECRET_KEY');
+    $response = Http::asForm()->post('https://hcaptcha.com/siteverify', [
+        'secret' => $secretKey,
+        'response' => $captchaResponse,
+    ]);
+
+    return $response->json()['success'] ?? false;
+}
 }
