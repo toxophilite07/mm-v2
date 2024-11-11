@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log; // Import Log
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Http;
-
 
 class LoginController extends Controller
 {
@@ -35,28 +33,6 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $captchaResponse = $request->input('h-captcha-response');
-
-        if (!$captchaResponse) {
-            Session::flash('captcha-error', 'Please complete the CAPTCHA verification.');
-            return redirect()->route('login.page');
-        }
-    
-        // Perform server-side validation for hCaptcha
-        $captchaSecretKey = env('HCAPTCHA_SECRET_KEY');
-        $response = Http::asForm()->post('https://hcaptcha.com/siteverify', [
-            'secret' => $captchaSecretKey,
-            'response' => $captchaResponse,
-        ]);
-    
-        $captchaVerification = $response->json();
-    
-        if (!$captchaVerification['success']) {
-            Session::flash('captcha-error', 'CAPTCHA verification failed. Please try again.');
-            return redirect()->route('login.page');
-        }
-    
-        // Proceed with the usual login attempts and rate-limiting logic here
         $throttleKey = $this->getThrottleKey($request);
         
         // Debugging: Log throttle attempts and key
