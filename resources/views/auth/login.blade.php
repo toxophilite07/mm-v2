@@ -365,6 +365,12 @@
         }
     @endif
 </script>
+    <noscript>
+    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+    </div>
+</noscript>
+
 
         @include('auth.response')
     </body>
