@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log; // Import Log
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+
 
 class LoginController extends Controller
 {
