@@ -27,11 +27,23 @@ $(function () {
                     if (data) {
                         $('#feminine_table').DataTable().ajax.reload();
 
+                        // Clear form and validation on modal close
                         $('#editFeminineModal').modal('hide');
-                        $('#editFeminineForm').trigger('reset');
+                        $("#editFeminineModal").on("hidden.bs.modal", function () {
+                            form.trigger("reset")
+                                .find(".form-control")
+                                .removeClass("form-control-danger valid")
+                                .removeAttr("aria-invalid")
+                                .end()
+                                .find(".form-group")
+                                .removeClass("has-danger");
+                            form.validate().resetForm();
+                        });
 
+                        // Reset date picker
                         $('#edit_last_period_datepicker').datepicker('setDate', null);
 
+                        // Display success message
                         iziToast.success({
                             close: false,
                             displayMode: 2,
@@ -43,6 +55,9 @@ $(function () {
                             transitionIn: 'bounceInDown',
                             transitionOut: 'fadeOutUp',
                         });
+
+                        // Close modal
+                        $('#editFeminineModal').modal('hide');
                     }
                 },
                 error: function () {
@@ -63,56 +78,24 @@ $(function () {
 
     $("#editFeminineForm").validate({
         onkeyup: function (element) {
-            // Dynamically validate the fields
             $(element).valid();
         },
         rules: {
-            edit_first_name: {
-                required: true,
-            },
-            edit_last_name: {
-                required: true,
-            },
-            edit_email_address: {
-                email: true
-            },
-            edit_menstruation_status: {
-                required: true,
-            },
-            last_period_date: {
-                required: true,
-                date: true
-            },
-            birthdate: {
-                required: true,
-                date: true
-            },
-            edit_contact_no: {
-                digits: true,
-                minlength: 10,
-                maxlength: 11
-            }
+            edit_first_name: { required: true },
+            edit_last_name: { required: true },
+            edit_email_address: { email: true },
+            edit_menstruation_status: { required: true },
+            last_period_date: { required: true, date: true },
+            birthdate: { required: true, date: true },
+            edit_contact_no: { digits: true, minlength: 10, maxlength: 11 }
         },
         messages: {
-            edit_first_name: {
-                required: "Please enter a first name",
-            },
-            edit_last_name: {
-                required: "Please enter a last name",
-            },
-            edit_email_address: {
-                email: "Please enter a valid email address"
-            },
-            edit_menstruation_status: {
-                required: "Please select the current menstruation status of the user",
-            },
-            last_period_date: {
-                required: "Please select the last known period date of the user",
-            },
-            birthdate: {
-                required: "Please select the birthdate of the user",
-                date: "Please enter a valid date"
-            },
+            edit_first_name: { required: "Please enter a first name" },
+            edit_last_name: { required: "Please enter a last name" },
+            edit_email_address: { email: "Please enter a valid email address" },
+            edit_menstruation_status: { required: "Please select the current menstruation status of the user" },
+            last_period_date: { required: "Please select the last known period date of the user" },
+            birthdate: { required: "Please select the birthdate of the user", date: "Please enter a valid date" },
             edit_contact_no: {
                 digits: "Please enter a valid contact number",
                 minlength: "Must be at least 10 digits",
@@ -123,11 +106,11 @@ $(function () {
             label.addClass('mt-2 text-danger');
             label.insertAfter(element);
         },
-        highlight: function (element, errorClass) {
+        highlight: function (element) {
             $(element).parent().addClass('has-danger');
             $(element).addClass('form-control-danger');
         },
-        unhighlight: function (element, errorClass) {
+        unhighlight: function (element) {
             $(element).parent().removeClass('has-danger');
             $(element).removeClass('form-control-danger');
         }

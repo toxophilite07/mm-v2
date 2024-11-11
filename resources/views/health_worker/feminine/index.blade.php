@@ -14,6 +14,9 @@
 }
 </style>
 @section('contents')
+<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+</div>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
@@ -35,7 +38,7 @@
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadCSV()"><i class="fa-solid fa-file-csv"></i> Download as CSV</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadExcel()"><i class="fa-solid fa-file-excel"></i> Download as Excel</a></li>
                             </ul>     
-                    </div>
+                         </div>
                     </div>
                   <p class="card-description mb-4 mt-2">This is your assigned female list, other female that are not under your care or assigned to you will not be displayed here.</p>
                     <div class="table-responsive">
@@ -125,20 +128,6 @@ $(function () {
     }
 });
 
-function updateTotals(data) {
-    var totalActive = 0;
-    var totalInactive = 0;
-    data.forEach(item => {
-        if (item.is_active === 'Active') {
-            totalActive++;
-        } else {
-            totalInactive++;
-        }
-    });
-    document.getElementById('total_active').innerText = totalActive;
-    document.getElementById('total_inactive').innerText = totalInactive;
-}
-
 function printFeminineList() {
     var table = document.getElementById('feminine_table');
     var clonedTable = table.cloneNode(true);
@@ -205,6 +194,21 @@ function printFeminineList() {
         newWindow.print();
     }
 }
+
+function updateTotals(data) {
+    var totalActive = 0;
+    var totalInactive = 0;
+    data.forEach(item => {
+        if (item.is_active === 'Active') {
+            totalActive++;
+        } else {
+            totalInactive++;
+        }
+    });
+    document.getElementById('total_active').innerText = totalActive;
+    document.getElementById('total_inactive').innerText = totalInactive;
+}
+
 
 function downloadCSV() {
     var csv = [];

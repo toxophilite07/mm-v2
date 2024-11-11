@@ -10,6 +10,8 @@ use App\Http\Controllers\CookieConsentController;
 use App\Http\Controllers\ChatController;
 use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Controllers\OpenAIController;
+use App\Http\Controllers\Auth\RegisterController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,9 @@ use App\Http\Controllers\OpenAIController;
 
 Auth::routes();
 Route::view('/', 'auth/login')->name('login.page');
+
+Route::post('/send-otp', [RegisterController::class, 'generateOtp'])->name('send.otp');
+Route::post('/validate-otp', [RegisterController::class, 'validateOtp'])->name('validate.otp');
 
 Route::get('forgot-password', [ForgotPasswordController::class, 'index'])->name('password.request');
 Route::post('forgot-password', [ForgotPasswordController::class, 'postForgotPassword'])->name('password.email');

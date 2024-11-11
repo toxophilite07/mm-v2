@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="newFeminineModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="newFeminineLbl" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -155,6 +156,7 @@
             <div class="modal-body">
                 <div class="col-md-12">
                     <form autocomplete="off" id="editFeminineForm" novalidate="novalidate">
+                    @csrf
                         <input type="hidden" id="edit_id">
                         <input type="hidden" id="edit_menstruation_period_id">
                         <div class="row">
@@ -218,8 +220,8 @@
                         <div class="form-group">
                             <label for="edit_menstruation_status">Menstruation Status</label>
                             <select name="edit_menstruation_status" id="edit_menstruation_status" name="edit_menstruation_status" aria-describedby="edit_menstruation_help">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                                <option value="1">Regular</option>
+                                <option value="0">Irregular</option>
                             </select>
                             <div class="col-12 mt-2">
                                 <small id="edit_menstruation_help" class="form-text text-muted">
@@ -340,4 +342,3 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('assets/auth/js/register.js') }}"></script>

@@ -8,13 +8,16 @@
 @endsection
 
 @section('contents')
+<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+</div>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-4 mb-md-3">
                         <h6 class="card-title mb-0">Female List</h6>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newFeminineModal"><i class="fa-solid fa-plus"></i> Add New Female</button>
+                        <!-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newFeminineModal"><i class="fa-solid fa-plus"></i> Add New Female</button> -->
                     </div>
                     <div class="table-responsive">
                         <table id="feminine_table" class="table">
@@ -24,7 +27,7 @@
                                     <th>Name</th>
                                     <th>Menstruation Status</th>
                                     <th>Assign Status</th>
-                                    <th>Account Status</th>
+                                    <th>Verification Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

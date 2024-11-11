@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Session;
 
 class RegisterController extends Controller
@@ -185,11 +186,19 @@ class RegisterController extends Controller
         Session::flush();
         Auth::logout();
         Session::regenerate();
-
+    
         Session::flash('post-register', 'Registration completed! Please wait for the admin to verify your account.');
-
+    
+        $user = Auth::user();
+        
+        if ($user) {
+            // Send an email to the user informing them about the admin verification
+            Mail::to($user->email)->send(new AdminVerificationMail($user));
+        }
+    
         return redirect()->route('login.page');
     }
+    
 
     public function reloadCaptcha()
     {

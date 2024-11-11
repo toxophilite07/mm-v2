@@ -54,7 +54,7 @@
     </style>
 </head>
 @include('partials.cookie-consent')
-    <noscript>
+<noscript>
     <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
         Menstrual Monitoring App: Please enable JavaScript to work properly.
     </div>
@@ -137,9 +137,11 @@
                                             </div>    -->
                                             <div class="col-12 col-md-6 mb-4">
                                                 <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                                <p id="captcha-error" style="color: red; display: none;">
-                                                    Please verify that you are not a robot
-                                                </p>
+                                                @if (session('captcha-error'))
+                                                    <p id="captcha-error" style="color: red;">
+                                                        {{ session('captcha-error') }}
+                                                    </p>
+                                                @endif
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
@@ -147,11 +149,12 @@
                                                     <label class="form-check-label text-dark" for="remember">Remember me</label>
                                                 </div>
                                             </div>
+
                                             <button type="submit" class="btn btn-primary w-100 py-2 fs-4 rounded-1" id="loginButton" {{ session('login-error') && str_contains(session('login-error'), 'Too many login attempts') ? 'disabled' : '' }}>
                                                 <span id="buttonText">Sign In</span>
                                                 <span id="timerText" class="d-none"></span>
                                             </button>
-
+                                            
                                             <div class="d-flex align-items-center justify-content-between mt-3">
                                                 @if(Route::has('register'))
                                                     <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
@@ -370,7 +373,6 @@
         }
     @endif
 </script>
-
 
 
         @include('auth.response')

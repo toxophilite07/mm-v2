@@ -27,10 +27,11 @@ class CookieConsent
 
     public function acceptConsent(Request $request)
     {
-        // Set the cookie to remember the consent
-        Cookie::queue('cookie_consent', 'accepted', 365); // Cookie valid for 1 year
-
-        // Redirect back or to a specific page
+        // Set the cookie to remember the consent for 3 hours
+        Cookie::queue('cookie_consent', 'accepted', 180); // Cookie valid for 3 hours
+    
+        // Redirect back or to a specific page with a success message
         return redirect()->back()->with('message', 'Cookie consent accepted!');
     }
+    
 }

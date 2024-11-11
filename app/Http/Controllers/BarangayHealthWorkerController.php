@@ -39,6 +39,7 @@ class BarangayHealthWorkerController extends Controller
         return view('health_worker.feminine.index', compact('new_period_notification'));
     }
 
+    //EDIT
     public function postFeminine(Request $request)
     {
         $feminine = User::findOrFail($request->id);
@@ -124,7 +125,7 @@ class BarangayHealthWorkerController extends Controller
     
         return response()->json([
             'status' => 'success',
-            'message' => 'Feminine details updated successfully.',
+            'message' => 'Female details updated successfully.',
             'data' => [
                 'first_name' => htmlspecialchars($feminine->first_name),
                 'middle_name' => htmlspecialchars($feminine->middle_name),
@@ -142,8 +143,6 @@ class BarangayHealthWorkerController extends Controller
         ]);
     }
     
-    
-
     public function postnewfeminine(Request $request)
     {
         return $this->postForm($request->all());
