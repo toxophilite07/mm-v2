@@ -14,9 +14,6 @@
 }
 </style>
 @section('contents')
-<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
-        Menstrual Monitoring App: Please enable JavaScript to work properly.
-</div>
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">

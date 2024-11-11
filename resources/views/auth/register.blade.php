@@ -217,7 +217,7 @@ input[type="password"] {
                                                 <div class="col-lg-4 col-sm-12 mb-4">
                                                     <label for="birthdate" class="form-label">Birthdate</label>
                                                     <div class="input-group date datepicker" id="birthdate_datepicker">
-                                                        <input type="text" id="birthdate" name="birthdate" class="form-control">
+                                                        <input type="text" id="birthdate" name="birthdate" class="form-control" placeholder="m/d/y">
                                                         <span class="input-group-addon">
                                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                                                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>

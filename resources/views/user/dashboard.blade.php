@@ -31,9 +31,6 @@
     <br>
 </div>
    </div>
-<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
-        Menstrual Monitoring App: Please enable JavaScript to work properly.
-</div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
         @csrf
          <!-- <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0" data-toggle="modal" data-target="#{{ Auth::user()->menstruation_status == 1 ? 'menstrualPeriodModal' : '404' }}" {{ Auth::user()->menstruation_status == 0 ? 'disabled' : '' }} >

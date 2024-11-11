@@ -54,7 +54,11 @@
     </style>
 </head>
 @include('partials.cookie-consent')
-
+<noscript>
+    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+    </div>
+</noscript>
 <body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
@@ -138,7 +142,7 @@
                                             </div>    -->
                                             <div class="col-12 col-md-6 mb-4">
                                                 <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                            
+
                                                 <!-- Display an error message if CAPTCHA is not completed -->
                                                 @if (session('captcha-error'))
                                                     <p id="captcha-error" style="color: red;">
