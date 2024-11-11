@@ -120,8 +120,8 @@ class LoginController extends Controller
 
     protected function validateCaptcha($captchaResponse)
 {
-    $secretKey = env('HCAPTCHA_SECRET_KEY');
-    $response = Http::asForm()->post('https://hcaptcha.com/siteverify', [
+    $secretKey = env('HCAPTCHA_SITE_KEY');
+    $response = Http::asForm()->post('https://hcaptcha.com', [
         'secret' => $secretKey,
         'response' => $captchaResponse,
     ]);
