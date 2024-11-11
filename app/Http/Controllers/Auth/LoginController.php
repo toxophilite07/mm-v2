@@ -35,7 +35,7 @@ class LoginController extends Controller
     {
         $captchaResponse = $request->input('h-captcha-response');
         if (!$captchaResponse || !$this->validateCaptcha($captchaResponse)) {
-            return redirect()->route('login.page')->with('captcha-error', 'Please verify that you are not a robot or enable you javascript.');
+            return redirect()->route('login.page')->with('captcha-error', 'Please verify that you are not a robot.');
         }
 
         $throttleKey = $this->getThrottleKey($request);
