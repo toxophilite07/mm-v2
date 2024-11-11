@@ -140,20 +140,18 @@
                                                     Please verify that you are not a robot
                                                 </p>
                                             </div>    -->
-                                            <div class="col-12 col-md-6 mb-4">
-                                                <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+<div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
 
-                                                <!-- Display an error message if CAPTCHA is not completed -->
-                                                @if (session('captcha-error'))
-                                                    <p id="captcha-error" style="color: red;">
-                                                        {{ session('captcha-error') }}
-                                                    </p>
-                                                @else
-                                                    <p id="captcha-error" style="color: red; display: none;">
-                                                        Please verify that you are not a robot.
-                                                    </p>
-                                                @endif
-                                            </div>
+    <!-- Display an error message if CAPTCHA is not completed -->
+    @if (session('captcha-error'))
+        <p id="captcha-error" style="color: red;">
+            {{ session('captcha-error') }}
+        </p>
+    @else
+        <p id="captcha-error" style="color: red; display: none;">
+            Please verify that you are not a robot.
+        </p>
+    @endif
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
