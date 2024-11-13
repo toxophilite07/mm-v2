@@ -51,6 +51,19 @@
                         </div>
                     </div>
                 </li>
+                @if(Auth::user()->user_role_id == 1)
+                    <li class="nav-item dropdown nav-notifications">
+                        <!-- Link directly to the Chatify page when the icon is clicked -->
+                        <a class="nav-link" href="{{ route('chatify') }}" id="messageNotificationLink" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="message-square"></i>
+                            @if(count($message_notifications ?? []) != 0)
+                                <div class="indicator" id="message_notification_indicator">
+                                    <div class="circle"></div>
+                                </div>
+                            @endif
+                        </a>
+                    </li>
+                @endif
                 <!-- ADMIN NEW CREATE ACCOUNT NOTIF -->
                 @if(Auth::user()->user_role_id == 1)
                     <li class="nav-item dropdown nav-notifications">
@@ -220,8 +233,8 @@
             <!-- MESSAGE FOR FEMALE USER -->
             @if(Auth::user()->user_role_id == 2)
                 <li class="nav-item dropdown nav-notifications">
-                    <a class="nav-link dropdown-toggle" href="#" id="messageNotificationDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- Link directly to the Chatify page when the icon is clicked -->
+                    <a class="nav-link" href="{{ route('chatify') }}" id="messageNotificationLink" aria-haspopup="true" aria-expanded="false">
                         <i data-feather="message-square"></i>
                         @if(count($message_notifications ?? []) != 0)
                             <div class="indicator" id="message_notification_indicator">
@@ -229,43 +242,9 @@
                             </div>
                         @endif
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="messageNotificationDropdown">
-                        <div class="dropdown-header d-flex align-items-center justify-content-between">
-                            @if(count($message_notifications ?? []) != 0)
-                                <p class="mb-0 font-weight-medium">{{ count($message_notifications) }} New Messages</p>
-                            @else
-                                <p class="mb-0 font-weight-medium">No New Messages</p>
-                            @endif
-                        </div>
-                        <div class="dropdown-body" id="message_notification_container">
-                            @if(count($message_notifications ?? []) != 0)
-                                @foreach($message_notifications as $message)
-                                    <a href="{{ URL::to('health-worker/chat') }}?u={{ $message->user_id }}" id="message_notification_body_{{ $message->user_id }}" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="message-circle"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>{{ $message->first_name.' '.$message->last_name }}</p>
-                                            <p class="sub-text text-muted">New Message: {{ $message->last_message_excerpt }}</p>
-                                        </div>
-                                    </a>
-                                @endforeach
-                            @else
-                                <!-- Prototype: Show message for no new messages -->
-                                <a href="javascript:void(0);" class="dropdown-item">
-                                    <div class="icon">
-                                        <i data-feather="message-circle"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>Start a conversation with your health worker</p>
-                                        <p class="sub-text text-muted">Click here to chat</p>
-                                    </div>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
                 </li>
             @endif
+
 
             <!-- FEMALE USER -->
              @if(Auth::user()->user_role_id == 2)
@@ -313,8 +292,8 @@
             <!-- MESSAGE FOR HEALTH WORKER -->
             @if(Auth::user()->user_role_id == 3)
                 <li class="nav-item dropdown nav-notifications">
-                    <a class="nav-link dropdown-toggle" href="#" id="messageNotificationDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- Link directly to the Chatify page when the icon is clicked -->
+                    <a class="nav-link" href="{{ route('chatify') }}" id="messageNotificationLink" aria-haspopup="true" aria-expanded="false">
                         <i data-feather="message-square"></i>
                         @if(count($message_notifications ?? []) != 0)
                             <div class="indicator" id="message_notification_indicator">
@@ -322,43 +301,9 @@
                             </div>
                         @endif
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="messageNotificationDropdown">
-                        <div class="dropdown-header d-flex align-items-center justify-content-between">
-                            @if(count($message_notifications ?? []) != 0)
-                                <p class="mb-0 font-weight-medium">{{ count($message_notifications) }} New Messages</p>
-                            @else
-                                <p class="mb-0 font-weight-medium">No New Messages</p>
-                            @endif
-                        </div>
-                        <div class="dropdown-body" id="message_notification_container">
-                            @if(count($message_notifications ?? []) != 0)
-                                @foreach($message_notifications as $message)
-                                <a href="{{ URL::to('health-worker/chat') }}?u={{ $message->user_id }}" id="message_notification_body_{{ $message->user_id }}" class="dropdown-item">
-                                <div class="icon">
-                                        <i data-feather="message-circle"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>{{ $message->first_name.' '.$message->last_name }}</p>
-                                        <p class="sub-text text-muted">New Message: {{ $message->last_message_excerpt }}</p>
-                                    </div>
-                                </a>
-                                @endforeach
-                            @else
-                                <!-- Prototype: Show message for no new messages -->
-                                <a href="javascript:void(0);" class="dropdown-item">
-                                    <div class="icon">
-                                        <i data-feather="message-circle"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>Start a conversation with a female user</p>
-                                        <p class="sub-text text-muted">Click here to chat</p>
-                                    </div>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
                 </li>
             @endif
+
 
 
 
