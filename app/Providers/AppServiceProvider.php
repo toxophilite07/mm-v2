@@ -49,22 +49,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Check if the request is coming from a non-browser (like curl)
+        if (str_contains(request()->header('User-Agent'), 'curl')) {
+            abort(403, 'Forbidden');
+        }
+    
         // Force HTTPS in production
         if (config('app.env') === 'production') {
             \URL::forceScheme('https');
         }
-
-        // Set default string length for database columns
-        Schema::defaultStringLength(191);
-
+    
         // Define secure headers macro
         Response::macro('secureHeaders', function ($content) {
             return response($content)
                 ->header('X-Content-Type-Options', 'nosniff')
                 ->header('X-Frame-Options', 'DENY')
                 ->header('X-XSS-Protection', '1; mode=block')
-                ->header('Referrer-Policy', 'no-referrer');
+                ->header('Referrer-Policy', 'no-referrer')
+                ->header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'none'; base-uri 'self';");
         });
     }
+    
 
 }
