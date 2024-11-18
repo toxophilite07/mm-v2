@@ -38,7 +38,7 @@ return [
     ],
     'inverse' => [
         'length' => 5,
-        'width' => 120,
+        'width' => 190,
         'height' => 36,
         'quality' => 90,
         'sensitive' => true,
