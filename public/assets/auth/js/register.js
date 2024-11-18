@@ -1,13 +1,14 @@
-
-    $('#reload').click(function(){
-        $.ajax({
-            type:'GET',
-            url:'reload-captcha',
-            success:function(data){
-                $(".captcha span").html(data.captcha)
-            }
+        $('#reload').click(function(e){
+            e.preventDefault(); // Explicitly prevent default button behavior
+            $.ajax({
+                type:'GET',
+                url:'reload-captcha',
+                success:function(data){
+                    $(".captcha span").html(data.captcha)
+                }
+            });
+            return false; // Additional prevention
         });
-    });
 
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
@@ -47,7 +48,7 @@
         //     greetingElement.textContent = greeting;
         // });
 
-                $(document).ready(function() {
+        $(document).ready(function() {
             var greetingMessages = [
                 "Hello there! Ready to monitor your menstrual health?",
                 "Welcome back! Let’s track your cycle together!",
