@@ -66,8 +66,8 @@ return [
     | HttpOnly, Secure, and SameSite attributes.
     |
     */
-    // 'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_').'_session'),
-    'cookie' => '',
+    'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_').'_session'),
+    // 'cookie' => '',
 
     'path' => '/',
     'domain' => env('SESSION_DOMAIN'),
