@@ -10,7 +10,7 @@ $(function () {
             { data: "row_count" },
             { data: "full_name" },
             { data: "menstruation_status" },
-            { data: "is_active" },
+            { data: "estimated_next_period" },
             { data: "estimated_menstrual_status" },
             { data: "action" },
         ],
@@ -246,7 +246,7 @@ $(document).ready(function () {
                             drag: false,
                             title: "Success!",
                             message:
-                                "Feminine has been successfully removed from the list.",
+                                "Female has been successfully removed from the list.",
                             transitionIn: "bounceInDown",
                             transitionOut: "fadeOutUp",
                         });

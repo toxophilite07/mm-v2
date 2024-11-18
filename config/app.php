@@ -169,7 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
-        // \Chatify\ChatifyServiceProvider::class,
+        \Chatify\ChatifyServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -186,7 +186,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        // 'Chatify' => Chatify\Facades\ChatifyMessenger::class,
+        'Chatify' => Chatify\Facades\ChatifyMessenger::class,
     ])->toArray(),
 
 ];

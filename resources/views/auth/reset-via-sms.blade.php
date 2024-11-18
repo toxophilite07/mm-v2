@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mentrual Monitoring App :: Forgot Password ::</title>
+    <title>Mentrual Monitoring App :: Forgot Password via SMS::</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
 
@@ -42,19 +42,19 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 @if(Route::has('login'))
-                                    <p class="text-center fw-bolder mb-2 h4">Reset Password via Email</p>
-                                    <p class="text-center mb-4">Enter the email address associated with your account and we will send you a link to reset your password.</p>
-                                    <form action="{{ URL::to('forgot-password') }}" method="POST" class="submit-once" autocomplete="off">
+                                    <p class="text-center fw-bolder mb-2 h4">Reset Password via SMS</p>
+                                    <p class="text-center mb-4">Enter the mobile number associated with your account and we will send you a link to reset your password.</p>
+                                    <form action="{{ URL::to('forgot-password-sms') }}" method="POST" class="submit-once" autocomplete="off">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="email" class="form-label">Email Address</label>
-                                            <input type="email" id="email" name="email" class="form-control" required autofocus>
-
-                                            @if ($errors->has('email'))
-                                                <span class="invalid-feedback">
-                                                    <strong>{{ $errors->first('email') }}</strong>
-                                                </span>
-                                            @endif
+                                        <label for="contact_no" class="form-label">Phone Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">+63</span>
+                                            <input type="text" id="contact_no" name="contact_no" 
+                                                   class="form-control {{ $errors->has('contact_no') ? 'is-invalid' : '' }}" 
+                                                   value="{{ old('contact_no') }}" placeholder="9123456789" 
+                                                   oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}" 
+                                                   aria-label="Phone Number" aria-describedby="contact_no_error">
                                         </div>
                                         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between mt-3">
                                             <button type="submit" class="btn btn-primary py-2 fs-5 w-100 mb-2 mb-md-0 me-md-2 rounded-1">

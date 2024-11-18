@@ -83,6 +83,10 @@ $(function () {
         rules: {
             edit_first_name: { required: true },
             edit_last_name: { required: true },
+            address: {
+                required: true,
+                validateAddress: true // Added the custom validation here
+            },
             edit_email_address: { email: true },
             edit_menstruation_status: { required: true },
             last_period_date: { required: true, date: true },
@@ -92,6 +96,10 @@ $(function () {
         messages: {
             edit_first_name: { required: "Please enter a first name" },
             edit_last_name: { required: "Please enter a last name" },
+            address: {
+                required: "Please enter your address",
+                validateAddress: "Please enter a valid address in Madridejos "
+                },
             edit_email_address: { email: "Please enter a valid email address" },
             edit_menstruation_status: { required: "Please select the current menstruation status of the user" },
             last_period_date: { required: "Please select the last known period date of the user" },
@@ -116,3 +124,14 @@ $(function () {
         }
     });
 });
+
+$.validator.addMethod("validateAddress", function (value, element) {
+    var validAddresses = [
+        "Tarong Madridejos Cebu", "Bunakan Madridejos Cebu", "Kangwayan Madridejos Cebu", 
+        "Kaongkod Madridejos Cebu", "Kodia Madridejos Cebu", "Maalat Madridejos Cebu", 
+        "Malbago Madridejos Cebu", "Mancilang Madridejos Cebu", "Pili Madridejos Cebu", 
+        "Poblacion Madridejos Cebu", "San Agustin Madridejos Cebu", "Tabagak Madridejos Cebu", 
+        "Talangnan Madridejos Cebu", "Tugas Madridejos Cebu"
+    ];
+    return validAddresses.includes(value);
+}, "Please enter a valid address in Madridejos.");

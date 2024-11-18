@@ -15,6 +15,11 @@
 @include('components.chatbox')
 @section('contents')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<noscript>
+<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+</div>
+</noscript>
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
             <h4 id="greeting" class="mb-3 mb-md-0">Good morning {{ Auth::user()->first_name }}!</h4>

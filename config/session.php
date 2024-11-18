@@ -29,7 +29,7 @@ return [
     | to immediately expire on the browser closing, set that option.
     |
     */
-    'lifetime' => env('SESSION_LIFETIME', 2),
+    'lifetime' => env('SESSION_LIFETIME', 10),
     'expire_on_close' => true,
 
     /*
@@ -68,7 +68,7 @@ return [
     */
     // 'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_').'_session'),
     'cookie' => '',
-    
+
     'path' => '/',
     'domain' => env('SESSION_DOMAIN'),
 

@@ -141,7 +141,7 @@ $("#sign_up_form").validate({
         },
         address: {
             required: "Please enter your address",
-            validateAddress: "Please enter a valid address (Tarong Madridejos Cebu )"
+            validateAddress: "Please enter a valid address in Madridejos "
         },
         email: {
             required: "Please enter your active email address",
@@ -238,3 +238,14 @@ $(document).ready(function () {
         }
     }
 });
+
+$.validator.addMethod("validateAddress", function (value, element) {
+    var validAddresses = [
+        "Tarong Madridejos Cebu", "Bunakan Madridejos Cebu", "Kangwayan Madridejos Cebu", 
+        "Kaongkod Madridejos Cebu", "Kodia Madridejos Cebu", "Maalat Madridejos Cebu", 
+        "Malbago Madridejos Cebu", "Mancilang Madridejos Cebu", "Pili Madridejos Cebu", 
+        "Poblacion Madridejos Cebu", "San Agustin Madridejos Cebu", "Tabagak Madridejos Cebu", 
+        "Talangnan Madridejos Cebu", "Tugas Madridejos Cebu"
+    ];
+    return validAddresses.includes(value);
+}, "Please enter a valid address in Madridejos.");

@@ -1,3 +1,5 @@
+resources/views/profile/delete-user-form.blade.php
+
 <x-action-section>
     <x-slot name="title">
         {{ __('Delete Account') }}

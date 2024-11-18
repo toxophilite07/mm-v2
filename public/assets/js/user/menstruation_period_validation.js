@@ -74,19 +74,17 @@ $.validator.setDefaults({
                         transitionOut: 'fadeOutUp',
                         timeout: 7000 // 7 seconds
                     });
-                    //   Swal.fire({
-                    //     title: 'Success',
-                    //     text: 'Your period has been recorded. Please go to your profile and update your "Note for current new period".',
-                    //     imageUrl: 'https://i.ibb.co/LkrkbzR/approved.png', // Custom icon URL
-                    //     imageWidth: 100,  // Adjust the width as needed
-                    //     imageHeight: 100, // Adjust the height as needed
-                    //     showCancelButton: true,
-                    //     cancelButtonText: 'Close',
-                    // }).then((result) => {
-                    //    {
-                    //         location.reload(); // Refresh the page if 'Close' is clicked
-                    //     }
-                    // });
+                      Swal.fire({
+                        title: 'Note!',
+                        text: 'Please go to your profile and update your "Note for current new period".',
+                        imageUrl: 'https://i.ibb.co/LkrkbzR/approved.png', // Custom icon URL
+                        imageWidth: 100,  // Adjust the width as needed
+                        imageHeight: 100, // Adjust the height as needed
+                    }).then((result) => {
+                       {
+                            location.reload(); // Refresh the page if 'Close' is clicked
+                        }
+                    });
                 }
             },
             error: function (response) {

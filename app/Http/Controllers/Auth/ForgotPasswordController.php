@@ -105,6 +105,12 @@ class ForgotPasswordController extends Controller {
             return back()->with('post-forgot-password-error', 'Something went wrong!');
         }
     }
+
+    public function sendResetLinkSms(Request $request)
+{
+    // Validation logic and SMS sending logic...
+}
+
     
     public function getResetPassword($token) {
         if (Auth::check()) return redirect()->back();

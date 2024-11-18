@@ -274,6 +274,15 @@ class UserController extends Controller
             // Find the user
             $user = User::findOrFail($request->id);
     
+            // List of valid Barangays in Madridejos
+            $validBarangays = [
+                "Tarong Madridejos Cebu", "Bunakan Madridejos Cebu", "Kangwayan Madridejos Cebu",
+                "Kaongkod Madridejos Cebu", "Kodia Madridejos Cebu", "Maalat Madridejos Cebu",
+                "Malbago Madridejos Cebu", "Mancilang Madridejos Cebu", "Pili Madridejos Cebu",
+                "Poblacion Madridejos Cebu", "San Agustin Madridejos Cebu", "Tabagak Madridejos Cebu",
+                "Talangnan Madridejos Cebu", "Tugas Madridejos Cebu"
+            ];
+    
             // Validate the request
             $check_validation = Validator::make($request->all(), [
                 'first_name' => 'required|max:100',
@@ -282,6 +291,7 @@ class UserController extends Controller
                     'nullable',
                     'email',
                     'max:100',
+                    'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
                     Rule::unique('users', 'email')->ignore($user->id)
                 ],
                 'menstruation_status' => 'required|boolean',
@@ -293,10 +303,19 @@ class UserController extends Controller
                     Rule::unique('users', 'contact_no')->ignore($user->id),
                     'required_if:email,null'
                 ],
+                'address' => [
+                    'required',
+                    function ($attribute, $value, $fail) use ($validBarangays) {
+                        if (!in_array($value, $validBarangays)) {
+                            $fail('The address must be a valid address in Madridejos.');
+                        }
+                    }
+                ],
             ], [
                 'contact_no.regex' => 'The contact number must be 10 or 11 digits.',
                 'contact_no.unique' => 'The contact number has already been taken.',
-                'unique' => 'The :attribute field has already been taken.'
+                'unique' => 'The :attribute field has already been taken.',
+                'email.regex' => 'Only Gmail addresses are allowed (example: nelbanbetache@gmail.com).',
             ]);
     
             // Check for validation errors

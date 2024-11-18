@@ -44,8 +44,8 @@ return [
         'secret' => env('PUSHER_APP_SECRET'),
         'app_id' => env('PUSHER_APP_ID'),
         'options' => [
-            'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
-            'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
+            'cluster' => env('PUSHER_APP_CLUSTER', 'ap1'),
+            'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'ap1').'.pusher.com',
             'port' => env('PUSHER_PORT', 443),
             'scheme' => env('PUSHER_SCHEME', 'https'),
             'encrypted' => true,
@@ -106,6 +106,7 @@ return [
         '#FF9800',
         '#ff2522',
         '#9C27B0',
+        '#e35b89',
     ],
 
     'model' => App\Models\User::class,
@@ -123,5 +124,6 @@ return [
         'public_path' => 'sounds/chatify',
         'new_message' => 'new-message-sound.mp3',
     ]
+
     
 ];

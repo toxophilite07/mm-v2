@@ -54,11 +54,6 @@
     </style>
 </head>
 @include('partials.cookie-consent')
-<noscript>
-    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
-        Menstrual Monitoring App: Please enable JavaScript to work properly.
-    </div>
-</noscript>
 <body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
@@ -89,7 +84,7 @@
                                             <a href="{{ URL::to('user/dashboard') }}" class="btn btn-primary w-100 py-2 fs-4 rounded-1">Return to Dashboard</a>
                                         @endif
                                     @else
-                                        <p class="text-center mb-4">Sign in using email or mobile # to your account to proceed</p>
+                                        <p class="text-center mb-4">Sign in using email to your account to proceed</p>
                                         <noscript>
                                             <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
                                                 Menstrual Monitoring App: Please enable JavaScript to work properly.
@@ -140,19 +135,19 @@
                                                     Please verify that you are not a robot
                                                 </p>
                                             </div>    -->
-<div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+                                    <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
 
-    <!-- Display an error message if CAPTCHA is not completed -->
-    @if (session('captcha-error'))
-        <p id="captcha-error" style="color: red;">
-            {{ session('captcha-error') }}
-        </p>
-    @else
-        <p id="captcha-error" style="color: red; display: none;">
-            Please verify that you are not a robot.
-        </p>
-    @endif
-                                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <!-- Display an error message if CAPTCHA is not completed -->
+                                        @if (session('captcha-error'))
+                                            <p id="captcha-error" style="color: red;">
+                                                {{ session('captcha-error') }}
+                                            </p>
+                                        @else
+                                            <p id="captcha-error" style="color: red; display: none;">
+                                                Please verify that you are not a robot.
+                                            </p>
+                                        @endif
+                                                                                <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input primary" type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
                                                     <label class="form-check-label text-dark" for="remember">Remember me</label>
@@ -168,7 +163,7 @@
                                                 @if(Route::has('register'))
                                                     <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
                                                 @endif
-                                                <a class="text-primary fw-bold" href="{{ URL::to('forgot-password') }}">Forgot Password</a>
+                                                <a class="text-primary fw-bold" href="{{ route('forgot-password-options') }}">Forgot Password</a>
                                             </div>
                                         </form>
                                     @endauth

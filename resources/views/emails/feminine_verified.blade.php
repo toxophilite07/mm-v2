@@ -81,7 +81,7 @@
         </p>
 
         <div class="footer">
-            <p>If you did not request verification, please contact us immediately.</p>
+            <p>If you did not request verification, please <a href="mailto:nelbanbetache@gmail.com">contact us</a> immediately.</p>
         </div>
     </div>
 

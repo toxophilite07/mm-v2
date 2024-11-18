@@ -73,12 +73,26 @@ class RegisterController extends Controller
                 }
             }],
             'address' => ['required', 'string', 'max:255', 'bail', function($attribute, $value, $fail) {
-                $sanitizedValue = htmlspecialchars(strip_tags($value));
-                if ($this->containsMaliciousScript($sanitizedValue)) {
-                    \Log::warning('Malicious script detected in user registration form.', ['value' => $value]);
-                    $fail('Malicious script detected in this field. Your actions have been logged for security purposes.');
+                $validAddresses = [
+                    'Tarong Madridejos Cebu',
+                    'Bunakan Madridejos Cebu',
+                    'Kangwayan Madridejos Cebu',
+                    'Kaongkod Madridejos Cebu',
+                    'Kodia Madridejos Cebu',
+                    'Maalat Madridejos Cebu',
+                    'Malbago Madridejos Cebu',
+                    'Mancilang Madridejos Cebu',
+                    'Pili Madridejos Cebu',
+                    'Poblacion Madridejos Cebu',
+                    'San Agustin Madridejos Cebu',
+                    'Tabagak Madridejos Cebu',
+                    'Talangnan Madridejos Cebu',
+                    'Tugas Madridejos Cebu',
+                ];
+                if (!in_array($value, $validAddresses)) {
+                    $fail('The selected address is invalid.');
                 }
-            }],
+            }],    
             'email' => ['nullable', 'string', 'email:rfc,dns', 'email', 'max:255', 'unique:users','regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/', 'bail', function($attribute, $value, $fail) {
                 $sanitizedValue = htmlspecialchars(strip_tags($value));
                 if ($this->containsMaliciousScript($sanitizedValue)) {
@@ -182,12 +196,13 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function registered() {
+    protected function registered() 
+    {
         Session::flush();
         Auth::logout();
         Session::regenerate();
     
-        Session::flash('post-register', 'Registration completed! Please wait for the admin to verify your account.');
+        Session::flash('post-register', 'Registration complete! Please wait for admin verification. You’ll receive a notification once verified.');
     
         $user = Auth::user();
         
@@ -215,6 +230,7 @@ class RegisterController extends Controller
         session(['show_terms' => true]);
         return response()->view('auth.register')->header('X-Frame-Options', 'DENY');
     }
+    
     protected function validateEmail(Request $request)
     {
         $request->validate([

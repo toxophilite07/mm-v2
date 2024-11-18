@@ -41,6 +41,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\PreventBrowserBackHistory::class,
             \App\Http\Middleware\CookieConsent::class,
             \App\Http\Middleware\SecureHeaders::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
         ],
 
         'api' => [

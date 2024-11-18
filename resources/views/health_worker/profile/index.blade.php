@@ -46,7 +46,31 @@
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <input class="form-control" type="text" id="address" name="address" placeholder="Enter your current address" value="{{ $user->address }}" oninput="handleInputCapitalize(event)">
+                                                <input class="form-control" type="text" id="address" list="addressOptions" name="address" placeholder="Enter your current address" value="{{ $user->address }}" oninput="handleInputCapitalize(event)">
+                                            <!-- Datalist for address options -->
+                                                        <datalist id="addressOptions">
+                                                            <option value="Tarong Madridejos Cebu"></option>
+                                                            <option value="Bunakan Madridejos Cebu"></option>
+                                                            <option value="Kangwayan Madridejos Cebu"></option>
+                                                            <option value="Kaongkod Madridejos Cebu"></option>
+                                                            <option value="Kodia Madridejos Cebu"></option>
+                                                            <option value="Maalat Madridejos Cebu"></option>
+                                                            <option value="Malbago Madridejos Cebu"></option>
+                                                            <option value="Mancilang Madridejos Cebu"></option>
+                                                            <option value="Pili Madridejos Cebu"></option>
+                                                            <option value="Poblacion Madridejos Cebu"></option>
+                                                            <option value="San Agustin Madridejos Cebu"></option>
+                                                            <option value="Tabagak Madridejos Cebu"></option>
+                                                            <option value="Talangnan Madridejos Cebu"></option>
+                                                            <option value="Tugas Madridejos Cebu"></option>
+                                                        </datalist>
+
+                                                        <!-- Display error message if validation fails -->
+                                                        @if ($errors->has('address'))
+                                                            <span class="invalid-feedback">
+                                                                <strong>{{ $errors->first('address') }}</strong>
+                                                            </span>
+                                                        @endif
                                             </div>
                                         </div>
 
@@ -67,7 +91,10 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                            <!-- Alert for Verified or Valid Email -->
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong>Notice:</strong> Please ensure you are using a verified or valid email address. Email notifications may not be sent if an unverified email is used.
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-6 col-ms-12">
                                             <div class="form-group">
@@ -89,7 +116,7 @@
                                     <div class="row">
                                         <div class="col mb-3">
                                             <div class="form-group">
-                                                <label for="remarks">Remarks</label>
+                                                <label for="remarks">Bio (Optional)</label>
                                                 <textarea class="form-control" id="remarks" name="remarks" rows="5" placeholder="Enter any remarks or notes...">{{ $user->remarks }}</textarea>
                                             </div>
                                         </div>

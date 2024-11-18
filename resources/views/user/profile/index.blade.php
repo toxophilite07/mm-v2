@@ -12,6 +12,11 @@
 @endsection
 
 @section('contents')
+<noscript>
+<div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center;">
+        Menstrual Monitoring App: Please enable JavaScript to work properly.
+</div>
+</noscript>
     <div class="d-flex align-items-center justify-content-center w-100">
         <div class="row justify-content-center w-100 mb-3">
             <div class="col-lg-7">
@@ -48,8 +53,33 @@
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <input class="form-control" type="text" id="address" name="address" placeholder="Enter your current address" value="{{ $user->address }}" oninput="handleInputCapitalize(event)">
-                                            </div>
+                                                <input type="text" id="address" name="address" list="addressOptions" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Type or select your address" oninput="handleInputCapitalize(event)" required>
+                                                        
+                                                        <!-- Datalist for address options -->
+                                                        <datalist id="addressOptions">
+                                                            <option value="Tarong Madridejos Cebu"></option>
+                                                            <option value="Bunakan Madridejos Cebu"></option>
+                                                            <option value="Kangwayan Madridejos Cebu"></option>
+                                                            <option value="Kaongkod Madridejos Cebu"></option>
+                                                            <option value="Kodia Madridejos Cebu"></option>
+                                                            <option value="Maalat Madridejos Cebu"></option>
+                                                            <option value="Malbago Madridejos Cebu"></option>
+                                                            <option value="Mancilang Madridejos Cebu"></option>
+                                                            <option value="Pili Madridejos Cebu"></option>
+                                                            <option value="Poblacion Madridejos Cebu"></option>
+                                                            <option value="San Agustin Madridejos Cebu"></option>
+                                                            <option value="Tabagak Madridejos Cebu"></option>
+                                                            <option value="Talangnan Madridejos Cebu"></option>
+                                                            <option value="Tugas Madridejos Cebu"></option>
+                                                        </datalist>
+
+                                                        <!-- Display error message if validation fails -->
+                                                        @if ($errors->has('address'))
+                                                            <span class="invalid-feedback">
+                                                                <strong>{{ $errors->first('address') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
                                         </div>
 
                                         <div class="col-lg-4 col-sm-12">
@@ -69,7 +99,10 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                            <!-- Alert for Verified or Valid Email -->
+                                            <div class="alert alert-warning" role="alert">
+                                        <strong>Notice:</strong> Please ensure you are using a verified or valid email address. Email notifications may not be sent if an unverified email is used.
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-6 col-ms-12">
                                             <div class="form-group">
@@ -109,7 +142,10 @@
                                     <div class="row">
                                         <div class="col mb-3">
                                             <div class="form-group">
-                                                <label for="remarks">Add a note for the new menstruation to keep your Barangay Health Worker (BHW) updated.</label>
+                                                                                            <!-- Alert for Verified or Valid Email -->
+                                        <div class="alert alert-warning" role="alert">
+                                            <strong>Notice:</strong> You can add a note here for the new menstruation to keep your Barangay Health Worker (BHW) updated.
+                                        </div>
                                                 <textarea class="form-control" id="remarks" name="remarks" rows="5" placeholder="Enter any remarks or notes...">{{ $user->remarks }}</textarea>
                                             </div>
                                         </div>

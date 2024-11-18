@@ -16,6 +16,7 @@ use App\Models\MenstruationPeriod;
 use App\Models\FeminineHealthWorkerGroup;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -44,12 +45,28 @@ class BarangayHealthWorkerController extends Controller
     {
         $feminine = User::findOrFail($request->id);
     
+        // List of valid Barangays in Madridejos
+        $validBarangays = [
+            "Tarong Madridejos Cebu", "Bunakan Madridejos Cebu", "Kangwayan Madridejos Cebu",
+            "Kaongkod Madridejos Cebu", "Kodia Madridejos Cebu", "Maalat Madridejos Cebu",
+            "Malbago Madridejos Cebu", "Mancilang Madridejos Cebu", "Pili Madridejos Cebu",
+            "Poblacion Madridejos Cebu", "San Agustin Madridejos Cebu", "Tabagak Madridejos Cebu",
+            "Talangnan Madridejos Cebu", "Tugas Madridejos Cebu"
+        ];
+    
         // Validate the request
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'address' => [
+                'required', 'string', 'max:255',
+                function ($attribute, $value, $fail) use ($validBarangays) {
+                    if (!in_array($value, $validBarangays)) {
+                        $fail('The address must be a valid barangay in Madridejos.');
+                    }
+                }
+            ],
             'email' => [
                 'nullable', // Allow email to be null
                 'string',
@@ -136,16 +153,35 @@ class BarangayHealthWorkerController extends Controller
                 'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
                 'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
                 'remarks' => htmlspecialchars($feminine->remarks ?? null),
-                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date
-                )->format('m/d/Y') : null,
+                'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
                 'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
             ]
         ]);
     }
-    
+     
+    // public function postnewfeminine(Request $request)
+    // {
+    //     return $this->postForm($request->all());
+    // }
     public function postnewfeminine(Request $request)
     {
-        return $this->postForm($request->all());
+        // Sanitize the input
+        $sanitizedInput = $this->sanitizeInput($request->all());
+
+        // Pass sanitized data to the postForm method
+        return $this->postForm($sanitizedInput);
+    }
+
+    protected function sanitizeInput(array $input)
+    {
+        // Sanitize all string inputs to prevent XSS attacks
+        foreach ($input as $key => $value) {
+            if (is_string($value)) {
+                // Use htmlspecialchars to encode special characters
+                $input[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            }
+        }
+        return $input;
     }
 
     public function deleteFeminie(Request $request)
@@ -183,7 +219,7 @@ class BarangayHealthWorkerController extends Controller
                 if (count($last_period_list) !== 0) {
                     $estimated_next_period = $this->estimatedNextPeriod($last_period_list->first()->menstruation_date, $feminine['birthdate']);
                 } else {
-                    $estimated_next_period = 'N/A';
+                    $estimated_next_period = 'No Record Yet';
                 }
     
                 $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
@@ -332,6 +368,15 @@ class BarangayHealthWorkerController extends Controller
             // Find the user
             $user = User::findOrFail($request->id);
     
+            // List of valid Barangays in Madridejos
+            $validBarangays = [
+                "Tarong Madridejos Cebu", "Bunakan Madridejos Cebu", "Kangwayan Madridejos Cebu",
+                "Kaongkod Madridejos Cebu", "Kodia Madridejos Cebu", "Maalat Madridejos Cebu",
+                "Malbago Madridejos Cebu", "Mancilang Madridejos Cebu", "Pili Madridejos Cebu",
+                "Poblacion Madridejos Cebu", "San Agustin Madridejos Cebu", "Tabagak Madridejos Cebu",
+                "Talangnan Madridejos Cebu", "Tugas Madridejos Cebu"
+            ];
+    
             // Validate the request
             $check_validation = Validator::make($request->all(), [
                 'first_name' => 'required|max:100',
@@ -340,7 +385,8 @@ class BarangayHealthWorkerController extends Controller
                     'nullable',
                     'email',
                     'max:100',
-                    Rule::unique('users', 'email')->ignore($user->id)
+                    Rule::unique('users', 'email')->ignore($user->id),
+                    'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/'
                 ],
                 'birthdate' => 'required|date|before:today',
                 'contact_no' => [
@@ -350,10 +396,19 @@ class BarangayHealthWorkerController extends Controller
                     Rule::unique('users', 'contact_no')->ignore($user->id),
                     'required_if:email,null'
                 ],
+                'address' => [
+                    'required',
+                    function ($attribute, $value, $fail) use ($validBarangays) {
+                        if (!in_array($value, $validBarangays)) {
+                            $fail('The address must be a valid address in Madridejos.');
+                        }
+                    }
+                ],
             ], [
                 'contact_no.regex' => 'The contact number must be 10 or 11 digits.',
                 'contact_no.unique' => 'The contact number has already been taken.',
-                'unique' => 'The :attribute field has already been taken.'
+                'unique' => 'The :attribute field has already been taken.',
+                'email.regex' => 'Only Gmail addresses are allowed.'
             ]);
     
             // Check for validation errors

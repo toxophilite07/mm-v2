@@ -45,7 +45,7 @@
                                     <th></th>
                                     <th>Name</th>
                                     <th>Menstruation Status</th>
-                                    <th>Account Status</th>
+                                    <th>Period Dates</th>
                                     <th>Estimated Menstrual Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -93,7 +93,7 @@ $(function () {
                 { data: "row_count" }, // Adds numbering to rows
                 { data: "full_name" },
                 { data: "menstruation_status" },
-                { data: "is_active" },
+                { data: "estimated_next_period" },
                 { data: "estimated_menstrual_status" },
                 { data: "action" }
             ],
@@ -133,7 +133,7 @@ function printFeminineList() {
     // Hide the "Account Status" and "Action" columns
     for (var i = 0; i < rows.length; i++) {
         rows[i].deleteCell(5);
-        rows[i].deleteCell(3);
+        // rows[i].deleteCell(3);
     }
 
     // Create the HTML for the print view
@@ -141,6 +141,7 @@ function printFeminineList() {
     headerTable += '<th>No.</th>'; // Add numbering
     headerTable += '<th>Name</th>';
     headerTable += '<th>Menstruation Status</th>';
+    headerTable += '<th>Estimated Period Dates</th>';
     headerTable += '<th>Estimated Menstrual Status</th>';
     headerTable += '</tr></thead><tbody>';
 
@@ -151,6 +152,7 @@ function printFeminineList() {
         nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
         nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
         nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
+        nameTable += '<td>' + rows[i].cells[4].innerText + '</td>';
         nameTable += '</tr>';
     }
 
@@ -211,7 +213,7 @@ function downloadCSV() {
     var csv = [];
     
     // Define the headers
-    var headers = ['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Status'];
+    var headers = ['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Dates', 'Estimated Menstrual Status'];
     csv.push(headers.join(",")); // Add headers to the first row
 
     var rows = document.querySelectorAll("#feminine_table tr");
@@ -247,7 +249,7 @@ function downloadExcel() {
     var data = [];
     
     // Define the headers
-    data.push(['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Status']); // Add headers
+    data.push(['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Dates', 'Estimated Menstrual Status']); // Add headers
 
     var rows = document.querySelectorAll("#feminine_table tr");
 

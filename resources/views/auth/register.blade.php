@@ -214,28 +214,43 @@ input[type="password"] {
                                                             </span>
                                                         @endif
                                                     </div>
-                                                <div class="col-lg-4 col-sm-12 mb-4">
-                                                    <label for="birthdate" class="form-label">Birthdate</label>
-                                                    <div class="input-group date datepicker" id="birthdate_datepicker">
-                                                        <input type="text" id="birthdate" name="birthdate" class="form-control" placeholder="mm/dd/yyyy">
-                                                        <span class="input-group-addon">
-                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
-                                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-    
-                                                    @if ($errors->has('birthdate'))
-                                                        <span class="invalid-feedback">
-                                                            <strong>{{ $errors->first('birthdate') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                                    <div class="col-lg-4 col-sm-12 mb-4">
+                                                        <label for="birthdate" class="form-label">Birthdate</label>
+                                                        <div class="input-group date datepicker" id="birthdate_datepicker">
+                                                            <input type="text" id="birthdate" name="birthdate" class="form-control" placeholder="mm/dd/yyyy" oninput="restrictInput(event)">
+                                                            <span class="input-group-addon">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
 
+                                                        @if ($errors->has('birthdate'))
+                                                            <span class="invalid-feedback">
+                                                                <strong>{{ $errors->first('birthdate') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+
+                                                    <script>
+                                                        // Function to restrict input to numbers and "/"
+                                                        function restrictInput(event) {
+                                                            var input = event.target.value;
+                                                            // Allow only numbers and "/"
+                                                            var formattedInput = input.replace(/[^0-9\/]/g, '');
+                                                            // Set the cleaned input back to the field
+                                                            event.target.value = formattedInput;
+                                                        }
+                                                    </script>
+
+                                            </div>
+                                            <!-- Alert for Verified or Valid Email -->
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong>Notice:</strong> Please ensure you are using a verified or valid email address. Email notifications may not be sent if an unverified email is used.
+                                            </div>
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-12 mb-4">
                                                     <label for="email" class="form-label">Email</label>

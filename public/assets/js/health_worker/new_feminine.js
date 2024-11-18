@@ -41,7 +41,7 @@ $.ajaxSetup({
 $.validator.addMethod("eitherOr", function (value, element, params) {
     var otherElement = $(params).val();
     return !value || !otherElement || (value && otherElement); // Either both or neither can be filled
-}, "Please provide either email or contact number if one is provided.");
+}, "Please provide either email.");
 
 $.validator.setDefaults({
     submitHandler: function (form) {

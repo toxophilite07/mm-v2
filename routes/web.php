@@ -25,6 +25,9 @@ use App\Http\Controllers\Auth\RegisterController;
 
 Auth::routes();
 Route::view('/', 'auth/login')->name('login.page');
+// Forgot Password Options
+Route::view('/forgot-password-options', 'auth.forgot-password-options')->name('forgot-password-options');
+Route::get('reset-via-sms', function () {return view('auth.reset-via-sms');})->name('reset-via-sms');
 
 Route::post('/send-otp', [RegisterController::class, 'generateOtp'])->name('send.otp');
 Route::post('/validate-otp', [RegisterController::class, 'validateOtp'])->name('validate.otp');
