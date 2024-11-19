@@ -349,7 +349,7 @@ input[type="password"] {
 
                                     <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
-                                            <span>{!! captcha_img('inverse') !!}</span>
+                                            <img src="{{ captcha_src('inverse') }}" alt="CAPTCHA" style="pointer-events: none;">
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
                                         </div>
                                     </div>
