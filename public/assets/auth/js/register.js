@@ -1,14 +1,27 @@
-        $('#reload').click(function(e){
-            e.preventDefault(); // Explicitly prevent default button behavior
-            $.ajax({
-                type:'GET',
-                url:'reload-captcha',
-                success:function(data){
-                    $(".captcha span").html(data.captcha)
-                }
+
+    // $('#reload').click(function(){
+    //     $.ajax({
+    //         type:'GET',
+    //         url:'reload-captcha',
+    //         success:function(data){
+    //             $(".captcha span").html(data.captcha)
+    //         }
+    //     });
+    // });
+    document.querySelector('#submit-button').addEventListener('click', function (e) {
+        e.preventDefault();
+        // Ensure only form submission happens, no interaction with CAPTCHA
+    });
+    
+    document.querySelector('#reload').addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default action
+        fetch('/reload-captcha') // Replace this with your CAPTCHA reload URL
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.captcha img').src = data;
             });
-            return false; // Additional prevention
-        });
+    });
+    
 
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
@@ -48,7 +61,7 @@
         //     greetingElement.textContent = greeting;
         // });
 
-        $(document).ready(function() {
+                $(document).ready(function() {
             var greetingMessages = [
                 "Hello there! Ready to monitor your menstrual health?",
                 "Welcome back! Let’s track your cycle together!",
