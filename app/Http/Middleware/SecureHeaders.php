@@ -16,8 +16,8 @@ class SecureHeaders
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-
-        if (app()->environment('production')) {
+    
+        if (app()->environment('production') && $response instanceof Response) {
             $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' https://example-cdn.com; object-src 'none'; base-uri 'self';");
             $response->headers->set('X-Frame-Options', 'DENY');
             $response->headers->set('X-Content-Type-Options', 'nosniff');
@@ -27,7 +27,8 @@ class SecureHeaders
             $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
             $response->headers->set('Pragma', 'no-cache');
         }
-
+    
         return $response;
     }
+    
 }
