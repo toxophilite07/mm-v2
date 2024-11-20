@@ -14,10 +14,13 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Send Requests To Front Controller (Hides index.php from URL)
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    # Block direct access to index.php files
+    RewriteRule ^index.php$ - [F]
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -37,3 +40,9 @@
     Header set X-XSS-Protection "1; mode=block"
     Header set Referrer-Policy "no-referrer"
 </IfModule>
+
+# Block direct access to any php file including index.php*
+<Files "index.php*">
+    Order Deny,Allow
+    Deny from all
+</Files>
