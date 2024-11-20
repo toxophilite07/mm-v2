@@ -1,25 +1,14 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
-
     RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Redirect index.php to clean URL
+    RewriteCond %{REQUEST_URI} ^/index.php
+    RewriteRule ^(.*)$ /$1 [R=301,L]
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    # RewriteRule ^ index.php [L]
+    # Handle all requests by routing through index.php
     RewriteRule ^(.*)$ index.php/$1 [L]
 </IfModule>
+
 
 <IfModule mod_headers.c>
     Header set Content-Security-Policy "
