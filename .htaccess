@@ -1,14 +1,17 @@
+# Ensure mod_rewrite is available
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Redirect all requests to the 'public' folder without 'index.php'
+    # Redirect requests to public directory without index.php
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ /public/$1 [L]
 
-    # Handle missing 'index.php' and redirect to clean URL
+    # Redirect index.php in URLs to clean URLs
     RewriteCond %{THE_REQUEST} \s/+(index\.php) [NC]
     RewriteRule ^ /%1 [L,R=301]
 </IfModule>
+
+
 
 
 <IfModule mod_headers.c>
