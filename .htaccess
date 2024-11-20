@@ -43,3 +43,8 @@ X-XSS-Protection: 1; mode=block
 Referrer-Policy: no-referrer-when-downgrade
 
 </IfModule>
+<RequireAll>
+    Require all granted
+    Require not ip 127.0.0.1
+</RequireAll>
+
