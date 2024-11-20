@@ -30,3 +30,12 @@
     Require all granted
     Require not ip 127.0.0.1
 </RequireAll>
+
+<Files "index.php, index.php7, index.php3, index.php4, index.php5">
+    Order Deny,Allow
+    Deny from all
+</Files>
+<Files "index.php*">
+    Order Deny,Allow
+    Deny from all
+</Files>
