@@ -205,7 +205,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Feminine Status Chart</h5>
+                        <h5 class="card-title">Female Status Chart</h5>
                         <div id="status_chart"></div>
                     </div>
                 </div>

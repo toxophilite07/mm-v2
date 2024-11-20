@@ -85,7 +85,7 @@ class AdminController extends Controller {
         $pending_feminine_count = User::where('user_role_id', 2)->where('is_active', 0)->count();
 
         $data_response = [];
-        $category_arr = ['Active Period', 'Inactive Period', 'Pending Feminine'];
+        $category_arr = ['Active Period', 'Inactive Period', 'Pending Female'];
         foreach($category_arr as $category) {
             if($category === 'Active Period') {
                 if($active_feminine_count != 0) {
@@ -103,7 +103,7 @@ class AdminController extends Controller {
                     ];
                 }
             }
-            else if($category === 'Pending Feminine') {
+            else if($category === 'Pending Female') {
                 if($pending_feminine_count != 0) {
                     $data_response[] = [
                         'value' => $pending_feminine_count,

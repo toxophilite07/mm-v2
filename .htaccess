@@ -36,8 +36,3 @@ RewriteRule ^(/)?$ public/index.php [L]
     Header set X-XSS-Protection "1; mode=block"
     Header set Referrer-Policy "no-referrer"
 </IfModule>
-
-<RequireAll>
-    Require all granted
-    Require not ip 127.0.0.1
-</RequireAll>

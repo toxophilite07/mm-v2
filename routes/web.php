@@ -134,8 +134,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('health-worker/pie-chart-data', [BarangayHealthWorkerController::class, 'pieChartData']);
     // In routes/web.php or routes/api.php
     Route::get('/health-worker/forecast', [BarangayHealthWorkerController::class, 'generateAdvancedForecastData']);
-
-
 });
 
 });

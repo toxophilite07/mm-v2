@@ -48,11 +48,11 @@ class LoginController extends Controller
             return redirect()->route('login.page');
         }
         // Check hCaptcha response
-        $hCaptchaResponse = $request->input('h-captcha-response');
-        if (!$hCaptchaResponse || !$this->verifyHCaptcha($hCaptchaResponse)) {
-            Session::flash('captcha-error', "Please verify that you are not a robot.");
-            return redirect()->route('login.page');
-        }
+        // $hCaptchaResponse = $request->input('h-captcha-response');
+        // if (!$hCaptchaResponse || !$this->verifyHCaptcha($hCaptchaResponse)) {
+        //     Session::flash('captcha-error', "Please verify that you are not a robot.");
+        //     return redirect()->route('login.page');
+        // }
 
         $credentials = $request->only('password');
         $multi_user_field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'contact_no';
@@ -118,15 +118,15 @@ class LoginController extends Controller
         return Str::lower($request->input('email')) . '|' . $request->ip();
     }
 
-    protected function verifyHCaptcha($response)
-    {
-        $secretKey = env('HCAPTCHA_SECRET_KEY'); // Ensure you have this in your .env file
-        $verificationResponse = Http::asForm()->post('https://hcaptcha.com/siteverify', [
-            'secret' => $secretKey,
-            'response' => $response,
-        ]);
+    // protected function verifyHCaptcha($response)
+    // {
+    //     $secretKey = env('HCAPTCHA_SECRET_KEY'); // Ensure you have this in your .env file
+    //     $verificationResponse = Http::asForm()->post('https://hcaptcha.com/siteverify', [
+    //         'secret' => $secretKey,
+    //         'response' => $response,
+    //     ]);
 
-        return $verificationResponse->json()['success'] ?? false;
-    }
+    //     return $verificationResponse->json()['success'] ?? false;
+    // }
     
 }
