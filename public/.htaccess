@@ -1,10 +1,9 @@
-<Files "index.php">
-    Order Deny,Allow
-    Deny from all
-</Files>
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
 
-# Deny access to other PHP files if necessary
-<Files "*.php">
-    Order Deny,Allow
-    Deny from all
-</Files>
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
