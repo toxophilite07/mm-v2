@@ -1,18 +1,18 @@
 <?php
-namespace App\Http\Middleware;
+// namespace App\Http\Middleware;
 
-use Closure;
+// use Closure;
 
-class BlockIndexPhpAccess
-{
-    public function handle($request, Closure $next)
-    {
-        // Check if the request contains 'index.php'
-        if (strpos($request->getRequestUri(), 'index.php') !== false) {
-            // Redirect to the same route without 'index.php'
-            return redirect()->to(str_replace('index.php', '', $request->getRequestUri()));
-        }
+// class BlockIndexPhpAccess
+// {
+//     public function handle($request, Closure $next)
+//     {
+//         // Check if the request contains 'index.php'
+//         if (strpos($request->getRequestUri(), 'index.php') !== false) {
+//             // Redirect to the same route without 'index.php'
+//             return redirect()->to(str_replace('index.php', '', $request->getRequestUri()));
+//         }
 
-        return $next($request);
-    }
-}
+//         return $next($request);
+//     }
+// }
