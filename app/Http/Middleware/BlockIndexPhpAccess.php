@@ -8,22 +8,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BlockIndexPhpAccess
 {
-    // public function handle($request, Closure $next)
-    // {
-    //     $uri = $request->getRequestUri();
-        
-    //     // Log the requested URI for debugging
-    //     Log::info("Requested URI: " . $uri);
+    public function handle($request, Closure $next)
+    {
+        $uri = $request->getRequestUri();
 
-    //     // Check if the request contains 'index.php'
-    //     if (strpos($uri, 'index.php') !== false) {
-    //         // Log that we're redirecting
-    //         Log::info("Redirecting from: " . $uri);
+        // Temporarily comment out the logging lines to check if this resolves the issue
+        // Log::info("Requested URI: " . $uri);
 
-    //         // Redirect to the same route without 'index.php'
-    //         return redirect()->to(str_replace('index.php', '', $uri));
-    //     }
+        // Check if the request contains 'index.php'
+        if (strpos($uri, 'index.php') !== false) {
+            // Log::info("Redirecting from: " . $uri);
 
-    //     return $next($request);
-    // }
+            // Redirect to the same route without 'index.php'
+            return redirect()->to(str_replace('index.php', '', $uri));
+        }
+
+        return $next($request);
+    }
 }
