@@ -1,14 +1,15 @@
 <IfModule mod_rewrite.c>
-Options +FollowSymLinks
-RewriteEngine On
+    RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+    # Redirect all requests to the 'public' folder without 'index.php'
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L]
 
-RewriteRule ^(.*)$ /public/$1 
-RewriteRule ^(/)?$ public/index.php [L]
+    # Handle missing 'index.php' and redirect to clean URL
+    RewriteCond %{THE_REQUEST} \s/+(index\.php) [NC]
+    RewriteRule ^ /%1 [L,R=301]
 </IfModule>
+
 
 <IfModule mod_headers.c>
     <!-- Header set Content-Security-Policy "
