@@ -35,14 +35,8 @@ RewriteRule ^(/)?$ public/index.php [L]
     Header set X-Frame-Options "SAMEORIGIN"
     Header set X-XSS-Protection "1; mode=block"
     Header set Referrer-Policy "no-referrer"
-
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-Referrer-Policy: no-referrer-when-downgrade
-
 </IfModule>
+
 <RequireAll>
     Require all granted
     Require not ip 127.0.0.1
