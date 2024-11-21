@@ -450,7 +450,7 @@ input[type="password"] {
     </script>
 
     <!-- LOADING FOR PRESSING BUTTON -->
-    <script>
+<!--     <script>
     function handleFormSubmit(event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -470,7 +470,7 @@ input[type="password"] {
             // You can handle any further logic here (e.g., redirect, update UI)
         }, 2000); // Simulating a 2-second delay for demonstration
     }
-    </script>
+    </script> -->
 
     
 </body>
