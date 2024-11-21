@@ -40,6 +40,10 @@
                 <div class="row justify-content-center w-100">
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
+                                <!-- Close button container -->
+                             <div class="close-button-container text-end p-2">
+                                <button type="button" class="btn-close" aria-label="Close" title="Close Form"  onclick="closeForm()"></button>
+                            </div>
                             <div class="card-body">
                                 @if(Route::has('login'))
                                     <p class="text-center fw-bolder mb-2 h4">Reset Password via Email</p>
@@ -57,10 +61,10 @@
                                             @endif
                                         </div>
                                         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between mt-3">
-                                            <button type="submit" class="btn btn-primary py-2 fs-5 w-100 mb-2 mb-md-0 me-md-2 rounded-1">
+                                            <button type="submit" title="Send Password Reset Link" class="btn btn-primary py-2 fs-5 w-100 mb-2 mb-md-0 me-md-2 rounded-1">
                                                 <i class="fa-solid fa-paper-plane"></i> Send Password Reset Link
                                             </button>
-                                            <a href="{{ route('forgot-password-options') }}"  class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                                            <a href="{{ route('forgot-password-options') }}"  class="btn btn-light py-2 fs-5 w-100 rounded-1" title="Back to Options">
                                                 <i class="fa-solid fa-paper-plane"></i> Back to Options
                                             </a>
                                         </div>
@@ -87,6 +91,11 @@
             }
             $(this).addClass('form-submitted').find('button[type=submit]').attr('disabled', true).html('Please wait a moment...');
         });
+
+         //close form
+          function closeForm() {
+        window.location.href = '/forgot-password-options'; // Redirects to the main page or index page
+        }
     </script>
 
     @include('auth.response')

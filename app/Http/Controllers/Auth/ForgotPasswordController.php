@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 use Carbon\Carbon; // Make sure Carbon is imported
 use App\Models\User; 
 
@@ -107,12 +108,74 @@ class ForgotPasswordController extends Controller {
     }
 
     public function sendResetLinkSms(Request $request)
-{
-    // Validation logic and SMS sending logic...
-}
-
+    {
+        $request->validate([
+            'contact_no' => 'required|digits:10|exists:users,contact_no',
+        ]);
     
-    public function getResetPassword($token) {
+        $contact_no = '+63' . $request->contact_no;
+    
+        // Check if a reset request already exists
+        $user = User::where('contact_no', $request->contact_no)->first();
+        if (!$user) {
+            return back()->with('error', 'Phone number is not registered.');
+        }
+    
+        // Check if a reset request was made within the last 24 hours
+        $existingReset = DB::table('password_resets')
+            ->where('email', $user->email)
+            ->where('created_at', '>=', Carbon::now()->subDay())
+            ->first();
+    
+        if ($existingReset) {
+            return back()->with('error', 'You can request a password reset link only once every 24 hours.');
+        }
+    
+        $token = Str::random(64);
+    
+        // Save the token in the database
+        DB::table('password_resets')->updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $token, 'created_at' => Carbon::now()]
+        );
+    
+        // Generate the reset link
+        $resetLink = route('password.reset', ['token' => $token]);
+    
+        // Send the reset link via SMS using Sinch
+        try {
+            $sinchAppKey = env('SINCH_APP_KEY');
+            $sinchAppSecret = env('SINCH_APP_SECRET');
+            $sinchUrl = 'https://sms.api.sinch.com/xms/v1/' . env('SINCH_SERVICE_PLAN_ID') . '/batches';
+    
+            $payload = [
+                'from' => env('SINCH_SENDER_ID'),
+                'to' => [$contact_no],
+                'body' => "Reset your password using the following link: $resetLink",
+            ];
+    
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post($sinchUrl, [
+                'headers' => [
+                    'Authorization' => 'Basic ' . base64_encode("$sinchAppKey:$sinchAppSecret"),
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $payload,
+            ]);
+    
+            if ($response->getStatusCode() !== 201) {
+                throw new \Exception('Failed to send SMS. Status Code: ' . $response->getStatusCode());
+            }
+        } catch (\Exception $e) {
+            \Log::error('SMS sending failed: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send the reset link. Please try again.');
+        }
+    
+        return back()->with('success', 'Password reset link sent successfully via SMS.');
+    }
+     
+    public function getResetPassword($token) 
+    {
         if (Auth::check()) return redirect()->back();
 
         $password_reset_request = DB::table('password_resets')->where('token', $token)->first();
@@ -125,7 +188,8 @@ class ForgotPasswordController extends Controller {
         return view('auth.reset_password', compact('token', 'user'));
     }
 
-    public function postResetPassword(Request $request) {
+    public function postResetPassword(Request $request)
+    {
         $request->validate([
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required'

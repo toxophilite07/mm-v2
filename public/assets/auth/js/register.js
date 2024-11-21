@@ -1,27 +1,13 @@
 
-    // $('#reload').click(function(){
-    //     $.ajax({
-    //         type:'GET',
-    //         url:'reload-captcha',
-    //         success:function(data){
-    //             $(".captcha span").html(data.captcha)
-    //         }
-    //     });
-    // });
-    document.querySelector('#submit-button').addEventListener('click', function (e) {
-        e.preventDefault();
-        // Ensure only form submission happens, no interaction with CAPTCHA
+    $('#reload').click(function(){
+        $.ajax({
+            type:'GET',
+            url:'reload-captcha',
+            success:function(data){
+                $(".captcha span").html(data.captcha)
+            }
+        });
     });
-    
-    document.querySelector('#reload').addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent default action
-        fetch('/reload-captcha') // Replace this with your CAPTCHA reload URL
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.captcha img').src = data;
-            });
-    });
-    
 
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;

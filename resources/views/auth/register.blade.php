@@ -450,7 +450,7 @@ input[type="password"] {
     </script>
 
     <!-- LOADING FOR PRESSING BUTTON -->
-<!--     <script>
+    <!-- <script>
     function handleFormSubmit(event) {
         event.preventDefault(); // Prevent default form submission
 

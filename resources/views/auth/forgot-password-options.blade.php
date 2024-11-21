@@ -8,11 +8,6 @@
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            background: linear-gradient(180deg, rgba(255, 214, 209, 0.8), rgba(255, 214, 209, 0.9)); /* Gradient background */
-        }
         .btn-primary {
             background-color: #F6A5BB;
             border: none;
@@ -50,22 +45,29 @@
             align-items: center;
             justify-content: center;
         }
+        .close-button-container {
+        text-align: right;
+         }
     </style>
 </head>
-<body>
+<body style="background-color: #FFD6D1;">
     <div class="d-flex align-items-center justify-content-center min-vh-100">
         <div class="card floating-shadow">
+            <!-- Close button container -->
+            <div class="close-button-container text-end p-2">
+                <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
+            </div>
             <div class="card-body">
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
                 <div class="d-flex flex-column gap-3">
-                    <a href="{{ URL::to('forgot-password') }}" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
-                        <i class="fa-solid fa-envelope"></i> Reset via Email
+                    <a href="{{ URL::to('forgot-password') }}" title="Send Password Reset Link via Email" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
+                        <i class="fa-solid fa-envelope"></i> Send Password Reset Link via Email
                     </a>
-                    <a href="{{ route('reset-via-sms') }}" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
-                        <i class="fa-solid fa-sms"></i> Reset via SMS
+                    <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
+                        <i class="fa-solid fa-sms"></i> Send Password Reset Link via SMS
                     </a>
-                    <a href="{{ route('login') }}" class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                    <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-arrow-left"></i> Back to Login
                     </a>
                 </div>
@@ -73,7 +75,14 @@
         </div>
     </div>
 
+
     <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+                //close form
+        function closeForm() {
+        window.location.href = '/login'; // Redirects to the main page or index page
+        }
+    </script>
 </body>
 </html>
