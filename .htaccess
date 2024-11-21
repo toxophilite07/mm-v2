@@ -42,8 +42,5 @@ RewriteRule ^(/)?$ public/index.php [L]
     Deny from all
 </Files>
 # Deny access to all .php files
-<FilesMatch "\.php$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
+
 
