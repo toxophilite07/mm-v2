@@ -15,7 +15,7 @@
 </head>
 <body>
     <button class="floating-icon" onclick="toggleChatbox()">
-      
+      <i class="fa-solid fa-comments fa-pulse"></i> <!-- Pulsing Chat Bubbles -->
     </button>
 
     <div class="chatbox" id="chatbox">
