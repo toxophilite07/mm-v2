@@ -8,8 +8,14 @@
     //         }
     //     });
     // });
+    // Prevent default behavior on the CAPTCHA image
+    document.querySelector('.captcha span img').addEventListener('click', function (e) {
+        e.preventDefault();
+    });
+
+    // Handle reload button functionality
     document.getElementById('reload').addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent any default behavior
+        e.preventDefault();
         fetch('/reload-captcha') // Adjust to your reload route if needed
             .then(response => response.text())
             .then(data => {
@@ -17,6 +23,7 @@
             })
             .catch(err => console.error('Error reloading CAPTCHA:', err));
     });
+
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
             let words = inputValue.split(" ");
