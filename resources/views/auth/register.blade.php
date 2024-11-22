@@ -347,7 +347,7 @@ input[type="password"] {
                                         </div>
                                     </div>
 
-                                    <div class="form-group mt-2 mb-2">
+<!--                                     <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
                                             <span>{!! captcha_img('inverse') !!}</span>
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
@@ -358,7 +358,7 @@ input[type="password"] {
                                         @error('captcha')
                                             <label for="" class="text-danger">{{$message}}</label>
                                         @enderror
-                                    </div>
+                                    </div> -->
 
                                     <div class="mb-3 form-check">
                                         <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
