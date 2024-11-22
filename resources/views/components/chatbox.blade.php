@@ -15,7 +15,7 @@
 </head>
 <body>
     <button class="floating-icon" onclick="toggleChatbox()">
-        <i class="fa-solid fa-question-circle"></i>
+      <i class="fa-solid fa-question-circle fa-spin"></i> <!-- Spinning -->
     </button>
 
     <div class="chatbox" id="chatbox">
