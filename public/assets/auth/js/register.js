@@ -23,7 +23,6 @@
             })
             .catch(err => console.error('Error reloading CAPTCHA:', err));
     });
-
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
             let words = inputValue.split(" ");
