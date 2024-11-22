@@ -120,7 +120,7 @@ class RegisterController extends Controller
             'birthdate' => ['required', 'date', 'before:today'],
             'contact_no' => ['nullable', 'regex:/^\d{10,11}$/', 'unique:users,contact_no', 'required_without:email'],
             'role' => ['required', Rule::in(['Health Worker', 'Feminine'])],
-            'captcha' => 'required|captcha',
+            // 'captcha' => 'required|captcha',
             'terms' => 'accepted',
         ];
     
@@ -132,8 +132,8 @@ class RegisterController extends Controller
             'contact_no.regex' => 'The contact number must be 10 or 11 digits.',
             'contact_no.unique' => 'The contact number has already been taken.',
             'unique' => 'The :attribute field has already been taken.',
-            'captcha.required' => 'The captcha field is required.',
-            'captcha.captcha' => 'Invalid captcha.',
+            // 'captcha.required' => 'The captcha field is required.',
+            // 'captcha.captcha' => 'Invalid captcha.',
             'terms' => 'Please read the terms and conditions',
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character. (e.g., @$!%*#?&)',
         ]);
