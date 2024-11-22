@@ -354,9 +354,9 @@ input[type="password"] {
                                         </div>
                                     </div>
                                     <div class="form-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
+                                        <input type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required>
                                         @error('captcha')
-                                            <label for="" class="text-danger">{{$message}}</label>
+                                            <label class="text-danger">{{ $message }}</label>
                                         @enderror
                                     </div>
 
