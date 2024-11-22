@@ -1,26 +1,52 @@
 
-    $('#reload').click(function(){
+    // $('#reload').click(function(){
+    //     $.ajax({
+    //         type:'GET',
+    //         url:'reload-captcha',
+    //         success:function(data){
+    //             $(".captcha span").html(data.captcha)
+    //         }
+    //     });
+    // });
+    $('#reload').click(function (e) {
+        e.preventDefault(); // Prevent any default action
         $.ajax({
-            type:'GET',
-            url:'reload-captcha',
-            success:function(data){
-                $(".captcha span").html(data.captcha)
+            type: 'GET',
+            url: 'reload-captcha',
+            success: function (data) {
+                $(".captcha span").html(data.captcha);
+            },
+            error: function () {
+                console.error('Failed to reload CAPTCHA.');
             }
         });
     });
-
-        // Prevent CAPTCHA image from triggering any action
-        document.getElementById('captchaImage').addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent default click behavior
-            e.stopPropagation(); // Stop event propagation
-        });
     
-        // Prevent image behavior during form submission
-        document.getElementById('sign_up_form').addEventListener('submit', function (e) {
-            const captchaImage = document.getElementById('captchaImage');
-            captchaImage.style.pointerEvents = 'none'; // Ensure the image is non-interactive
-        });
-
+    document.addEventListener('DOMContentLoaded', function () {
+        const captchaImage = document.querySelector('.captcha span img');
+    
+        if (captchaImage) {
+            // Prevent click and touch events on the image
+            captchaImage.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            });
+    
+            captchaImage.addEventListener('touchstart', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            });
+    
+            // Disable context menu (optional)
+            captchaImage.addEventListener('contextmenu', function (event) {
+                event.preventDefault();
+                return false;
+            });
+        }
+    });
+    
 
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
