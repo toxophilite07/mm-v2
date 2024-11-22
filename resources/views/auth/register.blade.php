@@ -346,7 +346,7 @@ input[type="password"] {
                                             @endif
                                         </div>
                                     </div>
-
+                                    <!--captcha image -->
                                     <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
                                             <span style="pointer-events: none;">{!! captcha_img('inverse') !!}</span>
