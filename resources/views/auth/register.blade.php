@@ -107,6 +107,11 @@ input[type="password"] {
         top: 61%; /* Keep centered */
     }
 }
+.captcha span img {
+    pointer-events: none; /* Prevent mouse and touch interactions */
+    user-select: none;    /* Disable text selection */
+    touch-action: none;   /* Disable touch gestures like zoom or pan */
+}
 
 </style>
 </head>
@@ -346,12 +351,11 @@ input[type="password"] {
                                             @endif
                                         </div>
                                     </div>
-                                            
-                                    <!--captcha image -->
-                                   <div class="form-group mt-2 mb-2">
+
+                                    <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
                                             <span>
-                                                <img src="{!! captcha_src('inverse') !!}" id="captchaImage" alt="CAPTCHA Image" style="pointer-events: none;">
+                                                <img src="{!! captcha_src('inverse') !!}" alt="CAPTCHA" style="pointer-events: none;">
                                             </span>
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
                                         </div>
@@ -378,7 +382,7 @@ input[type="password"] {
 
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span>Already have an account? <a class="text-primary fw-bold" href="{{ route('login') }}">Sign in</a></span>
-                                        <button type="submit" class="btn btn-primary no-hover py-2 fs-4 rounded-1">
+                                        <button type="submit" id="submit-button" class="btn btn-primary no-hover py-2 fs-4 rounded-1">
                                             <i class="fa-regular fa-circle-check mr-1"></i> Confirm Registration
                                             <span id="loading-indicator" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                         </button>
@@ -474,5 +478,7 @@ input[type="password"] {
         }, 2000); // Simulating a 2-second delay for demonstration
     }
     </script> -->
+
+    
 </body>
 </html>
