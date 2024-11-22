@@ -346,10 +346,13 @@ input[type="password"] {
                                             @endif
                                         </div>
                                     </div>
+                                            
                                     <!--captcha image -->
-                                    <div class="form-group mt-2 mb-2">
+                                   <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
-                                            <span style="pointer-events: none;">{!! captcha_img('inverse') !!}</span>
+                                            <span>
+                                                <img src="{!! captcha_src('inverse') !!}" id="captchaImage" alt="CAPTCHA Image" style="pointer-events: none;">
+                                            </span>
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
                                         </div>
                                     </div>
