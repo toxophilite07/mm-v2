@@ -471,7 +471,5 @@ input[type="password"] {
         }, 2000); // Simulating a 2-second delay for demonstration
     }
     </script> -->
-
-    
 </body>
 </html>
