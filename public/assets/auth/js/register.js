@@ -1,28 +1,27 @@
 
-    // $('#reload').click(function(){
-    //     $.ajax({
-    //         type:'GET',
-    //         url:'reload-captcha',
-    //         success:function(data){
-    //             $(".captcha span").html(data.captcha)
-    //         }
-    //     });
-    // });
-    // Prevent default behavior on the CAPTCHA image
-    document.querySelector('.captcha span img').addEventListener('click', function (e) {
-        e.preventDefault();
+    $('#reload').click(function(){
+        $.ajax({
+            type:'GET',
+            url:'reload-captcha',
+            success:function(data){
+                $(".captcha span").html(data.captcha)
+            }
+        });
     });
 
-    // Handle reload button functionality
-    document.getElementById('reload').addEventListener('click', function (e) {
-        e.preventDefault();
-        fetch('/reload-captcha') // Adjust to your reload route if needed
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.captcha span').innerHTML = data;
-            })
-            .catch(err => console.error('Error reloading CAPTCHA:', err));
-    });
+        // Prevent CAPTCHA image from triggering any action
+        document.getElementById('captchaImage').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default click behavior
+            e.stopPropagation(); // Stop event propagation
+        });
+    
+        // Prevent image behavior during form submission
+        document.getElementById('sign_up_form').addEventListener('submit', function (e) {
+            const captchaImage = document.getElementById('captchaImage');
+            captchaImage.style.pointerEvents = 'none'; // Ensure the image is non-interactive
+        });
+
+
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
             let words = inputValue.split(" ");
