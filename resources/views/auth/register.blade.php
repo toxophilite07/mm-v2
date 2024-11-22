@@ -107,11 +107,6 @@ input[type="password"] {
         top: 61%; /* Keep centered */
     }
 }
-.captcha span img {
-    pointer-events: none; /* Prevent mouse and touch interactions */
-    user-select: none;    /* Disable text selection */
-    touch-action: none;   /* Disable touch gestures like zoom or pan */
-}
 
 </style>
 </head>
@@ -354,16 +349,14 @@ input[type="password"] {
 
                                     <div class="form-group mt-2 mb-2">
                                         <div class="captcha">
-                                            <span>
-                                                <img src="{!! captcha_src('inverse') !!}" alt="CAPTCHA" style="pointer-events: none;">
-                                            </span>
+                                            <span>{!! captcha_img('inverse') !!}</span>
                                             <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>
                                         </div>
                                     </div>
                                     <div class="form-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required>
+                                        <input type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
                                         @error('captcha')
-                                            <label class="text-danger">{{ $message }}</label>
+                                            <label for="" class="text-danger">{{$message}}</label>
                                         @enderror
                                     </div>
 
@@ -384,7 +377,7 @@ input[type="password"] {
                                         <span>Already have an account? <a class="text-primary fw-bold" href="{{ route('login') }}">Sign in</a></span>
                                         <button type="submit" id="submit-button" class="btn btn-primary no-hover py-2 fs-4 rounded-1">
                                             <i class="fa-regular fa-circle-check mr-1"></i> Confirm Registration
-                                            <span id="loading-indicator" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                         </button>
                                     </div>
                                         </form>
@@ -455,30 +448,5 @@ input[type="password"] {
         strengthIndicator.style.color = strength === 'Strong' ? 'green' : (strength === 'Moderate' ? 'orange' : 'red');
     }
     </script>
-
-    <!-- LOADING FOR PRESSING BUTTON -->
-    <!-- <script>
-    function handleFormSubmit(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        const submitButton = document.getElementById('submit-button');
-        const loadingIndicator = document.getElementById('loading-indicator');
-
-        // Show loading indicator
-        loadingIndicator.classList.remove('d-none');
-        submitButton.disabled = true; // Disable the button to prevent multiple submissions
-
-        // Simulate form submission (replace this with your actual submission logic)
-        setTimeout(() => {
-            // After form submission logic, you can hide the loading indicator
-            loadingIndicator.classList.add('d-none');
-            submitButton.disabled = false; // Re-enable the button if needed
-
-            // You can handle any further logic here (e.g., redirect, update UI)
-        }, 2000); // Simulating a 2-second delay for demonstration
-    }
-    </script> -->
-
-    
 </body>
 </html>
