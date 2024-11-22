@@ -377,7 +377,6 @@ input[type="password"] {
                                         <span>Already have an account? <a class="text-primary fw-bold" href="{{ route('login') }}">Sign in</a></span>
                                         <button type="submit" id="submit-button" class="btn btn-primary no-hover py-2 fs-4 rounded-1">
                                             <i class="fa-regular fa-circle-check mr-1"></i> Confirm Registration
-                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                         </button>
                                     </div>
                                         </form>
