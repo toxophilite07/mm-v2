@@ -53,7 +53,7 @@
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <input type="text" id="address" name="address" list="addressOptions" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Type or select your address" oninput="handleInputCapitalize(event)" required>
+                                                <input type="text" id="address" name="address" list="addressOptions" value="{{ $user->address }}" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Type or select your address" oninput="handleInputCapitalize(event)" required>
                                                         
                                                         <!-- Datalist for address options -->
                                                         <datalist id="addressOptions">
