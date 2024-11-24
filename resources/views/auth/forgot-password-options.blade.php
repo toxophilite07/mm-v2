@@ -45,32 +45,18 @@
             align-items: center;
             justify-content: center;
         }
-        .close-button-container, .close-button-container-2 {
-        display: flex;
-        align-items: center; /* Vertically centers the buttons */
-        justify-content: space-between; /* Adjusts spacing between buttons */
-    }
-
-    .btn-close, .btn {
-        font-size: 1rem; /* Ensures consistent size */
-    }
+        .close-button-container {
+        text-align: right;
+         }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
     <div class="d-flex align-items-center justify-content-center min-vh-100">
         <div class="card floating-shadow">
-        <div class="d-flex justify-content-between align-items-center p-2">
-            <!-- Left arrow button -->
-            <div class="close-button-container-2">
-                <button type="button" class="btn" aria-label="Back" title="Go Back" onclick="closeForm()">
-                    &larr; <!-- Left arrow symbol -->
-                </button>
-            </div>
-            <!-- Close button -->
-            <div class="close-button-container">
+            <!-- Close button container -->
+            <div class="close-button-container text-end p-2">
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
-        </div>
             <div class="card-body">
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
