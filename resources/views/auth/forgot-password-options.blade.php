@@ -45,37 +45,32 @@
             align-items: center;
             justify-content: center;
         }
- .close-button-container {
-        text-align: right;
+        .close-button-container, .close-button-container-2 {
+        display: flex;
+        align-items: center; /* Vertically centers the buttons */
+        justify-content: space-between; /* Adjusts spacing between buttons */
     }
 
-    .close-button-container-2 {
-        text-align: left;
-    }
-
-    .arrow-left {
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    .arrow-left::before {
-        content: "←"; /* Use an arrow character */
-        font-size: 1.5rem;
+    .btn-close, .btn {
+        font-size: 1rem; /* Ensures consistent size */
     }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
     <div class="d-flex align-items-center justify-content-center min-vh-100">
         <div class="card floating-shadow">
-            <!-- Close button container -->
-            <div class="close-button-container text-end p-2">
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <!-- Left arrow button -->
+            <div class="close-button-container-2">
+                <button type="button" class="btn" aria-label="Back" title="Go Back" onclick="closeForm()">
+                    &larr; <!-- Left arrow symbol -->
+                </button>
+            </div>
+            <!-- Close button -->
+            <div class="close-button-container">
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
-            <div class="close-button-container-2 text-start p-2">
-                <button type="button" class="arrow-left" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
-            </div>
+        </div>
             <div class="card-body">
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
@@ -86,9 +81,9 @@
                     <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-sms"></i> Send Password Reset Link via SMS
                     </a>
-                    <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                    <!-- <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-arrow-left"></i> Back to Login
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>
