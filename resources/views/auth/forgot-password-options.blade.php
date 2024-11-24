@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Menstrual Monitoring App :: Forgot Password Options.</title>
+    <title>Menstrual Monitoring App :: Forgot Password Options</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
@@ -48,9 +48,6 @@
         .close-button-container {
         text-align: right;
          }
-         .close-button-container {
-        text-align: left;
-         }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
@@ -61,7 +58,7 @@
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
             <div class="close-button-container text-end p-2">
-                <button type="button" class="btn-close" aria-label="Close" title="Close Form" <a href="{{ route('login') }}"></button></a>
+                <button type="button" class="arrow-left" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
             <div class="card-body">
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
@@ -73,9 +70,9 @@
                     <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-sms"></i> Send Password Reset Link via SMS
                     </a>
-                    <!-- <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                    <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-arrow-left"></i> Back to Login
-                    </a> -->
+                    </a>
                 </div>
             </div>
         </div>
