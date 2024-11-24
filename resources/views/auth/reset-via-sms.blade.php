@@ -105,7 +105,7 @@
 
                 //close form
         function closeForm() {
-        window.location.href = '/forgot-password-options'; // Redirects to the main page or index page
+        window.location.href = '/login'; // Redirects to the main page or index page
         }
     </script>
 
