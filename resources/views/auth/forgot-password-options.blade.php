@@ -48,6 +48,9 @@
         .close-button-container {
         text-align: right;
          }
+         .close-button-container {
+        text-align: left;
+         }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
@@ -56,6 +59,9 @@
             <!-- Close button container -->
             <div class="close-button-container text-end p-2">
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
+            </div>
+            <div class="close-button-container text-end p-2">
+                <button type="button" class="btn-close" aria-label="Close" title="Close Form" <a href="{{ route('login') }}"></button></a>
             </div>
             <div class="card-body">
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
@@ -67,9 +73,9 @@
                     <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-sms"></i> Send Password Reset Link via SMS
                     </a>
-                    <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
+                    <!-- <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-arrow-left"></i> Back to Login
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>
