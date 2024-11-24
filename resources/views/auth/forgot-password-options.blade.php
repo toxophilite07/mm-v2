@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Menstrual Monitoring App :: Forgot Password Options</title>
+    <title>Menstrual Monitoring App :: Forgot Password Options.</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
