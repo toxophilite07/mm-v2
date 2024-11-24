@@ -45,9 +45,25 @@
             align-items: center;
             justify-content: center;
         }
-        .close-button-container {
+ .close-button-container {
         text-align: right;
-         }
+    }
+
+    .close-button-container-2 {
+        text-align: left;
+    }
+
+    .arrow-left {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .arrow-left::before {
+        content: "←"; /* Use an arrow character */
+        font-size: 1.5rem;
+    }
     </style>
 </head>
 <body style="background-color: #FFD6D1;">
@@ -57,7 +73,7 @@
             <div class="close-button-container text-end p-2">
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
-            <div class="close-button-container text-end p-2">
+            <div class="close-button-container-2 text-start p-2">
                 <button type="button" class="arrow-left" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
             <div class="card-body">
