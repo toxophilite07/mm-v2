@@ -61,23 +61,11 @@
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
             <div class="card-body">
-            @if(request('error') === 'expired')
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="flash-message">
+                @if(request('error') === 'expired')
+                <div class="alert alert-danger text-center" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; padding: 10px;">
                     <strong>This password reset link has expired. Please request a new one.</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-
-                <script>
-                    // Make the message flash
-                    const flashMessage = document.getElementById('flash-message');
-                    if (flashMessage) {
-                        setInterval(() => {
-                            flashMessage.style.visibility = flashMessage.style.visibility === 'hidden' ? 'visible' : 'hidden';
-                        }, 500); // Toggle visibility every 500ms
-                    }
-                </script>
                 @endif
-
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
                 <div class="d-flex flex-column gap-3">
