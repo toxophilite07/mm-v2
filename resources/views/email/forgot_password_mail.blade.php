@@ -218,6 +218,9 @@
                                                                     </span>
                                                                 </a>
                                                             </div>
+                                                            <p style="font-size: 14px; line-height: 21px; color: #666666;">
+                                                               Please note that this link will expire in 3 minutes. If the link expires, you can request a new password reset.
+                                                            </p>
                                                         </td>
                                                     </tr>
                                                 </tbody>
