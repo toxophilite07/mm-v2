@@ -2,9 +2,9 @@
     Options +FollowSymLinks
     RewriteEngine On
 
-    # Redirect direct access to /public/index.php to the root
+    # Block direct access to /public/index.php
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/public/index\.php [NC]
-    RewriteRule ^public/index\.php / [L,R=301]
+    RewriteRule ^public/index\.php$ - [F,L]
 
     # Redirect any URL containing /public/ to root
     RewriteCond %{REQUEST_URI} ^/public/
@@ -21,6 +21,7 @@
     # Redirect root URL to public/index.php
     RewriteRule ^/?$ public/index.php [L]
 </IfModule>
+
 
 </IfModule>
 
