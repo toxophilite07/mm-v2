@@ -62,7 +62,7 @@
             </div>
             <div class="card-body">
                 @if(request('error') === 'expired')
-                <div class="alert alert-danger text-center" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; padding: 10px;">
+                <div class="alert alert-danger text-center" role="alert">
                     <strong>This password reset link has expired. Please request a new one.</strong>
                 </div>
                 @endif
