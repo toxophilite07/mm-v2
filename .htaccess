@@ -2,14 +2,43 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !index\.php[0-9]+$
-RewriteCond %{REQUEST_FILENAME}.php -f
+Options +FollowSymLinks
+RewriteEngine On
 
-RewriteRule ^(.*)$ /public/$1 
-RewriteRule ^(/)?$ public/index.php [L]
+# RewriteCond %{REQUEST_URI} !^/public/
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !index\.php[0-9]+$
+# RewriteCond %{REQUEST_FILENAME}.php -f
+
+# RewriteRule ^(.*)$ /public/$1 
+# RewriteRule ^(/)?$ public/index.php [L]
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Redirect any request containing public/index.php to the root URL
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/public/index\.php [NC]
+RewriteRule ^public/index\.php / [L,R=301]
+
+# Redirect any request containing index.php (even without 'public/') to the root URL
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index\.php [NC]
+RewriteRule ^index\.php / [L,R=301]
+
+# Ensure requests are not pointing to /public/ directly
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Check if the requested resource is not a directory
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Check if the requested resource is not a file
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Redirect all requests to the public directory
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Redirect root URL to public/index.php
+RewriteRule ^/?$ public/index.php [L]
+
 </IfModule>
 
 <IfModule mod_headers.c>
