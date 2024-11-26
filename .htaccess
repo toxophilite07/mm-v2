@@ -1,25 +1,15 @@
 <IfModule mod_rewrite.c>
-    Options +FollowSymLinks
-    RewriteEngine On
+Options +FollowSymLinks
+RewriteEngine On
 
-    # Block direct access to /public/index.php
-    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/public/index\.php [NC]
-    RewriteRule ^public/index\.php$ - [F,L]
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !index\.php[0-9]+$
+RewriteCond %{REQUEST_FILENAME}.php -f
 
-    # Redirect any URL containing /public/ to root
-    RewriteCond %{REQUEST_URI} ^/public/
-    RewriteRule ^public/(.*)$ /$1 [L,R=301]
-
-    # Ensure Laravel routing processes only non-existent files or directories
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-
-    # Handle all other routes through Laravel
-    RewriteRule ^(.*)$ /public/$1 [L]
-
-    # Redirect root URL to public/index.php
-    RewriteRule ^/?$ public/index.php [L]
+RewriteRule ^(.*)$ /public/$1 
+RewriteRule ^(/)?$ public/index.php [L]
 </IfModule>
 
 
