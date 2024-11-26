@@ -217,11 +217,11 @@
                                                                         <span style="font-size: 18px; line-height: 21.6px;">Reset Password</span>
                                                                     </span>
                                                                 </a>
-                                                            </div>
-                                                            <p style="font-size: 14px; line-height: 21px; color: #666666;">
-                                                               Please note that this link will expire in 3 minutes. If the link expires, you can request a new password reset.
-                                                            </p>
+                                                            </di>                    
                                                         </td>
+                                                            <p style="font-size: 14px; line-height: 21px; color: #666666;">
+                                                               Please note that this link will expire in 3 minutes. If the link expires, you can request a new password reset within 24 hours.
+                                                            </p>    
                                                     </tr>
                                                 </tbody>
                                             </table>
