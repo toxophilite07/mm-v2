@@ -185,7 +185,7 @@ class ForgotPasswordController extends Controller {
 
     // Check if the token is expired
     $createdAt = Carbon::parse($password_reset_request->created_at);
-    if ($createdAt->addHours(24)->isPast()) {
+    if ($createdAt->addMinutes(10)->isPast()) {
         return redirect('/forgot-password')->with('post-reset-password-error', 'This password reset link has expired.');
     }
 
