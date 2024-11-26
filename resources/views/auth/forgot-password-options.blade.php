@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .btn-primary {
@@ -62,9 +63,15 @@
             </div>
             <div class="card-body">
                 @if(request('error') === 'expired')
-                <div class="alert alert-danger text-center" role="alert">
-                    <strong>This password reset link has expired. Please request a new one.</strong>
-                </div>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Expired Link',
+                            text: 'This password reset link has expired. Please request a new one.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        });
+                    </script>
                 @endif
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
