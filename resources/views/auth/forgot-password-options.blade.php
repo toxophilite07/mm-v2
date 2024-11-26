@@ -65,7 +65,9 @@
                 @if(request('error') === 'expired')
                     <script>
                         Swal.fire({
-                            icon: 'error',
+                            imageWidth: 120, // Adjust image width as needed
+                            imageHeight: 120, // Adjust image height as needed
+                            imageClass: 'animated-icon', // Add the animation class here,
                             title: 'Expired Link',
                             text: 'This password reset link has expired. Please request a new one.',
                             showConfirmButton: true,
