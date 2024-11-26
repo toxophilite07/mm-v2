@@ -207,7 +207,11 @@ class ForgotPasswordController extends Controller {
             ->select(['email', 'first_name'])
             ->first();
     
-        return view('auth.reset_password', compact('token', 'user'));
+            return redirect('/forgot-password-options?error=expired')->withHeaders([
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+                'Pragma' => 'no-cache',
+            ]);
+            
     }
     
     public function postResetPassword(Request $request)
