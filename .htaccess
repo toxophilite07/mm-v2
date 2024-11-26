@@ -7,7 +7,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteRule ^(.*)$ /public/$1 
-RewriteRule ^(/)?$ public/index.php [L]
+RewriteRule ^(/)?$ public/index.php?page=$1 [L,QSA] [L]
 </IfModule>
 
 <<IfModule mod_headers.c>
@@ -30,7 +30,6 @@ RewriteRule ^(/)?$ public/index.php [L]
     # Route non-existent files through index.php (optional for routing)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
 </IfModule>
 
 <Files .env>
