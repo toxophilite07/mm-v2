@@ -8,8 +8,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !index\.php[0-9]+$
 RewriteCond %{REQUEST_FILENAME}.php -f
 
-#RewriteRule ^(.*)$ /public/$1 
-RewriteRule ^(/)?$ public/index.php [L]
+RewriteRule ^(.*)$ /public/$1 
+#RewriteRule ^(/)?$ public/index.php [L]
 </IfModule>
 
 
