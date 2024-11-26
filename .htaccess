@@ -1,43 +1,27 @@
 <IfModule mod_rewrite.c>
-Options +FollowSymLinks
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
 
-Options +FollowSymLinks
-RewriteEngine On
+    # Redirect direct access to /public/index.php to the root
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/public/index\.php [NC]
+    RewriteRule ^public/index\.php / [L,R=301]
 
-# RewriteCond %{REQUEST_URI} !^/public/
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !index\.php[0-9]+$
-# RewriteCond %{REQUEST_FILENAME}.php -f
+    # Redirect any URL containing /public/ to root
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteRule ^public/(.*)$ /$1 [L,R=301]
 
-# RewriteRule ^(.*)$ /public/$1 
-# RewriteRule ^(/)?$ public/index.php [L]
-# Enable Rewrite Engine
-RewriteEngine On
+    # Ensure Laravel routing processes only non-existent files or directories
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
 
-# Redirect any request containing public/index.php to the root URL
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/public/index\.php [NC]
-RewriteRule ^public/index\.php / [L,R=301]
+    # Handle all other routes through Laravel
+    RewriteRule ^(.*)$ /public/$1 [L]
 
-# Redirect any request containing index.php (even without 'public/') to the root URL
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index\.php [NC]
-RewriteRule ^index\.php / [L,R=301]
-
-# Ensure requests are not pointing to /public/ directly
-RewriteCond %{REQUEST_URI} !^/public/
-
-# Check if the requested resource is not a directory
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Check if the requested resource is not a file
-RewriteCond %{REQUEST_FILENAME} !-f
-
-# Redirect all requests to the public directory
-RewriteRule ^(.*)$ /public/$1 [L]
-
-# Redirect root URL to public/index.php
-RewriteRule ^/?$ public/index.php [L]
+    # Redirect root URL to public/index.php
+    RewriteRule ^/?$ public/index.php [L]
+</IfModule>
 
 </IfModule>
 
