@@ -175,37 +175,61 @@ class ForgotPasswordController extends Controller {
     }
      
     public function getResetPassword($token) 
-    {
-        if (Auth::check()) return redirect()->back();
+{
+    if (Auth::check()) return redirect()->back();
 
-        $password_reset_request = DB::table('password_resets')->where('token', $token)->first();
-        if (!$password_reset_request) abort(404);
+    $password_reset_request = DB::table('password_resets')->where('token', $token)->first();
 
-        $user = User::where('email', $password_reset_request->email)
-            ->select(['email', 'first_name'])
-            ->first();
+    // Check if the token exists
+    if (!$password_reset_request) abort(404);
 
-        return view('auth.reset_password', compact('token', 'user'));
+    // Check if the token is expired
+    $createdAt = Carbon::parse($password_reset_request->created_at);
+    if ($createdAt->addHours(24)->isPast()) {
+        return redirect('/forgot-password')->with('post-reset-password-error', 'This password reset link has expired.');
     }
 
-    public function postResetPassword(Request $request)
-    {
-        $request->validate([
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ]);
+    $user = User::where('email', $password_reset_request->email)
+        ->select(['email', 'first_name'])
+        ->first();
 
-        $check_request = DB::table('password_resets')
-            ->where([
-                'email' => $request->email, 
-                'token' => $request->token
-            ])->get()->last();
+    return view('auth.reset_password', compact('token', 'user'));
+}
 
-        if (!$check_request) return back()->with('post-reset-password-error', 'Invalid token!');
+public function postResetPassword(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'token' => 'required',
+        'password' => 'required|string|min:6|confirmed',
+        'password_confirmation' => 'required'
+    ]);
 
-        User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+    $check_request = DB::table('password_resets')
+        ->where([
+            'email' => $request->email, 
+            'token' => $request->token
+        ])->first();
+
+    // Check if the token is valid
+    if (!$check_request) {
+        return back()->with('post-reset-password-error', 'Invalid or expired token!');
+    }
+
+    // Check if the token has expired
+    $createdAt = Carbon::parse($check_request->created_at);
+    if ($createdAt->addHours(24)->isPast()) {
         DB::table('password_resets')->where(['email' => $request->email])->delete();
-
-        return redirect('/login')->with('post-reset-password', 'Your password has been changed!');
+        return back()->with('post-reset-password-error', 'This password reset link has expired.');
     }
+
+    // Update the user's password
+    User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+
+    // Delete the token after use
+    DB::table('password_resets')->where(['email' => $request->email])->delete();
+
+    return redirect('/login')->with('post-reset-password', 'Your password has been changed!');
+}
+
 }
