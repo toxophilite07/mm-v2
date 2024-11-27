@@ -71,7 +71,7 @@
                             drag: false,
                             position: "topCenter",
                             title: 'Oops',
-                            message: 'This password reset link has expired. Please request a new one.',
+                            message: 'This password reset link has expired. Please try to request a new one.',
                             transitionIn: "bounceInDown",
                             transitionOut: "fadeOutUp",
                         });
