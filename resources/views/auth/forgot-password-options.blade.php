@@ -7,9 +7,9 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
 
     <style>
         .btn-primary {
@@ -64,16 +64,17 @@
             <div class="card-body">
                 @if(request('error') === 'expired')
                     <script>
-                         iziToast.error({
-                        close: false,
-                        displayMode: 2,
-                        layout: 2,
-                        drag: false,
-                        position: "topCenter",
-                        title: 'Expired Link',
-                        text: 'This password reset link has expired. Please request a new one.',
-                        transitionIn: "bounceInDown",
-                        transitionOut: "fadeOutUp",
+                        iziToast.error({
+                            close: false,
+                            displayMode: 2,
+                            layout: 2,
+                            drag: false,
+                            position: "topCenter",
+                            title: 'Expired Link',
+                            message: 'This password reset link has expired. Please request a new one.',
+                            transitionIn: "bounceInDown",
+                            transitionOut: "fadeOutUp",
+                        });
                     </script>
                 @endif
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
