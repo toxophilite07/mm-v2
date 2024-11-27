@@ -1,52 +1,13 @@
 
-    // $('#reload').click(function(){
-    //     $.ajax({
-    //         type:'GET',
-    //         url:'reload-captcha',
-    //         success:function(data){
-    //             $(".captcha span").html(data.captcha)
-    //         }
-    //     });
-    // });
-    $('#reload').click(function (e) {
-        e.preventDefault(); // Prevent any default action
+    $('#reload').click(function(){
         $.ajax({
-            type: 'GET',
-            url: 'reload-captcha',
-            success: function (data) {
-                $(".captcha span").html(data.captcha);
-            },
-            error: function () {
-                console.error('Failed to reload CAPTCHA.');
+            type:'GET',
+            url:'reload-captcha',
+            success:function(data){
+                $(".captcha span").html(data.captcha)
             }
         });
     });
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const captchaImage = document.querySelector('.captcha span img');
-    
-        if (captchaImage) {
-            // Prevent click and touch events on the image
-            captchaImage.addEventListener('click', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-            });
-    
-            captchaImage.addEventListener('touchstart', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-            });
-    
-            // Disable context menu (optional)
-            captchaImage.addEventListener('contextmenu', function (event) {
-                event.preventDefault();
-                return false;
-            });
-        }
-    });
-    
 
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
@@ -185,14 +146,25 @@
         // If the form is invalid, prevent submission and show SweetAlert
         if (!isValid) {
             event.preventDefault(); // Prevent form submission
-            Swal.fire({
-                imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
-                imageWidth: 120, // Adjust image width as needed
-                imageHeight: 120, // Adjust image height as needed
-                imageClass: 'animated-icon', // Add the animation class here
-                title: 'Please double-check your credentials before submitting the form',
-                html: errorMessage || 'Make sure all required fields are filled in correctly.',
-                confirmButtonText: 'OK'
+            // Swal.fire({
+            //     imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+            //     imageWidth: 120, // Adjust image width as needed
+            //     imageHeight: 120, // Adjust image height as needed
+            //     imageClass: 'animated-icon', // Add the animation class here
+            //     title: 'Please double-check your credentials before submitting the form',
+            //     html: errorMessage || 'Make sure all required fields are filled in correctly.',
+            //     confirmButtonText: 'OK'
+            // });
+            iziToast.error({
+                close: false,
+                displayMode: 2,
+                layout: 2,
+                drag: false,
+                position: "topCenter",
+                title: 'Oops',
+                message: 'Please double-check your credentials before submitting the form.',
+                transitionIn: "bounceInDown",
+                transitionOut: "fadeOutUp",
             });
         }
         
