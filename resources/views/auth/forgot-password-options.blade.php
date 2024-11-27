@@ -64,7 +64,7 @@
             <div class="card-body">
                 @if(request('error') === 'expired')
                     <script>
-                         iziToast.success({
+                         iziToast.error({
                         close: false,
                         displayMode: 2,
                         layout: 2,
