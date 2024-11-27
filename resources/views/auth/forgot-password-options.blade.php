@@ -70,7 +70,7 @@
                             layout: 2,
                             drag: false,
                             position: "topCenter",
-                            title: 'Expired Link',
+                            title: 'Oops',
                             message: 'This password reset link has expired. Please request a new one.',
                             transitionIn: "bounceInDown",
                             transitionOut: "fadeOutUp",
