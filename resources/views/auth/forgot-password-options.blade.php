@@ -64,16 +64,16 @@
             <div class="card-body">
                 @if(request('error') === 'expired')
                     <script>
-                        Swal.fire({
-                            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
-                            imageWidth: 120, // Adjust image width as needed
-                            imageHeight: 120, // Adjust image height as needed
-                            imageClass: 'animated-icon', // Add the animation class here,
-                            title: 'Expired Link',
-                            text: 'This password reset link has expired. Please request a new one.',
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK',
-                        });
+                         iziToast.success({
+                        close: false,
+                        displayMode: 2,
+                        layout: 2,
+                        drag: false,
+                        position: "topCenter",
+                        title: 'Expired Link',
+                        text: 'This password reset link has expired. Please request a new one.',
+                        transitionIn: "bounceInDown",
+                        transitionOut: "fadeOutUp",
                     </script>
                 @endif
                 <h4 class="text-center fw-bold mb-3">Forgot Password</h4>
