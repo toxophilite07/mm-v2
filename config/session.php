@@ -66,15 +66,22 @@ return [
     | HttpOnly, Secure, and SameSite attributes.
     |
     */
+    'csrf_cookie' => [
+    'http_only' => true, // Makes the CSRF cookie HTTP-only.
+    ],
+
     'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_').'_session'),
     // 'cookie' => '',
 
     'path' => '/',
     'domain' => env('SESSION_DOMAIN'),
 
-    'secure' => env('SESSION_SECURE_COOKIE', true), // Enforces cookies over HTTPS
-    'http_only' => true,                            // Makes cookies inaccessible to JavaScript
-    'same_site' => 'Strict',                        // Limits cookies to same-site requests
+    // 'secure' => env('SESSION_SECURE_COOKIE', true), // Enforces cookies over HTTPS
+    // 'http_only' => true,                            // Makes cookies inaccessible to JavaScript
+    // 'same_site' => 'Strict',                        // Limits cookies to same-site requests
+    'secure' => true,       // Only send over HTTPS.
+    'http_only' => true,    // Hide cookies from JavaScript.
+    'same_site' => 'strict', // Avoid cross-site transmission.
 
     /*
     |----------------------------------------------------------------------
