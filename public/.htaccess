@@ -9,10 +9,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
-    # Block access to .php files with numbers (e.g., index.php1, index.php2, etc.)
-    RewriteCond %{REQUEST_FILENAME} ^(.*)\.php[0-9]+$
-    RewriteRule ^(.*)$ - [F,L]
-
     # Remove .php extension from URLs
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
