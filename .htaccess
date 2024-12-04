@@ -5,8 +5,8 @@
     # Prevent access to the .env file
     RewriteRule ^\.env$ - [F,L]
 
-    # Prevent access to index.php followed by any number (e.g., index.php7, index.php2, etc.)
-    RewriteRule ^index\.php\d+$ - [F,L]
+    # Block access to any index.php followed by digits or invalid characters
+    RewriteRule ^index\.php[\d\W]+$ - [F,L]  # Deny access to index.php with numbers or non-alphanumeric characters (e.g., index.php7, index.php1')
 
     # Ensure all non-public requests are directed to the /public/ directory
     RewriteCond %{REQUEST_URI} !^/public/
