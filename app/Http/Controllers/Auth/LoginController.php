@@ -47,7 +47,7 @@ class LoginController extends Controller
             Session::flash('login-error', "Too many login attempts. Please wait $formattedTime before trying again.");
             return redirect()->route('login.page');
         }
-        Check hCaptcha response
+       // Check hCaptcha response
         $hCaptchaResponse = $request->input('h-captcha-response');
         if (!$hCaptchaResponse || !$this->verifyHCaptcha($hCaptchaResponse)) {
             Session::flash('captcha-error', "Please verify that you are not a robot.");
