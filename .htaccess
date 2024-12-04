@@ -2,17 +2,18 @@
     Options +FollowSymLinks
     RewriteEngine On
 
-    # Prevent access to the .env file
+    # Block access to .env file
     RewriteRule ^\.env$ - [F,L]
 
-    # Block access to any index.php followed by digits or invalid characters
-    RewriteRule ^index\.php[\d\W]+$ - [F,L]  # Deny access to index.php with numbers or non-alphanumeric characters (e.g., index.php7, index.php1')
+    # Remove .php extension from URLs
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^([a-zA-Z0-9_-]+)$ $1.php [L]
 
     # Ensure all non-public requests are directed to the /public/ directory
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-
     RewriteRule ^(.*)$ /public/$1 [L]
 
     # Direct the root (/) to the public/index.php
