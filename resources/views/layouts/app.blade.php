@@ -125,7 +125,7 @@
     </script>
     <script>
           // Fetch session lifetime from Laravel config
-        var sessionLifetimeMinutes = {{ config('session.lifetime', 5) }}; // Default to 1 minute if not set
+        var sessionLifetimeMinutes = {{ config('session.lifetime', 1) }}; // Default to 1 minute if not set
         var sessionLifetime = sessionLifetimeMinutes * 60 * 1000; // Convert minutes to milliseconds
 
         // Function to handle session expiration
