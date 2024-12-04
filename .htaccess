@@ -1,15 +1,20 @@
 <IfModule mod_rewrite.c>
-Options +FollowSymLinks
-RewriteEngine On
+    Options +FollowSymLinks
+    RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !^/public/ 
+    # Prevent access to the .env file
+    RewriteRule ^\.env$ - [F,L]
 
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+    # Prevent access to index.php followed by any number (e.g., index.php7, index.php2, etc.)
+    RewriteRule ^index\.php\d+$ - [F,L]
 
+    # Ensure all non-public requests are directed to the /public/ directory
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
 
+    RewriteRule ^(.*)$ /public/$1 [L]
 
-RewriteRule ^(.*)$ /public/$1 
-#RewriteRule ^ index.php [L]
-RewriteRule ^(/)?$ public/index.php [L] 
+    # Direct the root (/) to the public/index.php
+    RewriteRule ^(/)?$ public/index.php [L]
 </IfModule>
