@@ -86,7 +86,9 @@
 
             <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between">
                 <p class="text-muted text-center text-md-left">Copyright © {{ date('Y') }} <a href="#" target="_self">MCC</a>. All rights reserved</p>
-                <p class="text-muted text-center text-md-left mb-0 d-none d-md-block">Powered by: MCC Dev Team</p>
+                <p class="text-muted text-center text-md-left mb-0 d-none d-md-block">
+                    Powered by: <a href="mailto:nelbanbetache@gmail.com">MCC Dev Team</a>
+                </p>
             </footer>
         </div>
     </div>
@@ -99,6 +101,7 @@
     <script src="{{ asset('assets/izitoast/iziToast.min.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/notifications.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function handleInputCapitalize(e) {
             let inputValue = e.target.value;
@@ -120,7 +123,45 @@
             input.value = phoneNumber;
         }
     </script>
+    <script>
+          // Fetch session lifetime from Laravel config
+        var sessionLifetimeMinutes = {{ config('session.lifetime', 5) }}; // Default to 1 minute if not set
+        var sessionLifetime = sessionLifetimeMinutes * 60 * 1000; // Convert minutes to milliseconds
 
+        // Function to handle session expiration
+        function sessionExpired() {
+            Swal.fire({
+                text: 'You have been automatically logged out due to inactivity.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(() => {
+                window.location.href = '/login'; // Redirect to login page
+            });
+        }
+
+        // Initialize session timeout
+        var sessionTimeout = setTimeout(sessionExpired, sessionLifetime);
+
+        // Reset session timeout on user activity
+        document.addEventListener('mousemove', resetTimeout);
+        document.addEventListener('keypress', resetTimeout);
+
+        function resetTimeout() {
+            clearTimeout(sessionTimeout); // Clear existing timeout
+            sessionTimeout = setTimeout(sessionExpired, sessionLifetime); // Restart timeout
+        }
+
+        // Check session status on page load
+        window.addEventListener('load', function () {
+            if (!{{ Auth::check() ? 'true' : 'false' }}) {
+                sessionExpired(); // Trigger session expired alert if not authenticated
+            }
+        });
+
+    </script>
     @yield('scripts')
 </body>
 </html>

@@ -17,7 +17,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
     <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
-
     <style>
         .form-control { border-radius: 2px !important; }
         footer {
@@ -40,75 +39,75 @@
             }
         }
         .btn-primary {
-    background-color: #F6A5BB;
-    border: none;
-}
-.floating-shadow {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transition: box-shadow 0.3s ease-in-out;
-}
+            background-color: #F6A5BB;
+            border: none;
+        }
+        .floating-shadow {
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
 
-.floating-shadow:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
-}
-.btn-primary.no-hover:hover {
-    background-color: #F6A5BB; /* Default Bootstrap primary color */
-    border-color: #0d6efd; /* Default Bootstrap primary color */
-}
-.close-button-container {
-        text-align: right;
-    }
-    .form-control {
-        transition: background-color 0.3s ease; /* Smooth transition for background color */
-    }
-    .strength-indicator {
-    height: 5px; /* Height of the indicator */
-    background-color: transparent; /* Default to transparent */
-    transition: width 0.3s ease, background-color 0.3s ease; /* Smooth transition for width and color */
-    border-radius: 3px; /* Rounded corners */
-    margin-top: 5px; /* Space above the indicator */
-}
+        .floating-shadow:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 12px 40px rgba(0, 0, 0, 0.8);
+        }
+        .btn-primary.no-hover:hover {
+            background-color: #F6A5BB; /* Default Bootstrap primary color */
+            border-color: #0d6efd; /* Default Bootstrap primary color */
+        }
+        .close-button-container {
+                text-align: right;
+            }
+            .form-control {
+                transition: background-color 0.3s ease; /* Smooth transition for background color */
+            }
+            .strength-indicator {
+            height: 5px; /* Height of the indicator */
+            background-color: transparent; /* Default to transparent */
+            transition: width 0.3s ease, background-color 0.3s ease; /* Smooth transition for width and color */
+            border-radius: 3px; /* Rounded corners */
+            margin-top: 5px; /* Space above the indicator */
+        }
 
-.strength-indicator.weak {
-    /* Styles for weak can be left empty as we set it in JavaScript */
-}
+        .strength-indicator.weak {
+            /* Styles for weak can be left empty as we set it in JavaScript */
+        }
 
-.strength-indicator.moderate {
-    /* Styles for moderate can be left empty as we set it in JavaScript */
-}
+        .strength-indicator.moderate {
+            /* Styles for moderate can be left empty as we set it in JavaScript */
+        }
 
-.strength-indicator.strong {
-    /* Styles for strong can be left empty as we set it in JavaScript */
-}
-
-
-.mb-4 {
-    position: relative; /* Ensure this parent is positioned */
-}
-
-.toggle-password {
-    position: absolute; /* Absolutely position the toggle icon */
-    right: 15px; /* Adjust this value to suit your design */
-    top: 61%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust to ensure centering */
-    cursor: pointer;
-    z-index: 10; /* Optional: ensures the icon is above the input */
-}
-
-/* Optional: Adjust the input padding */
-input[type="password"] {
-    padding-right: 40px; /* Give enough space for the icon */
-}
+        .strength-indicator.strong {
+            /* Styles for strong can be left empty as we set it in JavaScript */
+        }
 
 
-@media (max-width: 768px) { /* Adjust the max-width as needed */
-    .toggle-password {
-        right: 10px; /* Reduce right margin on smaller screens */
-        top: 61%; /* Keep centered */
-    }
-}
+        .mb-4 {
+            position: relative; /* Ensure this parent is positioned */
+        }
 
-</style>
+        .toggle-password {
+            position: absolute; /* Absolutely position the toggle icon */
+            right: 15px; /* Adjust this value to suit your design */
+            top: 61%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust to ensure centering */
+            cursor: pointer;
+            z-index: 10; /* Optional: ensures the icon is above the input */
+        }
+
+        /* Optional: Adjust the input padding */
+        input[type="password"] {
+            padding-right: 40px; /* Give enough space for the icon */
+        }
+
+
+        @media (max-width: 768px) { /* Adjust the max-width as needed */
+            .toggle-password {
+                right: 10px; /* Reduce right margin on smaller screens */
+                top: 61%; /* Keep centered */
+            }
+        }
+
+    </style>
 </head>
 @include('partials.terms-and-conditions')
 <noscript>
@@ -402,50 +401,47 @@ input[type="password"] {
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/auth/js/sign_up_validation.js') }}"></script>
     <script src="{{ asset('assets/auth/js/register.js') }}"></script>
-
-
-
+    <!-- BHW AND FEMALE -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-            const roleSelect = document.getElementById('role');
-            const menstruationFields = document.getElementById('menstruation-status-fields');
-            const menstruationStatusSelect = document.getElementById('menstruation_status');
+        document.addEventListener('DOMContentLoaded', function() {
+                const roleSelect = document.getElementById('role');
+                const menstruationFields = document.getElementById('menstruation-status-fields');
+                const menstruationStatusSelect = document.getElementById('menstruation_status');
 
-            roleSelect.addEventListener('change', function() {
-                const selectedRole = roleSelect.value;
-                if (selectedRole === 'Feminine') {
-                    menstruationFields.style.display = 'block';
-                    menstruationStatusSelect.setAttribute('required', 'required');
-                } else {
-                    menstruationFields.style.display = 'none';
-                    menstruationStatusSelect.removeAttribute('required');
-                    menstruationStatusSelect.value = ''; // Clear value if not required
-                }
+                roleSelect.addEventListener('change', function() {
+                    const selectedRole = roleSelect.value;
+                    if (selectedRole === 'Feminine') {
+                        menstruationFields.style.display = 'block';
+                        menstruationStatusSelect.setAttribute('required', 'required');
+                    } else {
+                        menstruationFields.style.display = 'none';
+                        menstruationStatusSelect.removeAttribute('required');
+                        menstruationStatusSelect.value = ''; // Clear value if not required
+                    }
+                });
+
+                roleSelect.dispatchEvent(new Event('change')); // Trigger change event initially
             });
 
-            roleSelect.dispatchEvent(new Event('change')); // Trigger change event initially
-        });
 
-
-        //close form
-        function closeForm() {
-        window.location.href = '/'; // Redirects to the main page or index page
-    }
+            //close form
+            function closeForm() {
+            window.location.href = '/'; // Redirects to the main page or index page
+        }
     </script>
-
     <!-- PASSWROD INDICATOR -->
     <script>
-    // Function to capitalize each word as user types
-    function checkPasswordStrength(password) {
-        // Basic password strength checking logic
-        const strengthIndicator = document.getElementById('password-strength-indicator');
-        let strength = 'Weak';
-        if (password.length > 8) strength = 'Moderate';
-        if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength = 'Strong';
-        
-        strengthIndicator.textContent = strength;
-        strengthIndicator.style.color = strength === 'Strong' ? 'green' : (strength === 'Moderate' ? 'orange' : 'red');
-    }
+        // Function to capitalize each word as user types
+        function checkPasswordStrength(password) {
+            // Basic password strength checking logic
+            const strengthIndicator = document.getElementById('password-strength-indicator');
+            let strength = 'Weak';
+            if (password.length > 8) strength = 'Moderate';
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength = 'Strong';
+            
+            strengthIndicator.textContent = strength;
+            strengthIndicator.style.color = strength === 'Strong' ? 'green' : (strength === 'Moderate' ? 'orange' : 'red');
+        }
     </script>
 </body>
 </html>

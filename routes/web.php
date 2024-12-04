@@ -33,12 +33,23 @@ Route::post('/send-reset-link-sms', [ForgotPasswordController::class, 'sendReset
 Route::post('/send-otp', [RegisterController::class, 'generateOtp'])->name('send.otp');
 Route::post('/validate-otp', [RegisterController::class, 'validateOtp'])->name('validate.otp');
 
+// SEND OTP
+Route::post('/send-otp-email', [ForgotPasswordController::class, 'sendOtpEmail']);
+Route::post('/send-otp-email', [ForgotPasswordController::class, 'sendOtpEmail'])->name('send-otp-email');
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp']);
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('verify-otp');
+
+
+
 Route::get('forgot-password', [ForgotPasswordController::class, 'index'])->name('password.request');
 Route::post('forgot-password', [ForgotPasswordController::class, 'postForgotPassword'])->name('password.email');
 
 // Reset Password Routes
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'getResetPassword'])->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'postResetPassword'])->name('password.update');
+// Route for password reset with token and email
+Route::get('auth/reset_password/{token}/{email}', [ForgotPasswordController::class, 'getResetPassword']);
+
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
 Route::post('/accept-cookie-consent', [CookieConsentController::class, 'acceptConsent'])->name('accept.cookie.consent');

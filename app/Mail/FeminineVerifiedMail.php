@@ -15,7 +15,7 @@ class FeminineVerifiedMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Your Female User Account Has Been Verified')
+        return $this->subject('Your Account Has Been Verified')
                     ->view('emails.feminine_verified')
                     ->with([
                         'userName' => $this->user->first_name . ' ' . $this->user->last_name,

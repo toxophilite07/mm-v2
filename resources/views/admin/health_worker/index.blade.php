@@ -54,7 +54,7 @@
                                     <th></th>
                                     <th>Name</th>                                  
                                     <th>Account Status</th>
-                                    <th>Assigning Feminine</th>
+                                    <th>Assigning Female</th>
                                     <!-- <th>Address</th> -->
                                     <th>Verification Status</th>
                                     <th>Action</th>

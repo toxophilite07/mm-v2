@@ -17,7 +17,7 @@ class HealthWorkerVerifiedMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Your Health Worker User Account Has Been Verified')
+        return $this->subject('Your Account Has Been Verified')
                     ->view('emails.health_worker_verified')
                     ->with([
                         'userName' => $this->user->first_name . ' ' . $this->user->last_name,

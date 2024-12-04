@@ -163,6 +163,7 @@ class BarangayHealthWorkerController extends Controller
     // {
     //     return $this->postForm($request->all());
     // }
+    
     public function postnewfeminine(Request $request)
     {
         // Sanitize the input

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Menstrual Monitoring App :: Forgot Password Options</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
@@ -57,7 +58,6 @@
 <body style="background-color: #FFD6D1;">
     <div class="d-flex align-items-center justify-content-center min-vh-100">
         <div class="card floating-shadow">
-            <!-- Close button container -->
             <div class="close-button-container text-end p-2">
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
@@ -70,8 +70,8 @@
                             layout: 2,
                             drag: false,
                             position: "topCenter",
-                            title: 'Oops',
-                            message: 'This password reset link has expired. Please try to request a new one.',
+                            title: 'Oops!',
+                            message: 'This password reset link has expired. Please request a new one.',
                             transitionIn: "bounceInDown",
                             transitionOut: "fadeOutUp",
                         });
@@ -83,25 +83,224 @@
                     <a href="{{ URL::to('forgot-password') }}" title="Send Password Reset Link via Email" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-envelope"></i> Send Password Reset Link via Email
                     </a>
+                    <button type="button" id="sendOtpEmail" class="btn btn-primary py-2 fs-5 w-100 rounded-1" data-bs-toggle="modal" data-bs-target="#emailOtpModal">
+                        <i class="fa-solid fa-envelope"></i> Send OTP via Email
+                    </button>
+                    <div class="modal fade" id="emailOtpModal" tabindex="-1" aria-labelledby="emailOtpModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="emailOtpModalLabel">Enter Your Email</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="sendOtpForm">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="otpEmail" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="otpEmail" name="otpEmail" placeholder="Enter your email" required>
+                                       
+                                            @if ($errors->has('email'))
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('email') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Send OTP</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-sms"></i> Send Password Reset Link via SMS
                     </a>
-                    <!-- <a href="{{ route('login') }}" title="Back to Login" class="btn btn-light py-2 fs-5 w-100 rounded-1">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Login
-                    </a> -->
                 </div>
             </div>
         </div>
     </div>
 
-
     <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
     <script>
-                //close form
         function closeForm() {
-        window.location.href = '/login'; // Redirects to the main page or index page
+                window.location.href = '/login';
         }
-    </script>
+
+        function validateEmail(email) {
+                const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                return regex.test(email);
+        }
+
+        document.getElementById('sendOtpForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('otpEmail').value;
+
+            if (!validateEmail(email)) {
+                iziToast.error({
+                    close: false,
+                    displayMode: 2,
+                    layout: 2,
+                    drag: false,
+                    position: "topCenter",
+                    title: 'Error',
+                    message: 'Invalid email format.',
+                    position: 'topCenter',
+                });
+                return;
+            }
+
+            fetch('{{ route("send-otp-email") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    iziToast.success({
+                        close: false,
+                        displayMode: 2,
+                        layout: 2,
+                        drag: false,
+                        position: "topCenter",
+                        title: 'Success',
+                        message: data.message,
+                        position: 'topCenter',
+                    });
+
+                    // Hide the modal and display the OTP form
+                    $('#emailOtpModal').modal('hide');
+
+                    const otpFormHtml = `
+                        <h5 class="text-center">Enter OTP</h5>
+                        <form id="verifyOtpForm">
+                            <input type="hidden" name="email" value="${email}">
+                            <div class="mb-3">
+                                <label for="otp" class="form-label">OTP</label>
+                                <input type="text" id="otp" name="otp" class="form-control" maxlength="6" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="verifyOtpBtn" disabled>Verify OTP</button>
+                        </form>
+                    `;
+
+                    const cardBody = document.querySelector('.card-body');
+                    cardBody.innerHTML = '';
+                    cardBody.insertAdjacentHTML('beforeend', otpFormHtml);
+
+                    // Enable the verify OTP button once the form is displayed
+                    document.getElementById('otp').addEventListener('input', function() {
+                        const otpInput = document.getElementById('otp');
+                        const verifyButton = document.getElementById('verifyOtpBtn');
+                        // Enable button if OTP is entered
+                        verifyButton.disabled = otpInput.value.length !== 6;
+                    });
+
+                    // Ensure the verify form submits properly
+                    document.getElementById('verifyOtpForm').addEventListener('submit', verifyOtp);
+                } else {
+                    iziToast.error({
+                        close: false,
+                        displayMode: 2,
+                        layout: 2,
+                        drag: false,
+                        position: "topCenter",
+                        title: 'Oops!',
+                        message: data.message,
+                        position: 'topCenter',
+                    });
+                }
+            })
+            .catch(err => {
+                iziToast.error({
+                    close: false,
+                    displayMode: 2,
+                    layout: 2,
+                    drag: false,
+                    position: "topCenter",
+                    title: 'Oops!',
+                    message: 'An unexpected error occurred. Please try again.',
+                    position: 'topCenter',
+                });
+            });
+        });
+
+        function verifyOtp(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = document.querySelector('input[name="email"]').value;
+            const otp = document.getElementById('otp').value;
+
+            // Make the API call to verify OTP
+            fetch('{{ route("verify-otp") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for Laravel
+                },
+                body: JSON.stringify({ email, otp })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Unexpected error occurred');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Show success toast first
+                    iziToast.success({
+                        close: false,
+                        displayMode: 2,
+                        layout: 2,
+                        drag: false,
+                        position: "topCenter",
+                        title: 'Success',
+                        message: data.message,
+                        position: 'topCenter',
+                    });
+
+                    // Wait a moment to allow the toast to be displayed before redirecting
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url; // Redirect to reset password page
+                    }, 1500); // Adjust timeout (1500ms = 1.5 seconds) if necessary
+                } else {
+                    iziToast.error({
+                        close: false,
+                        displayMode: 2,
+                        layout: 2,
+                        drag: false,
+                        position: "topCenter",
+                        title: 'Oops!',
+                        message: data.message,
+                        position: 'topCenter',
+                    });
+                }
+            })
+
+            .catch(err => {
+                console.error('Error verifying OTP:', err.message);
+                iziToast.error({
+                    close: false,
+                    displayMode: 2,
+                    layout: 2,
+                    drag: false,
+                    position: "topCenter",
+                    title: 'Oops!',
+                    message: err.message || 'An error occurred while verifying OTP. Please try again.',
+                    position: 'topCenter',
+                });
+            });
+        }
+        </script>
 </body>
+
 </html>

@@ -109,7 +109,7 @@ $(document).ready(function () {
                 required: function (element) {
                     return $("#contact_no").val() === "";
                 }
-            },
+            },            
             birthdate: {
                 required: true,
                 date: true,

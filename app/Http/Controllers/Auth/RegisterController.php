@@ -237,15 +237,5 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/'],
         ]);
     }
-   protected function verifyHCaptcha($response)
-    {
-        $secretKey = env('HCAPTCHA_SECRET_KEY'); // Ensure you have this in your .env file
-        $verificationResponse = Http::asForm()->post('https://hcaptcha.com/siteverify', [
-            'secret' => $secretKey,
-            'response' => $response,
-        ]);
-
-        return $verificationResponse->json()['success'] ?? false;
-    }
 
 }

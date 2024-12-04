@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/user_dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/ai.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Include SweetAlert CSS and JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Include SweetAlert CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @endsection
 @include('components.chatbox')
@@ -148,7 +148,7 @@
     <script src="{{ asset('assets/js/user/menstruation_period_validation.js') }}"></script>
     <script src="{{ asset('assets/js/user/ai.js') }}"></script>
     <script src="{{ asset('assets/js/user/ai_response.js') }}"></script>
-    <script src="{{ asset('assets/js/user/new_period_alerttt.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/user/new_period_alerttt.js') }}"></script> -->
     <script src="{{ asset('assets/template/vendors/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/moment/moment.min.js') }}"></script>
     <script src="{{ asset('assets/template/vendors/fullcalendar/fullcalendar.min.js') }}"></script>
@@ -171,75 +171,75 @@
         });
 
     </script>
-
-@if($reminder_needed)
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            title: 'Reminder',
-            text: "Your estimated period date is today. Has your period started?",
-            imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL
-            imageWidth: 100,  // Adjust the width as needed
-            imageHeight: 100, // Adjust the height as needed
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Send an AJAX request to automatically add the period record
-                fetch('/user/auto-add-period', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        menstruation_period: '{{ $estimated_next_period }}',
+        
+    @if($reminder_needed)
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Reminder',
+                text: "Your estimated period date is today. Has your period started?",
+                imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL
+                imageWidth: 100,  // Adjust the width as needed
+                imageHeight: 100, // Adjust the height as needed
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send an AJAX request to automatically add the period record
+                    fetch('/user/auto-add-period', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            menstruation_period: '{{ $estimated_next_period }}',
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Your period has been recorded. Please go to your profile and update your "Note for current new period".',
-                        imageUrl: 'https://i.ibb.co/LkrkbzR/approved.png', // Custom icon URL
-                        imageWidth: 100,  // Adjust the width as needed
-                        imageHeight: 100, // Adjust the height as needed
-                        showCancelButton: true,
-                        confirmButtonText: 'Go to Profile',
-                        cancelButtonText: 'Close',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href ="{{ URL::to('user/profile') }}"; // Redirect to the profile page
-                        } else {
-                            location.reload(); // Refresh the page if 'Close' is clicked
-                        }
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Your period has been recorded. Please go to your profile and update your "Note for current new period".',
+                            imageUrl: 'https://i.ibb.co/LkrkbzR/approved.png', // Custom icon URL
+                            imageWidth: 100,  // Adjust the width as needed
+                            imageHeight: 100, // Adjust the height as needed
+                            showCancelButton: true,
+                            confirmButtonText: 'Go to Profile',
+                            cancelButtonText: 'Close',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href ="{{ URL::to('user/profile') }}"; // Redirect to the profile page
+                            } else {
+                                location.reload(); // Refresh the page if 'Close' is clicked
+                            }
+                        });
+                    } else {
+                        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                    }
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
                     });
                 } else {
-                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                    Swal.fire({
+                        title: 'Reminder',
+                        text: "We'll remind you later.",
+                        imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL for the reminder
+                        imageWidth: 100,  // Adjust the width as needed
+                        imageHeight: 100, // Adjust the height as needed
+                        imageAlt: 'Custom image', // Alternative text for the image
+                    });
+
                 }
-
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-                });
-            } else {
-                Swal.fire({
-                    title: 'Reminder',
-                    text: "We'll remind you later.",
-                    imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL for the reminder
-                    imageWidth: 100,  // Adjust the width as needed
-                    imageHeight: 100, // Adjust the height as needed
-                    imageAlt: 'Custom image', // Alternative text for the image
-                });
-
-            }
+            });
         });
-    });
-</script>
-@endif
+    </script>
+    @endif
 
 @endsection

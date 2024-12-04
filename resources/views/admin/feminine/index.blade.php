@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feminine_list.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
+    
+    
 @endsection
 
 @section('contents')
@@ -14,7 +16,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-4 mb-md-3">
                         <h6 class="card-title mb-0">Female List</h6>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newFeminineModal"><i class="fa-solid fa-plus"></i> Add New Female</button>
+                        <!-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#newFeminineModal"><i class="fa-solid fa-plus"></i> Add New Female</button> -->
                     </div>
                     <div class="table-responsive">
                         <table id="feminine_table" class="table">

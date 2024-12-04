@@ -263,11 +263,11 @@
                         <p class="text-muted" id="display_health_worker_name"></p>
                     </div>
                     <div class="form-group mt-3 mb-0">
-                        <label>Assign Feminine</label>
+                        <label>Assign Female</label>
                         <select id="assign_feminine" multiple="multiple" style="width: 100%;" aria-describedby="assign_help">
                             <option></option>
                         </select>
-                        <small id="assign_help" class="form-text text-muted">You can select multiple feminine to assign to this health worker.</small>
+                        <small id="assign_help" class="form-text text-muted">You can select multiple female to assign to this health worker.</small>
                         <input type="hidden" id="health_worker_id">
                     </div>
                 </div>

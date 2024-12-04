@@ -698,22 +698,6 @@ class AdminController extends Controller {
                         <i class="fa-solid fa-magnifying-glass"></i> View
                 </button>
                 
-                <button type="button" class="btn btn-sm btn-primary"
-                    data-id="'.$feminine['id'].'"
-                    data-first_name="'.$feminine['first_name'].'"
-                    data-last_name="'.$feminine['last_name'].'"
-                    data-middle_name="'.$feminine['middle_name'].'"
-                    data-email="'.$feminine['email'].'"
-                    data-address="'.$feminine['address'].'"
-                    data-contact_no="'.$feminine['contact_no'].'"
-                    data-birthdate="'. ($feminine['birthdate'] ? date('m/d/Y', strtotime($feminine['birthdate'])) : null) .'"
-                    data-menstruation_status="'.$feminine['menstruation_status'].'"
-                    data-remarks="'.($feminine['remarks'] ?? null).'"
-                    data-last_period_date="' . (empty($feminine['last_periods']) ? null : date('m/d/Y', strtotime($feminine['last_periods'][0]['menstruation_date']))) . '"
-                    data-menstruation_period_id="'. (empty($feminine['last_periods']) ? null : $feminine['last_periods'][0]['id']) .'"
-                    data-toggle="modal" data-target="#editFeminineModal">
-                        <i class="fa-solid fa-user-pen"></i> Edit
-                </button>
 
                 <button type="button" class="btn btn-sm btn-danger delete_record" data-id="'.$feminine['id'].'"><i class="fa-solid fa-trash"></i> Delete</button>
             ';
@@ -798,162 +782,149 @@ class AdminController extends Controller {
     }
     ///WITHOUT SANITIZED
     // public function postHealthWorker(Request $request)
-        // {
-        //     $health_worker = User::findOrFail($request->id);
+    // // {
+    // //         $health_worker = User::findOrFail($request->id);
         
-        //     // Validate the request
-        //     $validatedData = $request->validate([
-        //         'first_name' => 'required|string|max:255',
-        //         'middle_name' => 'nullable|string|max:255',
-        //         'last_name' => 'required|string|max:255',
-        //         'email' => [
-        //             'required',
-        //             'string',
-        //             'email',
-        //             'max:255',
-        //             Rule::unique('users')->ignore($health_worker->id)->where(function ($query) {
-        //                 return $query->where('user_role_id', 3);
-        //             }),
-        //         ],
-        //         'contact_no' => 'nullable|string|max:255',
-        //         'address' => 'nullable|string|max:255',
-        //         'birthdate' => 'nullable|date_format:m/d/Y',
-        //         'remarks' => 'nullable|string|max:255',
-        //     ], [
-        //         'email.unique' => 'The email address is already taken.',
-        //         'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
-        //     ]);
+    // //         // Validate the request
+    // //         $validatedData = $request->validate([
+    // //             'first_name' => 'nullable|string|max:255',
+    // //             'middle_name' => 'nullable|string|max:255',
+    // //             'last_name' => 'nullable|string|max:255',
+    // //             'email' => [
+    // //                 'nullable',
+    // //                 'string',
+    // //                 'email',
+    // //                 'max:255',
+    // //                 Rule::unique('users')->ignore($health_worker->id)->where(function ($query) {
+    // //                     return $query->where('user_role_id', 3);
+    // //                 }),
+    // //             ],
+    // //             'contact_no' => 'nullable|string|max:255',
+    // //             'address' => 'nullable|string|max:255',
+    // //             'birthdate' => 'nullable|date_format:m/d/Y',
+    // //             'remarks' => 'nullable|string|max:255',
+    // //         ], [
+    // //             'email.unique' => 'The email address is already taken.',
+    // //             'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+    // //         ]);
         
-        //     // Sanitize inputs to prevent XSS
-        //     $validatedData['first_name'] = strip_tags($request->first_name);
-        //     $validatedData['middle_name'] = strip_tags($request->middle_name);
-        //     $validatedData['last_name'] = strip_tags($request->last_name);
-        //     $validatedData['email'] = strip_tags($request->email);
-        //     $validatedData['contact_no'] = strip_tags($request->contact_no);
-        //     $validatedData['address'] = strip_tags($request->address);
-        //     $validatedData['remarks'] = strip_tags($request->remarks);
+    // //         // Sanitize inputs to prevent XSS
+    // //         $validatedData['first_name'] = strip_tags($request->first_name);
+    // //         $validatedData['middle_name'] = strip_tags($request->middle_name);
+    // //         $validatedData['last_name'] = strip_tags($request->last_name);
+    // //         $validatedData['email'] = strip_tags($request->email);
+    // //         $validatedData['contact_no'] = strip_tags($request->contact_no);
+    // //         $validatedData['address'] = strip_tags($request->address);
+    // //         $validatedData['remarks'] = strip_tags($request->remarks);
         
-        //     // Check if the email has changed
-        //     if ($health_worker->email !== $validatedData['email']) {
-        //         $health_worker->email = $validatedData['email'];
-        //     }
+    // //         // Check if the email has changed
+    // //         if ($health_worker->email !== $validatedData['email']) {
+    // //             $health_worker->email = $validatedData['email'];
+    // //         }
         
-        //     // Update other fields with sanitized data
-        //     $health_worker->first_name = $validatedData['first_name'];
-        //     $health_worker->middle_name = $validatedData['middle_name'];
-        //     $health_worker->last_name = $validatedData['last_name'];
-        //     $health_worker->contact_no = $validatedData['contact_no'];
-        //     $health_worker->address = $validatedData['address'];
+    // //         // Update other fields with sanitized data
+    // //         $health_worker->first_name = $validatedData['first_name'];
+    // //         $health_worker->middle_name = $validatedData['middle_name'];
+    // //         $health_worker->last_name = $validatedData['last_name'];
+    // //         $health_worker->contact_no = $validatedData['contact_no'];
+    // //         $health_worker->address = $validatedData['address'];
         
-        //     // Format birthdate if present
-        //     if ($request->filled('birthdate')) {
-        //         $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $validatedData['birthdate'])->format('Y-m-d');
-        //     } else {
-        //         $health_worker->birthdate = null;
-        //     }
+    // //         // Format birthdate if present
+    // //         if ($request->filled('birthdate')) {
+    // //             $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $validatedData['birthdate'])->format('Y-m-d');
+    // //         } else {
+    // //             $health_worker->birthdate = null;
+    // //         }
         
-        //     $health_worker->remarks = $validatedData['remarks'];
+    // //         $health_worker->remarks = $validatedData['remarks'];
         
-        //     // Save the health worker
-        //     $health_worker->save();
+    // //         // Save the health worker
+    // //         $health_worker->save();
         
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Health worker details updated successfully.',
-        //         'data' => [
-        //             'first_name' => htmlspecialchars($health_worker->first_name),
-        //             'middle_name' => htmlspecialchars($health_worker->middle_name),
-        //             'last_name' => htmlspecialchars($health_worker->last_name),
-        //             'email' => htmlspecialchars($health_worker->email),
-        //             'contact_no' => htmlspecialchars($health_worker->contact_no),
-        //             'address' => htmlspecialchars($health_worker->address),
-        //             'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
-        //             'remarks' => htmlspecialchars($health_worker->remarks ?? null),
-        //         ]
-        //     ]);
-    // }
+    // //         return response()->json([
+    // //             'status' => 'success',
+    // //             'message' => 'Health worker details updated successfully.',
+    // //             'data' => [
+    // //                 'first_name' => htmlspecialchars($health_worker->first_name),
+    // //                 'middle_name' => htmlspecialchars($health_worker->middle_name),
+    // //                 'last_name' => htmlspecialchars($health_worker->last_name),
+    // //                 'email' => htmlspecialchars($health_worker->email),
+    // //                 'contact_no' => htmlspecialchars($health_worker->contact_no),
+    // //                 'address' => htmlspecialchars($health_worker->address),
+    // //                 'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
+    // //                 'remarks' => htmlspecialchars($health_worker->remarks ?? null),
+    // //             ]
+    // //         ]);
+    // // }
 
     //EDIT WITH SANITIZE//
     public function postHealthWorker(Request $request)
     {
-            $health_worker = User::findOrFail($request->id);
-        
-            // Validate the request
-            $validatedData = $request->validate([
-                'first_name' => 'required|string|max:255',
-                'middle_name' => 'nullable|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'email' => [
-                    'required',
-                    'string',
-                    'email',
-                    'max:255',
-                    Rule::unique('users')->ignore($health_worker->id)->where(function ($query) {
-                        return $query->where('user_role_id', 3);
-                    }),
-                ],
-                'contact_no' => 'nullable|string|max:255',
-                'address' => 'nullable|string|max:255',
-                'birthdate' => 'nullable|date_format:m/d/Y',
-                'remarks' => 'nullable|string|max:255',
-            ], [
-                'email.unique' => 'The email address is already taken.',
-                'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
-            ]);
-        
-            // Sanitize inputs to prevent XSS
-            $sanitizedData = [
-                'first_name' => strip_tags($request->first_name),
-                'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
-                'last_name' => strip_tags($request->last_name),
-                'email' => strip_tags($request->email),
-                'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
-                'address' => $request->filled('address') ? strip_tags($request->address) : null,
-                'remarks' => $request->filled('remarks') ? strip_tags($request->remarks) : null,
-            ];
-        
-            // Check if the email has changed
-            if ($health_worker->email !== $sanitizedData['email']) {
-                $health_worker->email = $sanitizedData['email'];
-            }
-        
-            // Update other fields with sanitized data
-            $health_worker->first_name = $sanitizedData['first_name'];
-            $health_worker->middle_name = $sanitizedData['middle_name'];
-            $health_worker->last_name = $sanitizedData['last_name'];
-            $health_worker->contact_no = $sanitizedData['contact_no'];
-            $health_worker->address = $sanitizedData['address'];
-        
-            // Format birthdate if present
-            if ($request->filled('birthdate')) {
-                $health_worker->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
-            } else {
-                $health_worker->birthdate = null;
-            }
-        
-            $health_worker->remarks = $sanitizedData['remarks'];
-        
-            // Save the health worker
-            $health_worker->save();
-        
-            // Prepare response data with htmlspecialchars to prevent XSS when rendering data
+        // Ensure that the ID exists in the request
+        $health_worker= User::find($request->id);
+    
+        // If the health worker does not exist, return an error response
+        if (!$health_worker) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Health worker details updated successfully.',
-                'data' => [
-                    'first_name' => htmlspecialchars($health_worker->first_name),
-                    'middle_name' => htmlspecialchars($health_worker->middle_name),
-                    'last_name' => htmlspecialchars($health_worker->last_name),
-                    'email' => htmlspecialchars($health_worker->email),
-                    'contact_no' => htmlspecialchars($health_worker->contact_no),
-                    'address' => htmlspecialchars($health_worker->address),
-                    'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
-                    'remarks' => htmlspecialchars($health_worker->remarks ?? null),
-                ]
-            ]);
-            logger()->info('Health Worker ID from request:', ['id' => $request->id]);
-
+                'status' => 'error',
+                'message' => 'Health worker not found.',
+            ], 404);
+        }
+    
+        // Validate the request
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'email' => [
+                'nullable', // Allow email to be null
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')
+                    ->ignore($health_worker->id) // Use the ID from the found health worker
+                    ->where(function ($query) {
+                        return $query->whereIn('user_role_id', [3]);
+                    }),
+            ],
+            'contact_no' => 'nullable|string|max:255',
+            'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
+        ], [
+            'email.unique' => 'The email address is already taken.',
+            'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+        ]);
+    
+        // Update the health worker
+        $health_worker->update([
+            'first_name' => $validatedData['first_name'],
+            'middle_name' => $validatedData['middle_name'] ?? $health_worker->middle_name,
+            'last_name' => $validatedData['last_name'],
+            'email' => $validatedData['email'] ?? $health_workwer->email,
+            'contact_no' => $validatedData['contact_no'] ?? $health_worker->contact_no,
+            'address' => $validatedData['address'] ?? $health_worker->address,
+            'birthdate' => $validatedData['birthdate'] ?? $health_worker->birthdate,
+            'remarks' => $validatedData['remarks'] ?? $health_worker->remarks,
+        ]);
+    
+        // Return a success response with updated details
+        return response()->json([
+            'status' => 'success',
+            'message' => 'BHW details updated successfully.',
+            'data' => [
+                'first_name' => htmlspecialchars($health_worker->first_name),
+                'middle_name' => htmlspecialchars($health_worker->middle_name),
+                'last_name' => htmlspecialchars($health_worker->last_name),
+                'email' => htmlspecialchars($health_worker->email),
+                'address' => htmlspecialchars($health_worker->address),
+                'contact_no' => htmlspecialchars($health_worker->contact_no),
+                'birthdate' => $health_worker->birthdate ? Carbon::parse($health_worker->birthdate)->format('m/d/Y') : null,
+                'remarks' => htmlspecialchars($health_worker->remarks ?? null),
+            ]
+        ]);
     }
+    
+     
         
     // public function postnewhbw(Request $request) {
     //     return $this->postHealthWorkerForm($request->all());
@@ -1100,20 +1071,6 @@ class AdminController extends Controller {
                     data-toggle="modal" data-target="#viewHealthWorkerModal">
                         <i class="fa-solid fa-magnifying-glass"></i> View
                 </button>
-                
-                <button type="button" class="btn btn-sm btn-primary"
-                    data-id="' . $health_worker['id'] . '"
-                    data-first_name="' . $health_worker['first_name'] . '"
-                    data-last_name="' . $health_worker['last_name'] . '"
-                    data-middle_name="' . $health_worker['middle_name'] . '"
-                    data-email="' . $health_worker['email'] . '"
-                    data-contact_no="' . $health_worker['contact_no'] . '"
-                    data-address="' . $health_worker['address'] . '"
-                    data-birthdate="' . ($health_worker['birthdate'] ? date('m/d/Y', strtotime($health_worker['birthdate'])) : null) . '"
-                    data-remarks="' . ($health_worker['remarks'] ?? null) . '"
-                    data-toggle="modal" data-target="#editHealthWorkerModal">
-                        <i class="fa-solid fa-user-pen"></i> Edit
-                </button>
     
                 <button type="button" class="btn btn-sm btn-danger delete_record" data-id="' . $health_worker['id'] . '"><i class="fa-solid fa-trash"></i> Delete</button>
             ';
@@ -1162,4 +1119,38 @@ class AdminController extends Controller {
 
         return response()->json(['message' => 'Health Worker verified successfully']);
     }
+
+////////HEALTH WORKER EDIT BUTTON
+      // <button type="button" class="btn btn-sm btn-primary"
+                //     data-id="' . $health_worker['id'] . '"
+                //     data-first_name="' . $health_worker['first_name'] . '"
+                //     data-last_name="' . $health_worker['last_name'] . '"
+                //     data-middle_name="' . $health_worker['middle_name'] . '"
+                //     data-email="' . $health_worker['email'] . '"
+                //     data-contact_no="' . $health_worker['contact_no'] . '"
+                //     data-address="' . $health_worker['address'] . '"
+                //     data-birthdate="' . ($health_worker['birthdate'] ? date('m/d/Y', strtotime($health_worker['birthdate'])) : null) . '"
+                //     data-remarks="' . ($health_worker['remarks'] ?? null) . '"
+                //     data-toggle="modal" data-target="#editHealthWorkerModal">
+                //         <i class="fa-solid fa-user-pen"></i> Edit
+                // </button>
+
+
+/////////FEMALE EDIT BUTTTON
+      //<button type="button" class="btn btn-sm btn-primary"
+                //     data-id="'.$feminine['id'].'"
+                //     data-first_name="'.$feminine['first_name'].'"
+                //     data-last_name="'.$feminine['last_name'].'"
+                //     data-middle_name="'.$feminine['middle_name'].'"
+                //     data-email="'.$feminine['email'].'"
+                //     data-address="'.$feminine['address'].'"
+                //     data-contact_no="'.$feminine['contact_no'].'"
+                //     data-birthdate="'. ($feminine['birthdate'] ? date('m/d/Y', strtotime($feminine['birthdate'])) : null) .'"
+                //     data-menstruation_status="'.$feminine['menstruation_status'].'"
+                //     data-remarks="'.($feminine['remarks'] ?? null).'"
+                //     data-last_period_date="' . (empty($feminine['last_periods']) ? null : date('m/d/Y', strtotime($feminine['last_periods'][0]['menstruation_date']))) . '"
+                //     data-menstruation_period_id="'. (empty($feminine['last_periods']) ? null : $feminine['last_periods'][0]['id']) .'"
+                //     data-toggle="modal" data-target="#editFeminineModal">
+                //         <i class="fa-solid fa-user-pen"></i> Edit
+                // </button>
 }

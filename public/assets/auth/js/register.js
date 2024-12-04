@@ -146,18 +146,7 @@
         // If the form is invalid, prevent submission and show SweetAlert
         if (!isValid) {
             event.preventDefault(); // Prevent form submission
-            iziToast.error({
-                close: false,
-                displayMode: 2,
-                layout: 2,
-                drag: false,
-                position: "topCenter",
-                title: 'Oops',
-                message: 'Please double-check your credentials before submitting the form.',
-                transitionIn: "bounceInDown",
-                transitionOut: "fadeOutUp",
-            });
-                        // Swal.fire({
+            // Swal.fire({
             //     imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
             //     imageWidth: 120, // Adjust image width as needed
             //     imageHeight: 120, // Adjust image height as needed
@@ -166,7 +155,61 @@
             //     html: errorMessage || 'Make sure all required fields are filled in correctly.',
             //     confirmButtonText: 'OK'
             // });
+            iziToast.error({
+                close: false,
+                displayMode: 2,
+                layout: 2,
+                drag: false,
+                position: "topCenter",
+                title: 'Oops!',
+                message: 'Please double-check your credentials before submitting the form.',
+                transitionIn: "bounceInDown",
+                transitionOut: "fadeOutUp",
+            });
         }
         
     });
     
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.getElementById('role');
+        const menstruationFields = document.getElementById('menstruation-status-fields');
+        const menstruationStatusSelect = document.getElementById('menstruation_status');
+
+        roleSelect.addEventListener('change', function() {
+            const selectedRole = roleSelect.value;
+            if (selectedRole === 'Feminine') {
+                menstruationFields.style.display = 'block';
+                menstruationStatusSelect.setAttribute('required', 'required');
+            } else {
+                menstruationFields.style.display = 'none';
+                menstruationStatusSelect.removeAttribute('required');
+                menstruationStatusSelect.value = ''; // Clear value if not required
+            }
+        });
+
+        roleSelect.dispatchEvent(new Event('change')); // Trigger change event initially
+    });
+
+
+    //close form
+    function closeForm() {
+    window.location.href = '/'; // Redirects to the main page or index page
+}
+
+
+    // Function to capitalize each word as user types
+    function checkPasswordStrength(password) {
+        // Basic password strength checking logic
+        const strengthIndicator = document.getElementById('password-strength-indicator');
+        let strength = 'Weak';
+        if (password.length > 8) strength = 'Moderate';
+        if (/[A-Z]/.test(password) && /[0-9]/.test(password)) strength = 'Strong';
+        
+        strengthIndicator.textContent = strength;
+        strengthIndicator.style.color = strength === 'Strong' ? 'green' : (strength === 'Moderate' ? 'orange' : 'red');
+    }
+    
+
+
+

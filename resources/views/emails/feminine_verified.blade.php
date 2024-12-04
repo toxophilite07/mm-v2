@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Female Verification</title>
+    <title>Account Confirmed</title>
     <style>
         /* General styles */
         body {
@@ -72,7 +72,7 @@
 
     <div class="container">
         <h2>Hello {{ $userName  }},</h2>
-        <p>Your account has been successfully verified by the admin. You can now access all the features available to Female users.</p>
+        <p>Your account has been successfully verified by the admin. You can now access all the features available to our system.</p>
         <p>Thank you for your patience!</p>
 
         <!-- Optional button or link -->
@@ -81,7 +81,8 @@
         </p>
 
         <div class="footer">
-            <p>If you did not request verification, please <a href="mailto:nelbanbetache@gmail.com">contact us</a> immediately.</p>
+            <p>If you did not request verification, please contact us immediately at <a href="mailto:nelbanbetache@gmail.com">support@menstrualmonitoringappv2.com</a>.</p>
+            <p>Thank you,<br>Menstrual Monitoring App v2</p>
         </div>
     </div>
 
