@@ -131,6 +131,7 @@
         // Function to handle session expiration
         function sessionExpired() {
             Swal.fire({
+                title:'Session Expired',
                 text: 'You have been automatically logged out due to inactivity.',
                 icon: 'warning',
                 confirmButtonText: 'OK',
