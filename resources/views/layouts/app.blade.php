@@ -132,7 +132,7 @@
         function sessionExpired() {
             Swal.fire({
                 title:'Session Expired',
-                text: 'You have been automatically logged out due to inactivity.',
+                text: 'You have been automatically logged out due to inactivity! Please login again.',
                 icon: 'warning',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#dc3545',
