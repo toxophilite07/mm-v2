@@ -45,7 +45,7 @@
                                     <th></th>
                                     <th>Name</th>
                                     <th>Menstruation Status</th>
-                                    <th>Period Dates</th>
+                                    <th>Estimated Period Dates</th>
                                     <th>Estimated Menstrual Status</th>
                                     <th>Action</th>
                                 </tr>
