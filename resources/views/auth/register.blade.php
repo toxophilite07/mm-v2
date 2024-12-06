@@ -401,6 +401,7 @@
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/auth/js/sign_up_validation.js') }}"></script>
     <script src="{{ asset('assets/auth/js/register.js') }}"></script>
+    
     <!-- BHW AND FEMALE -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
