@@ -371,17 +371,6 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                        <!-- Display an error message if CAPTCHA is not completed -->
-                                        @if (session('captcha-error'))
-                                            <p id="captcha-error" style="color: red;">
-                                                {{ session('captcha-error') }}
-                                            </p>
-                                        @else
-                                            <p id="captcha-error" style="color: red; display: none;">
-                                                Please verify that you are not a robot.
-                                            </p>
-                                        @endif
 
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span>Already have an account? <a class="text-primary fw-bold" href="{{ route('login') }}">Sign in</a></span>
@@ -412,8 +401,7 @@
     <script src="{{ asset('assets/template/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/auth/js/sign_up_validation.js') }}"></script>
     <script src="{{ asset('assets/auth/js/register.js') }}"></script>
-    <script src="https://hcaptcha.com/1/api.js" async defer></script>
-
+    
     <!-- BHW AND FEMALE -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
