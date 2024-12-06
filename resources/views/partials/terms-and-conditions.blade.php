@@ -18,7 +18,10 @@
         <h3>Modifications</h3>
         <p>We may revise these terms from time to time. Please check this page regularly to ensure you are happy with any changes.</p>
 
-        <button id="close-terms" class="btn btn">Close</button>
+        <button id="close-terms" class="btn btn">
+            <i class="fas fa-times"></i> <!-- This is the close icon -->
+        </button>
+
     </div>
 </div>
 
