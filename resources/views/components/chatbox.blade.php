@@ -10,12 +10,36 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     <style>
-      
+      /* Popup text animation */
+    .popup-text {
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        background-color: rgba(255, 105, 180, 0.9);
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 14px;
+        display: none;
+        animation: popup 5s infinite;
+    }
+
+    @keyframes popup {
+        0%, 80% {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        85%, 95% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
     </style>
 </head>
 <body>
     <button class="floating-icon" onclick="toggleChatbox()">
     <i class="fa-solid fa-comments"></i> 
+     <div class="popup-text" id="popupText">Hi! You can ask about menstruation here!</div>
     </button>
 
     <div class="chatbox" id="chatbox">
@@ -141,6 +165,18 @@
             typingIndicator.parentNode.removeChild(typingIndicator);
         }
     }
+
+        // Show and hide popup text periodically
+function showPopupText() {
+    const popupText = document.getElementById("popupText");
+    popupText.style.display = "block";
+    setTimeout(() => {
+        popupText.style.display = "none";
+    }, 3000);
+}
+
+// Call showPopupText every 8 seconds
+setInterval(showPopupText, 8000);
     </script>
 </body>
 </html>
