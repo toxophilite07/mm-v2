@@ -172,11 +172,11 @@ function showPopupText() {
     popupText.style.display = "block";
     setTimeout(() => {
         popupText.style.display = "none";
-    }, 3000);
+    }, 1000);
 }
 
 // Call showPopupText every 8 seconds
-setInterval(showPopupText, 8000);
+setInterval(showPopupText, 1000);
     </script>
 </body>
 </html>
