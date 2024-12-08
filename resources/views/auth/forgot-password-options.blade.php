@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
     <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         .btn-primary {
@@ -108,8 +108,27 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Send OTP</button>
+                                        <button type="submit" id="sendOtpButton" class="btn btn-primary">
+                                            <span id="buttonText">Send OTP</span>
+                                            <span id="buttonIndicator" style="display: none;">
+                                                <i class="fa fa-spinner fa-spin"></i> Please wait...
+                                            </span>
+                                        </button>
                                     </div>
+
+                                    <script>
+                                        document.getElementById('sendOtpButton').addEventListener('click', function () {
+                                            // Change button text and show indicator
+                                            const buttonText = document.getElementById('buttonText');
+                                            const buttonIndicator = document.getElementById('buttonIndicator');
+
+                                            // Hide "Send OTP" text
+                                            buttonText.style.display = 'none';
+                                            // Show the spinner and "Please wait..." text
+                                            buttonIndicator.style.display = 'inline-block';
+                                        });
+                                    </script>
+
                                 </form>
                             </div>
                         </div>
@@ -135,9 +154,108 @@
                 return regex.test(email);
         }
 
+        // document.getElementById('sendOtpForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     const email = document.getElementById('otpEmail').value;
+
+        //     if (!validateEmail(email)) {
+        //         iziToast.error({
+        //             close: false,
+        //             displayMode: 2,
+        //             layout: 2,
+        //             drag: false,
+        //             position: "topCenter",
+        //             title: 'Error',
+        //             message: 'Invalid email format.',
+        //             position: 'topCenter',
+        //         });
+        //         return;
+        //     }
+
+        //     fetch('{{ route("send-otp-email") }}', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        //         },
+        //         body: JSON.stringify({ email })
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             iziToast.success({
+        //                 close: false,
+        //                 displayMode: 2,
+        //                 layout: 2,
+        //                 drag: false,
+        //                 position: "topCenter",
+        //                 title: 'Success',
+        //                 message: data.message,
+        //                 position: 'topCenter',
+        //             });
+
+        //             // Hide the modal and display the OTP form
+        //             $('#emailOtpModal').modal('hide');
+
+        //             const otpFormHtml = `
+        //                 <h5 class="text-center">Enter OTP</h5>
+        //                 <form id="verifyOtpForm">
+        //                     <input type="hidden" name="email" value="${email}">
+        //                     <div class="mb-3">
+        //                         <label for="otp" class="form-label">OTP CODE</label>
+        //                         <input type="text" id="otp" name="otp" class="form-control" maxlength="6" required>
+        //                     </div>
+        //                     <button type="submit" class="btn btn-primary w-100" id="verifyOtpBtn" disabled>Verify OTP</button>
+        //                 </form>
+        //             `;
+
+        //             const cardBody = document.querySelector('.card-body');
+        //             cardBody.innerHTML = '';
+        //             cardBody.insertAdjacentHTML('beforeend', otpFormHtml);
+
+        //             // Enable the verify OTP button once the form is displayed
+        //             document.getElementById('otp').addEventListener('input', function() {
+        //                 const otpInput = document.getElementById('otp');
+        //                 const verifyButton = document.getElementById('verifyOtpBtn');
+        //                 // Enable button if OTP is entered
+        //                 verifyButton.disabled = otpInput.value.length !== 6;
+        //             });
+
+        //             // Ensure the verify form submits properly
+        //             document.getElementById('verifyOtpForm').addEventListener('submit', verifyOtp);
+        //         } else {
+        //             iziToast.error({
+        //                 close: false,
+        //                 displayMode: 2,
+        //                 layout: 2,
+        //                 drag: false,
+        //                 position: "topCenter",
+        //                 title: 'Oops!',
+        //                 message: data.message,
+        //                 position: 'topCenter',
+        //             });
+        //         }
+        //     })
+        //     .catch(err => {
+        //         iziToast.error({
+        //             close: false,
+        //             displayMode: 2,
+        //             layout: 2,
+        //             drag: false,
+        //             position: "topCenter",
+        //             title: 'Oops!',
+        //             message: 'An unexpected error occurred. Please try again.',
+        //             position: 'topCenter',
+        //         });
+        //     });
+        // });
+
         document.getElementById('sendOtpForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const email = document.getElementById('otpEmail').value;
+            const sendOtpButton = document.getElementById('sendOtpButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonIndicator = document.getElementById('buttonIndicator');
 
             if (!validateEmail(email)) {
                 iziToast.error({
@@ -148,10 +266,14 @@
                     position: "topCenter",
                     title: 'Error',
                     message: 'Invalid email format.',
-                    position: 'topCenter',
                 });
                 return;
             }
+
+            // Show loading indicator
+            buttonText.style.display = 'none';
+            buttonIndicator.style.display = 'inline-block';
+            sendOtpButton.disabled = true;
 
             fetch('{{ route("send-otp-email") }}', {
                 method: 'POST',
@@ -159,52 +281,70 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email }),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    iziToast.success({
-                        close: false,
-                        displayMode: 2,
-                        layout: 2,
-                        drag: false,
-                        position: "topCenter",
-                        title: 'Success',
-                        message: data.message,
-                        position: 'topCenter',
-                    });
+                .then(response => response.json())
+                .then(data => {
+                    // Reset button state
+                    buttonText.style.display = 'inline-block';
+                    buttonIndicator.style.display = 'none';
+                    sendOtpButton.disabled = false;
 
-                    // Hide the modal and display the OTP form
-                    $('#emailOtpModal').modal('hide');
+                    if (data.success) {
+                        iziToast.success({
+                            close: false,
+                            displayMode: 2,
+                            layout: 2,
+                            drag: false,
+                            position: "topCenter",
+                            title: 'Success',
+                            message: data.message,
+                        });
 
-                    const otpFormHtml = `
-                        <h5 class="text-center">Enter OTP</h5>
-                        <form id="verifyOtpForm">
-                            <input type="hidden" name="email" value="${email}">
-                            <div class="mb-3">
-                                <label for="otp" class="form-label">OTP</label>
-                                <input type="text" id="otp" name="otp" class="form-control" maxlength="6" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100" id="verifyOtpBtn" disabled>Verify OTP</button>
-                        </form>
-                    `;
+                        // Hide the modal and display the OTP form
+                        $('#emailOtpModal').modal('hide');
 
-                    const cardBody = document.querySelector('.card-body');
-                    cardBody.innerHTML = '';
-                    cardBody.insertAdjacentHTML('beforeend', otpFormHtml);
+                        const otpFormHtml = `
+                            <h5 class="text-center">Enter OTP</h5>
+                            <form id="verifyOtpForm">
+                                <input type="hidden" name="email" value="${email}">
+                                <div class="mb-3">
+                                    <label for="otp" class="form-label">OTP CODE</label>
+                                    <input type="text" id="otp" name="otp" class="form-control" maxlength="6" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" id="verifyOtpBtn" disabled>Verify OTP</button>
+                            </form>
+                        `;
 
-                    // Enable the verify OTP button once the form is displayed
-                    document.getElementById('otp').addEventListener('input', function() {
-                        const otpInput = document.getElementById('otp');
-                        const verifyButton = document.getElementById('verifyOtpBtn');
-                        // Enable button if OTP is entered
-                        verifyButton.disabled = otpInput.value.length !== 6;
-                    });
+                        const cardBody = document.querySelector('.card-body');
+                        cardBody.innerHTML = '';
+                        cardBody.insertAdjacentHTML('beforeend', otpFormHtml);
 
-                    // Ensure the verify form submits properly
-                    document.getElementById('verifyOtpForm').addEventListener('submit', verifyOtp);
-                } else {
+                        document.getElementById('otp').addEventListener('input', function () {
+                            const otpInput = document.getElementById('otp');
+                            const verifyButton = document.getElementById('verifyOtpBtn');
+                            verifyButton.disabled = otpInput.value.length !== 6;
+                        });
+
+                        document.getElementById('verifyOtpForm').addEventListener('submit', verifyOtp);
+                    } else {
+                        iziToast.error({
+                            close: false,
+                            displayMode: 2,
+                            layout: 2,
+                            drag: false,
+                            position: "topCenter",
+                            title: 'Oops!',
+                            message: data.message,
+                        });
+                    }
+                })
+                .catch(err => {
+                    // Reset button state
+                    buttonText.style.display = 'inline-block';
+                    buttonIndicator.style.display = 'none';
+                    sendOtpButton.disabled = false;
+
                     iziToast.error({
                         close: false,
                         displayMode: 2,
@@ -212,24 +352,11 @@
                         drag: false,
                         position: "topCenter",
                         title: 'Oops!',
-                        message: data.message,
-                        position: 'topCenter',
+                        message: 'An unexpected error occurred. Please try again.',
                     });
-                }
-            })
-            .catch(err => {
-                iziToast.error({
-                    close: false,
-                    displayMode: 2,
-                    layout: 2,
-                    drag: false,
-                    position: "topCenter",
-                    title: 'Oops!',
-                    message: 'An unexpected error occurred. Please try again.',
-                    position: 'topCenter',
                 });
-            });
         });
+
 
         function verifyOtp(e) {
             e.preventDefault(); // Prevent default form submission
