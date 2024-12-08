@@ -108,13 +108,33 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" id="sendOtpButton" class="btn btn-primary">
-                                           <span id="buttonText"><i class="fa-solid fa-paper-plane"></i> Send OTP</span>
+                                        <button type="submit" id="sendOtpButton" class="btn btn-primary" disabled>
+                                            <span id="buttonText"><i class="fa-solid fa-paper-plane"></i> Send OTP</span>
                                             <span id="buttonIndicator" style="display: none;">
                                                 <i class="fa fa-spinner fa-spin"></i> Please wait...
                                             </span>
                                         </button>
                                     </div>
+
+                                    <script>
+                                        const emailInput = document.getElementById('otpEmail');
+                                        const sendOtpButton = document.getElementById('sendOtpButton');
+
+                                        emailInput.addEventListener('input', function () {
+                                            // Enable the button only if the input is not empty and is a valid email format
+                                            if (emailInput.value.trim() !== '' && validateEmail(emailInput.value)) {
+                                                sendOtpButton.disabled = false;
+                                            } else {
+                                                sendOtpButton.disabled = true;
+                                            }
+                                        });
+
+                                        // Function to validate email format
+                                        function validateEmail(email) {
+                                            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                            return emailPattern.test(email);
+                                        }
+                                    </script>
 
                                     <script>
                                         document.getElementById('sendOtpButton').addEventListener('click', function () {
