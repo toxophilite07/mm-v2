@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" id="sendOtpButton" class="btn btn-primary">
-                                            <span id="buttonText">Send OTP</span>
+                                           <span id="buttonText"><i class="fa-solid fa-paper-plane"></i> Send OTP</span>
                                             <span id="buttonIndicator" style="display: none;">
                                                 <i class="fa fa-spinner fa-spin"></i> Please wait...
                                             </span>
