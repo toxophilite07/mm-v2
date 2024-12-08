@@ -6,8 +6,8 @@
     <title>Mentrual Monitoring App :: Forgot Password ::</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
-
     <link rel="stylesheet" href="{{ asset('assets/izitoast/iziToast.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
         .form-control { border-radius: 2px !important; }
@@ -65,7 +65,7 @@
                                                 <i class="fa-solid fa-paper-plane"></i> Send Password Reset Link
                                             </button>
                                             <a href="{{ route('forgot-password-options') }}"  class="btn btn-light py-2 fs-5 w-100 rounded-1" title="Back to Options">
-                                                <i class="fa-solid fa-paper-plane"></i> Back to Options
+                                                <i class="fa-solid fa fa-arrow-left"></i> Back to Options
                                             </a>
                                         </div>
                                     </form>
