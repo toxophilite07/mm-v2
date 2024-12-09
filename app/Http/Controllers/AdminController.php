@@ -54,7 +54,7 @@ class AdminController extends Controller {
         $active_user_count = User::where('user_role_id', 2)->where('is_active', 1)->count();
     
         // Count of barangays
-        $unique_barangay_count = User::where('user_role_id', 2, 3) // Assuming '2' is the role ID for feminines
+        $unique_barangay_count = User::where('user_role_id', 3) // Assuming '2' is the role ID for feminines
         ->distinct('address') // Get distinct addresses
         ->count('address'); // Ensure you have a Barangay model
     
