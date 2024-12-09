@@ -745,7 +745,7 @@ class AdminController extends Controller {
 
             $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
             $feminine_arr[$feminine_key]['full_name'] = $full_name;
-            $feminine_arr[$feminine_key]['user_role_id'] = '<span class="text-' . ($feminine['user_role_id'] == 2 ? 'success' : 'primary') . '"><strong>&bull;</strong> ' . ($feminine['user_role_id'] == 2 ? 'Feminine' : 'Health Worker') . '</span>';
+            $feminine_arr[$feminine_key]['user_role_id'] = '<span class="text-' . ($feminine['user_role_id'] == 2 ? 'success' : 'primary') . '"><strong>&bull;</strong> ' . ($feminine['user_role_id'] == 2 ? 'Female' : 'Health Worker') . '</span>';
             $feminine_arr[$feminine_key]['action'] = '<button type="button" class="btn btn-sm btn-primary reset_password" data-id="'.$feminine['id'].'" data-full_name="'.$full_name.'"><i class="fa-solid fa-key"></i> Reset Password</button>';
         }
 
