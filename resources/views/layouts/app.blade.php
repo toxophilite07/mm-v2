@@ -85,7 +85,7 @@
             </div>
 
             <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between">
-                <p class="text-muted text-center text-md-left">Copyright © {{ date('Y') }} <a href="#" target="_self">MCC</a>. All rights reserved</p>
+                <p class="text-muted text-center text-md-left">Copyright © {{ date('Y') }} <a href="mailto:nelbanbetache@gmail.com" target="_self">MCC Dev Team</a>. All rights reserved</p>
                 <p class="text-muted text-center text-md-left mb-0 d-none d-md-block">
                     Powered by: <a href="mailto:nelbanbetache@gmail.com">MCC Dev Team</a>
                 </p>
