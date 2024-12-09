@@ -166,8 +166,8 @@
                                                 </div>
             
                                                 <div class="col-lg-4 col-sm-12 mb-3">
-                                                    <label for="middle_name" class="form-label">Middle Name</label>
-                                                    <input type="text" id="middle_name" name="middle_name" class="form-control {{ $errors->has('middle_name') ? 'is-invalid' : '' }}" value="{{ old('middle_name') }}" placeholder="Enter your middle name" oninput="handleInputCapitalize(event)">
+                                                    <label for="middle_name" class="form-label">Middle Name (Optional)</label>
+                                                    <input type="text" id="middle_name" name="middle_name" class="form-control {{ $errors->has('middle_name') ? 'is-invalid' : '' }}" value="{{ old('middle_name') }}" placeholder="Enter your middle name (Optional)" oninput="handleInputCapitalize(event)">
                                                 </div>
             
                                                 <div class="col-lg-4 col-sm-12 mb-3">
