@@ -12,9 +12,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Check if it's running in a Cordova app (not browser)
     if (window.cordova) {
-        // If it's inside InAppBrowser, do not show the popup
-        if (window.cordova.InAppBrowser || cordova.platformId !== 'browser') {
-            return; // Prevent popup from showing in native environments (e.g., InAppBrowser, Android, iOS)
+        // Check if the app is running on Android platform or in InAppBrowser
+        if (cordova.platformId === 'android' || window.cordova.InAppBrowser) {
+            return; // Prevent popup from showing in Android or InAppBrowser environments
         }
     }
 
