@@ -200,7 +200,7 @@
                                                                 </p>
                                                                 <p style="font-size: 14px; line-height: 140%;"> </p>
                                                                 <p style="font-size: 14px; line-height: 140%;">
-                                                                    <span style="font-size: 18px; line-height: 25.2px; color: #666666;">Please note that this link will expire in 20 minutes. If the link expires, you can request a new password reset within 24 hours. </span>
+                                                                    <span style="font-size: 18px; line-height: 25.2px; color: #666666;">Please note that this link will expire in 15 minutes. If the link expires, you can request a new password reset within 24 hours. </span>
                                                                     <span style="font-size: 18px; line-height: 25.2px; color: #666666;">To reset your password, please follow the link below: </span>
                                                                 </p>
                                                             </div>
