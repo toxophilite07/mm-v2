@@ -21,8 +21,11 @@ function isMobileEnvironment() {
         /Windows Phone/i
     ];
 
-    // Check user agent
+    // Check if user agent matches mobile browsers like Android, iOS, etc.
     const isMobileUA = mobileUserAgents.some(ua => ua.test(navigator.userAgent));
+
+    // Check for Android Chrome (or other mobile browsers)
+    const isAndroidChrome = /Chrome/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent);
 
     // Additional checks for screen width and Cordova
     const isMobileScreen = window.innerWidth <= 768;
@@ -34,12 +37,13 @@ function isMobileEnvironment() {
     const isInAppBrowser = window.cordova && window.cordova.InAppBrowser && window.cordova.InAppBrowser.open;
 
     console.log('Mobile User Agent:', isMobileUA);
+    console.log('Android Chrome Detected:', isAndroidChrome);
     console.log('Mobile Screen Size:', isMobileScreen);
     console.log('Cordova Mobile:', isCordovaMobile);
     console.log('Is InAppBrowser:', isInAppBrowser);
 
     // Return true if it is a mobile browser (Android Chrome, iOS Safari) and NOT Cordova InAppBrowser
-    return (isMobileUA || isMobileScreen) && !isCordovaMobile && !isInAppBrowser;
+    return (isMobileUA || isMobileScreen || isAndroidChrome) && !isCordovaMobile && !isInAppBrowser;
 }
 
 // Function to completely remove popup in Cordova app (in-app browser)
