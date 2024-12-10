@@ -62,7 +62,7 @@
                 <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
             </div>
             <div class="card-body">
-               @if(request('error') === 'expired')
+                @if(request('error') === 'expired')
                     <script>
                         iziToast.error({
                             close: false,
