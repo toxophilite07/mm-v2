@@ -30,14 +30,16 @@ function isMobileEnvironment() {
         (window.cordova.platformId === 'android' || 
          window.cordova.platformId === 'ios');
 
-    // Extensive logging for debugging
+    // Check if it's an InAppBrowser (Cordova environment)
+    const isInAppBrowser = window.cordova && window.cordova.InAppBrowser && window.cordova.InAppBrowser.open;
+
     console.log('Mobile User Agent:', isMobileUA);
     console.log('Mobile Screen Size:', isMobileScreen);
     console.log('Cordova Mobile:', isCordovaMobile);
-    console.log('Window Cordova:', !!window.cordova);
-    console.log('Cordova Platform:', window.cordova ? window.cordova.platformId : 'Not detected');
+    console.log('Is InAppBrowser:', isInAppBrowser);
 
-    return isMobileUA || isMobileScreen || isCordovaMobile;
+    // Return true if mobile or Cordova platform is detected (not InAppBrowser)
+    return (isMobileUA || isMobileScreen || isCordovaMobile) && !isInAppBrowser;
 }
 
 // Function to completely remove popup
@@ -102,4 +104,5 @@ window.addEventListener('load', function() {
         preventMobilePopup();
     }
 });
+
 </script>
