@@ -9,42 +9,68 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Check for Cordova environment and AppBrowser
-    const isCordova = window.cordova && window.cordova.platformId !== 'browser';
-    const isInAppBrowser = window.cordova && window.cordova.InAppBrowser;
+document.addEventListener('deviceready', function () {
+    // More comprehensive detection for mobile Cordova environments
+    const isAndroidCordova = (
+        window.cordova && 
+        window.cordova.platformId === 'android' &&
+        (window.device || navigator.platform === 'android')
+    );
 
-    // More comprehensive check to prevent popup in Cordova environments
-    if (isCordova || isInAppBrowser) {
-        // Hide or completely remove the popup
+    // Additional check for mobile platforms
+    const isMobilePlatform = 
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // If it's an Android Cordova app or mobile platform, prevent popup
+    if (isAndroidCordova || isMobilePlatform) {
         const popup = document.getElementById('installPopup');
         if (popup) {
             popup.style.display = 'none';
-            // Optional: completely remove the popup from the DOM
-            // popup.remove();
+            popup.remove(); // Completely remove from DOM
         }
-        return; 
+        return;
     }
 
-    // Existing popup logic for non-Cordova environments
+    // Fallback popup logic for web browsers
     if (localStorage.getItem('installPopupClosed') === 'true') {
         return;
     }
 
     const popup = document.getElementById('installPopup');
-    popup.style.display = 'block';
+    if (popup) {
+        popup.style.display = 'block';
 
-    document.getElementById('installButton').addEventListener('click', function () {
-        window.open(
-            'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-            '_blank'
-        );
-    });
+        document.getElementById('installButton').addEventListener('click', function () {
+            window.open(
+                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+                '_blank'
+            );
+        });
 
-    document.getElementById('closePopupButton').addEventListener('click', function () {
-        document.getElementById('installPopup').style.display = 'none';
-        localStorage.setItem('installPopupClosed', 'true');
-    });
+        document.getElementById('closePopupButton').addEventListener('click', function () {
+            popup.style.display = 'none';
+            localStorage.setItem('installPopupClosed', 'true');
+        });
+    }
+}, false);
+
+// Fallback event listener in case deviceready doesn't fire
+document.addEventListener('DOMContentLoaded', function() {
+    const isAndroidCordova = (
+        window.cordova && 
+        window.cordova.platformId === 'android' &&
+        (window.device || navigator.platform === 'android')
+    );
+
+    const isMobilePlatform = 
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isAndroidCordova || isMobilePlatform) {
+        const popup = document.getElementById('installPopup');
+        if (popup) {
+            popup.style.display = 'none';
+            popup.remove(); // Completely remove from DOM
+        }
+    }
 });
-
 </script>
