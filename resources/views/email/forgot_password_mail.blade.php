@@ -199,7 +199,7 @@
                                                                 </p>
                                                                 <p style="font-size: 14px; line-height: 140%;"> </p>
                                                                 <p style="font-size: 14px; line-height: 140%;">
-                                                                    <span style="font-size: 18px; line-height: 25.2px; color: #666666;">Please note that this link will expire in 3 minutes. If the link expires, you can request a new password reset within 24 hours. </span>
+                                                                    <span style="font-size: 18px; line-height: 25.2px; color: #666666;">Please note that this link will expire in 20 minutes. If the link expires, you can request a new password reset within 24 hours. </span>
                                                                     <span style="font-size: 18px; line-height: 25.2px; color: #666666;">To reset your password, please follow the link below: </span>
                                                                 </p>
                                                             </div>
@@ -229,9 +229,8 @@
                                                     <tr>
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:30px 40px 15px;font-family:'Lato',sans-serif;" align="left">
                                                             <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;"><span style="color: #888888; font-size: 14px; line-height: 19.6px;"><em>
-                                                                    <span style="font-size: 16px; line-height: 22.4px;">Please ignore this email if you did not request a password change.</span></em></span><br /><span style="color: #888888; font-size: 14px; line-height: 19.6px;"><em><span style="font-size: 16px; line-height: 22.4px;"> </span></em></span>
-                                                                </p>
+                                                            <p>If you did not request this, please <a href="mailto:nelbanbetache@gmail.com">contact us immediately</a>.</p>
+                                                            <p>Thank you,<br>Menstrual Monitoring App v2</p>
                                                             </div>
 
                                                         </td>
