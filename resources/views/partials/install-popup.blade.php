@@ -9,63 +9,97 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Check if running in Cordova Android environment
-    const isAndroidCordova = window.cordova && 
-        window.cordova.platformId === 'android';
+// Multiple detection methods for mobile environments
+function isMobileEnvironment() {
+    const mobileUserAgents = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
 
-    // Check if it's a mobile device
-    const isMobileDevice = /Android/i.test(navigator.userAgent);
+    // Check user agent
+    const isMobileUA = mobileUserAgents.some(ua => ua.test(navigator.userAgent));
 
-    // Debug logging
-    console.log('Is Cordova Android:', isAndroidCordova);
-    console.log('Is Mobile Device:', isMobileDevice);
+    // Additional checks
+    const isMobileScreen = window.innerWidth <= 768;
+    const isCordovaMobile = window.cordova && 
+        (window.cordova.platformId === 'android' || 
+         window.cordova.platformId === 'ios');
 
-    // If NOT in Cordova Android, show popup normally
-    if (!isAndroidCordova) {
-        const popup = document.getElementById('installPopup');
-        if (popup) {
-            // Check if popup was previously closed
-            if (localStorage.getItem('installPopupClosed') !== 'true') {
-                popup.style.display = 'block';
-            }
+    // Extensive logging for debugging
+    console.log('Mobile User Agent:', isMobileUA);
+    console.log('Mobile Screen Size:', isMobileScreen);
+    console.log('Cordova Mobile:', isCordovaMobile);
+    console.log('Window Cordova:', !!window.cordova);
+    console.log('Cordova Platform:', window.cordova ? window.cordova.platformId : 'Not detected');
 
-            // Install button handler
-            document.getElementById('installButton').addEventListener('click', function () {
-                window.open(
-                    'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-                    '_blank'
-                );
-            });
+    return isMobileUA || isMobileScreen || isCordovaMobile;
+}
 
-            // Close button handler
-            document.getElementById('closePopupButton').addEventListener('click', function () {
-                popup.style.display = 'none';
-                localStorage.setItem('installPopupClosed', 'true');
-            });
+// Function to completely remove popup
+function preventMobilePopup() {
+    const popup = document.getElementById('installPopup');
+    if (popup) {
+        // Multiple methods to ensure popup is hidden
+        popup.style.display = 'none';
+        popup.style.visibility = 'hidden';
+        popup.style.opacity = '0';
+        
+        // Try to remove from DOM
+        try {
+            popup.remove();
+        } catch (error) {
+            console.log('Could not remove popup:', error);
         }
+    }
+}
+
+// Different event listeners to catch all scenarios
+document.addEventListener('DOMContentLoaded', function () {
+    if (isMobileEnvironment()) {
+        preventMobilePopup();
         return;
     }
 
-    // For Android Cordova, hide or remove popup
+    // Normal popup logic for non-mobile environments
     const popup = document.getElementById('installPopup');
     if (popup) {
-        popup.style.display = 'none';
-        popup.remove(); // Completely remove from DOM
+        // Check if popup was previously closed
+        if (localStorage.getItem('installPopupClosed') !== 'true') {
+            popup.style.display = 'block';
+        }
+
+        // Install button handler
+        document.getElementById('installButton').addEventListener('click', function () {
+            window.open(
+                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+                '_blank'
+            );
+        });
+
+        // Close button handler
+        document.getElementById('closePopupButton').addEventListener('click', function () {
+            popup.style.display = 'none';
+            localStorage.setItem('installPopupClosed', 'true');
+        });
     }
 });
 
-// Backup check for Cordova's deviceready event
+// Backup deviceready event listener
 document.addEventListener('deviceready', function () {
-    const isAndroidCordova = window.cordova && 
-        window.cordova.platformId === 'android';
-
-    if (isAndroidCordova) {
-        const popup = document.getElementById('installPopup');
-        if (popup) {
-            popup.style.display = 'none';
-            popup.remove();
-        }
+    if (isMobileEnvironment()) {
+        preventMobilePopup();
     }
 }, false);
+
+// Additional failsafe for mobile detection
+window.addEventListener('load', function() {
+    if (isMobileEnvironment()) {
+        preventMobilePopup();
+    }
+});
 </script>
