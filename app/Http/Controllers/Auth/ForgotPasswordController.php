@@ -338,7 +338,7 @@ class ForgotPasswordController extends Controller {
         $createdAt = Carbon::parse($password_reset_request->created_at);
     
         // Check if the token is expired (e.g., 5 minutes expiration window)
-        if ($createdAt->addMinutes(20)->isPast()) {
+        if ($createdAt->addMinutes(3)->isPast()) {
             return redirect('/forgot-password-options?error=expired')->withHeaders([
                 'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
                 'Pragma' => 'no-cache',
