@@ -9,12 +9,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Check if it's running in a Cordova app (not browser)
+document.addEventListener('deviceready', function () {
+    // Check if it's running in a Cordova app (Android or other platforms)
     if (window.cordova) {
-        // Check if the app is running on Android platform or in InAppBrowser
-        if (cordova.platformId === 'android' || window.cordova.InAppBrowser) {
-            return; // Prevent popup from showing in Android or InAppBrowser environments
+        // Check if the app is running on Android platform
+        if (cordova.platformId === 'android') {
+            return; // Prevent popup from showing on Android platform
+        }
+
+        // Check if running inside InAppBrowser
+        if (cordova.InAppBrowser) {
+            return; // Prevent popup if inside InAppBrowser
         }
     }
 
