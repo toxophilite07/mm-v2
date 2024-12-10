@@ -111,7 +111,7 @@
                                         <button type="submit" id="sendOtpButton" class="btn btn-primary" disabled>
                                             <span id="buttonText"><i class="fa-solid fa-paper-plane"></i> Send OTP</span>
                                             <span id="buttonIndicator" style="display: none;">
-                                                <i class="fa fa-spinner fa-spin"></i> Please wait...
+                                                <i class="fa fa-spinner fa-spin"></i> Please wait a moment...
                                             </span>
                                         </button>
                                     </div>
