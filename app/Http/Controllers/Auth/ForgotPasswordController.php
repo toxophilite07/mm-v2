@@ -356,45 +356,7 @@ class ForgotPasswordController extends Controller {
     
         // Render reset password page (or redirect as needed)
         return view('auth.reset_password', compact('token', 'user'));
-    }public function getResetPassword($token)
-{
-    if (Auth::check()) {
-        return redirect()->back();
     }
-
-    // Fetch the password reset request using the token
-    $password_reset_request = DB::table('password_resets')->where('token', $token)->first();
-
-    // Check if the token exists
-    if (!$password_reset_request) {
-        abort(404);
-    }
-
-    // Ensure the created_at field is parsed as a Carbon instance
-    $createdAt = Carbon::parse($password_reset_request->created_at);
-
-    // Check if the token is expired (e.g., 3 minutes expiration window)
-    if ($createdAt->addMinutes(3)->isPast()) {
-        // Redirect with the error parameter
-        return redirect('/forgot-password-options?error=expired')->withHeaders([
-            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-            'Pragma' => 'no-cache',
-        ]);
-    }
-
-    // Retrieve user details for the associated email
-    $user = User::where('email', $password_reset_request->email)
-        ->select(['email', 'first_name'])
-        ->first();
-
-    if (!$user) {
-        abort(404); // Or handle gracefully if user is not found
-    }
-
-    // Render reset password page (or redirect as needed)
-    return view('auth.reset_password', compact('token', 'user'));
-}
-
     
     public function postResetPassword(Request $request)
     {
