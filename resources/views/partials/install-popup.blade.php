@@ -1,45 +1,37 @@
-<div id="installPopup" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 320px; padding: 15px; background-color: #FFFF; border: 1px solid #F6A5BB; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); z-index: 9999; font-family: Arial, sans-serif;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <p style="margin: 0; font-size: 16px; color: #333; font-weight: bold;">Install our app!</p>
-        <button id="closePopupButton" style="background: none; border: none; font-size: 18px; font-weight: bold; cursor: pointer; color: #333;">&times;</button>
-    </div>
-    <p style="margin-top: 10px; font-size: 14px; color: #666;">Install our app for a better experience on your device.</p>
-    <button id="installButton" style="margin-top: 10px; padding: 10px 15px; background-color: #F6A5BB; border: none; border-radius: 3px; color: white; font-size: 14px; cursor: pointer;">Install Now</button>
-</div>
+document.addEventListener('DOMContentLoaded', function () {
+    // Check for Cordova environment and AppBrowser
+    const isCordova = window.cordova && window.cordova.platformId !== 'browser';
+    const isInAppBrowser = window.cordova && window.cordova.InAppBrowser;
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Check if the app is running in a Cordova environment
-        // Also check if the app is being opened inside InAppBrowser
-        if (window.cordova && window.cordova.platformId !== 'browser') {
-            // If it's in Cordova and not in the browser, don't show the popup
-            return; 
-        }
-
-        // Check if the user has closed the popup before (using localStorage)
-        if (localStorage.getItem('installPopupClosed') === 'true') {
-            return; // Skip showing the popup if it's closed previously
-        }
-
-        // Show the install popup for browser users
+    // More comprehensive check to prevent popup in Cordova environments
+    if (isCordova || isInAppBrowser) {
+        // Hide or completely remove the popup
         const popup = document.getElementById('installPopup');
-        popup.style.display = 'block';
+        if (popup) {
+            popup.style.display = 'none';
+            // Optional: completely remove the popup from the DOM
+            // popup.remove();
+        }
+        return; 
+    }
 
-        // Handle the Install Now button click
-        document.getElementById('installButton').addEventListener('click', function () {
-            window.open(
-                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-                '_blank'
-            ); // Replace with your app's Play Store URL
-        });
+    // Existing popup logic for non-Cordova environments
+    if (localStorage.getItem('installPopupClosed') === 'true') {
+        return;
+    }
 
-        // Handle the Close button click
-        document.getElementById('closePopupButton').addEventListener('click', function () {
-            document.getElementById('installPopup').style.display = 'none';
+    const popup = document.getElementById('installPopup');
+    popup.style.display = 'block';
 
-            // Set a flag in localStorage to remember that the user closed the popup
-            localStorage.setItem('installPopupClosed', 'true');
-        });
+    document.getElementById('installButton').addEventListener('click', function () {
+        window.open(
+            'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+            '_blank'
+        );
     });
-</script>
+
+    document.getElementById('closePopupButton').addEventListener('click', function () {
+        document.getElementById('installPopup').style.display = 'none';
+        localStorage.setItem('installPopupClosed', 'true');
+    });
+});
