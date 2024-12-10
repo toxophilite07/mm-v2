@@ -388,6 +388,43 @@
             }
         @endif
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if the app is running in a Cordova environment
+        if (!window.cordova) {
+            // Show the install popup for browser users
+            showInstallPopup();
+        }
+    });
+
+    function showInstallPopup() {
+        const popup = document.createElement('div');
+        popup.id = 'installPopup';
+        popup.style.position = 'fixed';
+        popup.style.bottom = '20px';
+        popup.style.right = '20px';
+        popup.style.width = '300px';
+        popup.style.padding = '15px';
+        popup.style.backgroundColor = '#FFD6D1';
+        popup.style.border = '1px solid #F6A5BB';
+        popup.style.borderRadius = '5px';
+        popup.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+        popup.style.zIndex = '9999';
+        popup.innerHTML = `
+            <p style="margin: 0; font-size: 16px; color: #333;">Install our app for a better experience!</p>
+            <button id="installButton" style="margin-top: 10px; padding: 10px 15px; background-color: #F6A5BB; border: none; border-radius: 3px; color: white; font-size: 14px; cursor: pointer;">Install Now</button>
+        `;
+
+        document.body.appendChild(popup);
+
+        // Handle button click
+        document.getElementById('installButton').addEventListener('click', function () {
+            alert('Redirecting to app installation...');
+            window.open('https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file', '_blank'); // Replace with your app's Play Store URL
+        });
+    }
+</script>
+
 
     @include('auth.response')
     </body>
