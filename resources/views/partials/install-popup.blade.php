@@ -9,37 +9,37 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Check if the app is running in a Cordova environment
-        // Also check if the app is being opened inside InAppBrowser
-        if (window.cordova && window.cordova.platformId !== 'browser') {
-            // If it's in Cordova and not in the browser, don't show the popup
-            return; 
-        }
+   document.addEventListener('DOMContentLoaded', function () {
+    // Check if the app is running in a Cordova environment
+    if (window.cordova && window.cordova.platformId !== 'browser' && !window.cordova.InAppBrowser) {
+        // If it's in Cordova and not in the browser, don't show the popup
+        return; 
+    }
 
-        // Check if the user has closed the popup before (using localStorage)
-        if (localStorage.getItem('installPopupClosed') === 'true') {
-            return; // Skip showing the popup if it's closed previously
-        }
+    // Check if the user has closed the popup before (using localStorage)
+    if (localStorage.getItem('installPopupClosed') === 'true') {
+        return; // Skip showing the popup if it's closed previously
+    }
 
-        // Show the install popup for browser users
-        const popup = document.getElementById('installPopup');
-        popup.style.display = 'block';
+    // Show the install popup for browser users
+    const popup = document.getElementById('installPopup');
+    popup.style.display = 'block';
 
-        // Handle the Install Now button click
-        document.getElementById('installButton').addEventListener('click', function () {
-            window.open(
-                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-                '_blank'
-            ); // Replace with your app's Play Store URL
-        });
-
-        // Handle the Close button click
-        document.getElementById('closePopupButton').addEventListener('click', function () {
-            document.getElementById('installPopup').style.display = 'none';
-
-            // Set a flag in localStorage to remember that the user closed the popup
-            localStorage.setItem('installPopupClosed', 'true');
-        });
+    // Handle the Install Now button click
+    document.getElementById('installButton').addEventListener('click', function () {
+        window.open(
+            'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+            '_blank'
+        ); // Replace with your app's Play Store URL
     });
+
+    // Handle the Close button click
+    document.getElementById('closePopupButton').addEventListener('click', function () {
+        document.getElementById('installPopup').style.display = 'none';
+
+        // Set a flag in localStorage to remember that the user closed the popup
+        localStorage.setItem('installPopupClosed', 'true');
+    });
+});
+
 </script>
