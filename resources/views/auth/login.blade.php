@@ -54,6 +54,8 @@
     </style>
 </head>
 @include('partials.cookie-consent')
+ <!-- Include the Install Pop-up -->
+ @include('partials.install-popup')
 <body style="background-color: #FFD6D1;">
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
@@ -388,53 +390,6 @@
             }
         @endif
     </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Check if the app is running in a Cordova environment
-        if (!window.cordova) {
-            // Show the install popup for browser users
-            showInstallPopup();
-        }
-    });
-
-    function showInstallPopup() {
-        const popup = document.createElement('div');
-        popup.id = 'installPopup';
-        popup.style.position = 'fixed';
-        popup.style.bottom = '20px';
-        popup.style.right = '20px';
-        popup.style.width = '320px';
-        popup.style.padding = '15px';
-        popup.style.backgroundColor = '#FFD6D1';
-        popup.style.border = '1px solid #F6A5BB';
-        popup.style.borderRadius = '10px';
-        popup.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-        popup.style.zIndex = '9999';
-        popup.style.fontFamily = 'Arial, sans-serif';
-        popup.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p style="margin: 0; font-size: 16px; color: #333; font-weight: bold;">Install our app!</p>
-                <button id="closePopupButton" style="background: none; border: none; font-size: 18px; font-weight: bold; cursor: pointer; color: #333;">&times;</button>
-            </div>
-            <p style="margin-top: 10px; font-size: 14px; color: #666;">Install our app for a better experience on your device.</p>
-            <button id="installButton" style="margin-top: 10px; padding: 10px 15px; background-color: #F6A5BB; border: none; border-radius: 3px; color: white; font-size: 14px; cursor: pointer;">Install Now</button>
-        `;
-
-        document.body.appendChild(popup);
-
-        // Handle the Install Now button click
-        document.getElementById('installButton').addEventListener('click', function () {
-            alert('Redirecting to app installation...');
-            window.open('https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file', '_blank'); // Replace with your app's Play Store URL
-        });
-
-        // Handle the Close button click
-        document.getElementById('closePopupButton').addEventListener('click', function () {
-            document.body.removeChild(popup);
-        });
-    }
-</script>
 
     @include('auth.response')
     </body>
