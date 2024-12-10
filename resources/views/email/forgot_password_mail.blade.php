@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/blood.jpg') }}" />
 
     <style type="text/css">
     @media only screen and (min-width: 620px) {
