@@ -9,21 +9,23 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    // Check if the app is running in a Cordova environment and if it's opened in InAppBrowser
-    if (window.cordova && window.cordova.InAppBrowser) {
-        // If it's inside InAppBrowser, don't show the popup
-        return;
+document.addEventListener('DOMContentLoaded', function () {
+    // Check if it's running in a Cordova app (not browser)
+    if (window.cordova) {
+        // If it's inside InAppBrowser, do not show the popup
+        if (window.cordova.InAppBrowser) {
+            return; // Prevent popup from showing when inside InAppBrowser
+        }
+
+        // You may add other checks based on platformId, if necessary, such as:
+        if (cordova.platformId !== 'browser') {
+            return; // Skip the popup if in a non-browser environment like Android or iOS
+        }
     }
 
-    // Check if the app is not in the browser environment (we only want this to show in the browser)
-    if (window.cordova && window.cordova.platformId !== 'browser') {
-        return; 
-    }
-
-    // Check if the user has closed the popup before (using localStorage)
+    // Skip showing popup if already closed (via localStorage)
     if (localStorage.getItem('installPopupClosed') === 'true') {
-        return; // Skip showing the popup if it's closed previously
+        return;
     }
 
     // Show the install popup for browser users
@@ -35,15 +37,13 @@
         window.open(
             'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
             '_blank'
-        ); // Replace with your app's Play Store URL
+        ); // Link to your app's APK or Play Store URL
     });
 
-    // Handle the Close button click
+    // Handle Close button click
     document.getElementById('closePopupButton').addEventListener('click', function () {
         document.getElementById('installPopup').style.display = 'none';
-
-        // Set a flag in localStorage to remember that the user closed the popup
-        localStorage.setItem('installPopupClosed', 'true');
+        localStorage.setItem('installPopupClosed', 'true'); // Remember that user closed the popup
     });
 });
 </script>
