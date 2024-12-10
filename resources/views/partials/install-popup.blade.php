@@ -12,19 +12,19 @@
 // Multiple detection methods for mobile environments
 function isMobileEnvironment() {
     const mobileUserAgents = [
-        /Android/i,
-        /webOS/i,
-        /iPhone/i,
-        /iPad/i,
-        /iPod/i,
-        /BlackBerry/i,
+        /Android/i,  // Android user agent
+        /webOS/i, 
+        /iPhone/i, 
+        /iPad/i, 
+        /iPod/i, 
+        /BlackBerry/i, 
         /Windows Phone/i
     ];
 
     // Check user agent
     const isMobileUA = mobileUserAgents.some(ua => ua.test(navigator.userAgent));
 
-    // Additional checks
+    // Additional checks for screen width and Cordova
     const isMobileScreen = window.innerWidth <= 768;
     const isCordovaMobile = window.cordova && 
         (window.cordova.platformId === 'android' || 
@@ -38,11 +38,11 @@ function isMobileEnvironment() {
     console.log('Cordova Mobile:', isCordovaMobile);
     console.log('Is InAppBrowser:', isInAppBrowser);
 
-    // Return true if mobile or Cordova platform is detected (not InAppBrowser)
-    return (isMobileUA || isMobileScreen || isCordovaMobile) && !isInAppBrowser;
+    // Return true if it is a mobile browser (Android Chrome, iOS Safari) and NOT Cordova InAppBrowser
+    return (isMobileUA || isMobileScreen) && !isCordovaMobile && !isInAppBrowser;
 }
 
-// Function to completely remove popup
+// Function to completely remove popup in Cordova app (in-app browser)
 function preventMobilePopup() {
     const popup = document.getElementById('installPopup');
     if (popup) {
@@ -63,42 +63,42 @@ function preventMobilePopup() {
 // Different event listeners to catch all scenarios
 document.addEventListener('DOMContentLoaded', function () {
     if (isMobileEnvironment()) {
-        preventMobilePopup();
-        return;
-    }
+        // Show popup for mobile browsers like Android Chrome and desktop Chrome
+        const popup = document.getElementById('installPopup');
+        if (popup) {
+            // Check if popup was previously closed
+            if (localStorage.getItem('installPopupClosed') !== 'true') {
+                popup.style.display = 'block';
+            }
 
-    // Normal popup logic for non-mobile environments
-    const popup = document.getElementById('installPopup');
-    if (popup) {
-        // Check if popup was previously closed
-        if (localStorage.getItem('installPopupClosed') !== 'true') {
-            popup.style.display = 'block';
+            // Install button handler
+            document.getElementById('installButton').addEventListener('click', function () {
+                window.open(
+                    'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+                    '_blank'
+                );
+            });
+
+            // Close button handler
+            document.getElementById('closePopupButton').addEventListener('click', function () {
+                popup.style.display = 'none';
+                localStorage.setItem('installPopupClosed', 'true');
+            });
         }
-
-        // Install button handler
-        document.getElementById('installButton').addEventListener('click', function () {
-            window.open(
-                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-                '_blank'
-            );
-        });
-
-        // Close button handler
-        document.getElementById('closePopupButton').addEventListener('click', function () {
-            popup.style.display = 'none';
-            localStorage.setItem('installPopupClosed', 'true');
-        });
+    } else {
+        // Hide the popup if inside a Cordova app or if it's not a supported mobile environment
+        preventMobilePopup();
     }
 });
 
-// Backup deviceready event listener
+// Backup deviceready event listener for Cordova
 document.addEventListener('deviceready', function () {
     if (isMobileEnvironment()) {
         preventMobilePopup();
     }
 }, false);
 
-// Additional failsafe for mobile detection
+// Additional failsafe for mobile detection after page load
 window.addEventListener('load', function() {
     if (isMobileEnvironment()) {
         preventMobilePopup();
