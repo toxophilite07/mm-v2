@@ -9,68 +9,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('deviceready', function () {
-    // More comprehensive detection for mobile Cordova environments
-    const isAndroidCordova = (
-        window.cordova && 
-        window.cordova.platformId === 'android' &&
-        (window.device || navigator.platform === 'android')
-    );
+document.addEventListener('DOMContentLoaded', function () {
+    // Check if running in Cordova Android environment
+    const isAndroidCordova = window.cordova && 
+        window.cordova.platformId === 'android';
 
-    // Additional check for mobile platforms
-    const isMobilePlatform = 
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // Check if it's a mobile device
+    const isMobileDevice = /Android/i.test(navigator.userAgent);
 
-    // If it's an Android Cordova app or mobile platform, prevent popup
-    if (isAndroidCordova || isMobilePlatform) {
+    // Debug logging
+    console.log('Is Cordova Android:', isAndroidCordova);
+    console.log('Is Mobile Device:', isMobileDevice);
+
+    // If NOT in Cordova Android, show popup normally
+    if (!isAndroidCordova) {
         const popup = document.getElementById('installPopup');
         if (popup) {
-            popup.style.display = 'none';
-            popup.remove(); // Completely remove from DOM
+            // Check if popup was previously closed
+            if (localStorage.getItem('installPopupClosed') !== 'true') {
+                popup.style.display = 'block';
+            }
+
+            // Install button handler
+            document.getElementById('installButton').addEventListener('click', function () {
+                window.open(
+                    'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
+                    '_blank'
+                );
+            });
+
+            // Close button handler
+            document.getElementById('closePopupButton').addEventListener('click', function () {
+                popup.style.display = 'none';
+                localStorage.setItem('installPopupClosed', 'true');
+            });
         }
         return;
     }
 
-    // Fallback popup logic for web browsers
-    if (localStorage.getItem('installPopupClosed') === 'true') {
-        return;
-    }
-
+    // For Android Cordova, hide or remove popup
     const popup = document.getElementById('installPopup');
     if (popup) {
-        popup.style.display = 'block';
-
-        document.getElementById('installButton').addEventListener('click', function () {
-            window.open(
-                'https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file',
-                '_blank'
-            );
-        });
-
-        document.getElementById('closePopupButton').addEventListener('click', function () {
-            popup.style.display = 'none';
-            localStorage.setItem('installPopupClosed', 'true');
-        });
+        popup.style.display = 'none';
+        popup.remove(); // Completely remove from DOM
     }
-}, false);
+});
 
-// Fallback event listener in case deviceready doesn't fire
-document.addEventListener('DOMContentLoaded', function() {
-    const isAndroidCordova = (
-        window.cordova && 
-        window.cordova.platformId === 'android' &&
-        (window.device || navigator.platform === 'android')
-    );
+// Backup check for Cordova's deviceready event
+document.addEventListener('deviceready', function () {
+    const isAndroidCordova = window.cordova && 
+        window.cordova.platformId === 'android';
 
-    const isMobilePlatform = 
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (isAndroidCordova || isMobilePlatform) {
+    if (isAndroidCordova) {
         const popup = document.getElementById('installPopup');
         if (popup) {
             popup.style.display = 'none';
-            popup.remove(); // Completely remove from DOM
+            popup.remove();
         }
     }
-});
+}, false);
 </script>
