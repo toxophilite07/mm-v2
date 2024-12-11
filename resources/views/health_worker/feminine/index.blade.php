@@ -78,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 @endsection
-<script>
+<!-- <script>
 
 $(function () {
     if (!$.fn.DataTable.isDataTable('#feminine_table')) {
@@ -276,4 +276,201 @@ function downloadExcel() {
     XLSX.writeFile(workbook, 'feminine_list.xlsx'); 
 }
 
+</script> -->
+
+<script>
+    $(function () {
+        if (!$.fn.DataTable.isDataTable('#feminine_table')) {
+            $("#feminine_table").DataTable({
+                aLengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ],
+                iDisplayLength: 10,
+                sAjaxSource: "../health-worker/feminine-data",
+                columns: [
+                    { data: "row_count" }, // Adds numbering to rows
+                    { data: "full_name" },
+                    { data: "menstruation_status" },
+                    { data: "estimated_next_period" },
+                    { data: "estimated_menstrual_status" },
+                    { data: "action" }
+                ],
+                drawCallback: function (settings) {
+                    updateTotals(settings.json.data);
+                },
+                columnDefs: [
+                    { 
+                        targets: [2, 4], // Menstruation Status and Estimated Menstrual Status columns
+                        createdCell: function (td, cellData) {
+                            $(td).css("list-style", "none"); // Removes any bullet styling
+                        }
+                    }
+                ]
+            });
+            $("#feminine_table").each(function () {
+                var datatable = $(this);
+                var search_input = datatable
+                    .closest(".dataTables_wrapper")
+                    .find("div[id$=_filter] input");
+                search_input.attr("placeholder", "Search");
+                search_input.removeClass("form-control-sm");
+
+                var length_sel = datatable
+                    .closest(".dataTables_wrapper")
+                    .find("div[id$=_length] select");
+                length_sel.removeClass("form-control-sm");
+            });
+        }
+    });
+
+    function printFeminineList() {
+        var table = document.getElementById('feminine_table');
+        var clonedTable = table.cloneNode(true);
+        var rows = clonedTable.rows;
+
+        // Hide the "Account Status" and "Action" columns
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].deleteCell(5);
+            // rows[i].deleteCell(3);
+        }
+
+        // Create the HTML for the print view
+        var headerTable = '<table border="1" style="width:100%; border-collapse: collapse; margin-bottom: 20px;"><thead><tr>';
+        headerTable += '<th>No.</th>'; // Add numbering
+        headerTable += '<th>Name</th>';
+        headerTable += '<th>Menstruation Status</th>';
+        headerTable += '<th>Estimated Period Dates</th>';
+        headerTable += '<th>Estimated Menstrual Status</th>';
+        headerTable += '</tr></thead><tbody>';
+
+        var nameTable = '';
+        for (var i = 1; i < rows.length; i++) {  // Start from 1 to skip the header row
+            nameTable += '<tr>';
+            nameTable += '<td>' + i + '</td>'; // Add row numbering
+            nameTable += '<td>' + rows[i].cells[1].innerText + '</td>';
+            nameTable += '<td>' + rows[i].cells[2].innerText + '</td>';
+            nameTable += '<td>' + rows[i].cells[3].innerText + '</td>';
+            nameTable += '<td>' + rows[i].cells[4].innerText + '</td>';
+            nameTable += '</tr>';
+        }
+
+        headerTable += nameTable + '</tbody></table>';
+
+        // Detect if it's a mobile device (Android)
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            // Generate and download PDF on Android devices
+            var doc = new jsPDF(); // Use jsPDF library to create PDF
+            doc.text('Female Residents List', 10, 10);
+            doc.autoTable({ html: clonedTable }); // Create a table from the HTML table
+            doc.save('Feminine_List.pdf'); // Trigger download of the PDF
+        } else {
+            // For non-Android devices, open a new window and print the content
+            var newWindow = window.open('', '', 'height=500, width=800');
+            newWindow.document.write('<html><head><title>Assigned Feminine List</title>');
+            newWindow.document.write('<link rel="stylesheet" href="{{ asset('assets/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">');
+            newWindow.document.write('<style>');
+            newWindow.document.write('th.sorting::after, th.sorting_asc::after, th.sorting_desc::after { display: none !important; }');
+            newWindow.document.write('h2 { text-align: center; }');
+            newWindow.document.write('h3 { text-align: center; }');
+            newWindow.document.write('p { text-align: center; }');
+            newWindow.document.write('table { margin: 0 auto; }');
+            newWindow.document.write('body { position: relative; padding: 0 20px; }');
+            newWindow.document.write('.logo { position: absolute; top: 0px; }');
+            newWindow.document.write('.logo.left { left: 100px; width: 90px; }');
+            newWindow.document.write('.logo.right { right: 100px; width: 90px; }');
+            newWindow.document.write('</style>');
+            newWindow.document.write('</head><body>');
+            newWindow.document.write('<img src="' + '{{ asset('assets/images/mad.png') }}' + '" class="logo left" alt="Left Logo">');
+            newWindow.document.write('<h3>Republic of the Philippines<br>Region VII-Northern Visayas<br> Province of Cebu<br>Municipality of Madridejos<b></h3>');
+            newWindow.document.write('<img src="' + '{{ asset('assets/images/doh.png') }}' + '" class="logo right" alt="Right Logo">');
+            newWindow.document.write('<br>');
+            newWindow.document.write('<h2>Female Residents List</h2>');
+            newWindow.document.write(headerTable);
+            newWindow.document.write('</body></html>');
+            newWindow.document.close();
+            newWindow.print();
+        }
+    }
+
+    function updateTotals(data) {
+        var totalActive = 0;
+        var totalInactive = 0;
+        data.forEach(item => {
+            if (item.is_active === 'Active') {
+                totalActive++;
+            } else {
+                totalInactive++;
+            }
+        });
+        document.getElementById('total_active').innerText = totalActive;
+        document.getElementById('total_inactive').innerText = totalInactive;
+    }
+
+    function downloadCSV() {
+        var csv = [];
+
+        // Define the headers
+        var headers = ['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Dates', 'Estimated Menstrual Status'];
+        csv.push(headers.join(",")); // Add headers to the first row
+
+        var rows = document.querySelectorAll("#feminine_table tr");
+
+        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            var row = [i]; // Add row number
+            var cols = rows[i].querySelectorAll("td");
+
+            // Assuming the columns are in the same order as defined in headers
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText); // Add cell data
+            }
+
+            csv.push(row.join(",")); // Join each row's cells with commas
+        }
+
+        // Create a CSV Blob
+        var csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+
+        // Create a link to download
+        var downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(csvFile);
+        downloadLink.download = "feminine_list.csv"; // Filename
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click(); // Trigger the download
+        document.body.removeChild(downloadLink); // Cleanup
+    }
+
+    function downloadExcel() {
+        // Create an array to hold the data for the workbook
+        var data = [];
+        
+        // Define the headers
+        data.push(['No.', 'Name', 'Menstruation Status', 'Estimated Menstrual Dates', 'Estimated Menstrual Status']); // Add headers
+
+        var rows = document.querySelectorAll("#feminine_table tr");
+
+        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            var row = [i]; // Add row number
+            var cols = rows[i].querySelectorAll("td");
+
+            // Assuming the columns are in the same order as defined in headers
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText); // Add cell data
+            }
+
+            data.push(row); // Push the row data to the data array
+        }
+
+        // Create a worksheet from the data array
+        var worksheet = XLSX.utils.aoa_to_sheet(data);
+        var workbook = XLSX.utils.book_new();
+        
+        // Append the worksheet to the workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Feminine List");
+
+        // Trigger download of the Excel file
+        XLSX.writeFile(workbook, 'feminine_list.xlsx'); 
+    }
 </script>
+
