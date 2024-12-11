@@ -44,6 +44,9 @@
                 <div class="row justify-content-center w-100">
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
+                        <div class="close-button-container text-end p-2">
+                            <button type="button" class="btn-close" aria-label="Close" title="Close Form" onclick="closeForm()"></button>
+                        </div>
                             <div class="card-body">
                             @if(Route::has('login'))
                                     <p class="text-center fw-bolder mb-2 h4">Reset Password</p>
@@ -147,6 +150,9 @@
 
         return true; // Allow form submission if all validations pass
     }
+        function closeForm() {
+                window.location.href = '/login';
+        }
 </script>
 
     @include('auth.response')
