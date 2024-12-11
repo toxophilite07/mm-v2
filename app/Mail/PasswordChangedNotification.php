@@ -9,15 +9,10 @@ class PasswordChangedNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
+    public function __construct() {}
 
     /**
      * Build the message.
@@ -25,9 +20,6 @@ class PasswordChangedNotification extends Mailable
     public function build()
     {
         return $this->subject('Password Changed Successfully')
-                    ->view('emails.password_changed')
-                    ->with([
-                        'userName' => $this->user->first_name . ' ' . $this->user->last_name,
-                    ]);
+                    ->view('emails.password_changed');
     }
 }
