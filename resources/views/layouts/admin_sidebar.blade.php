@@ -20,7 +20,7 @@
             <li class="nav-item">
                 <a href="{{ URL::to('admin/feminine-list') }}" class="nav-link" onclick="showLoading();">
                     <i class="link-icon" data-feather="users"></i>
-                    <span class="link-title">Female</span>
+                    <span class="link-title">Female Residents</span>
                 </a>
             </li>
             <li class="nav-item">
