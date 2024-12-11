@@ -225,31 +225,75 @@ class UserController extends Controller
         return view('user/menstrual/index');
     }
 
+    ///OLD
+    // public function menstrualData()
+    // {
+
+    //     $menstruation_period_arr = $this->getMenstruationPeriods()->toArray();
+
+    //     $row_count = 0;
+    //     foreach ($menstruation_period_arr as $menstruation_period_key => $menstruation_period) {
+
+    //         $menstruation_period_arr[$menstruation_period_key]['row_count'] = ++$row_count;
+    //         $menstruation_period_arr[$menstruation_period_key]['menstruation_date'] = date('F j, Y', strtotime($menstruation_period['menstruation_date']));
+    //         $menstruation_period_arr[$menstruation_period_key]['remarks'] = $menstruation_period['remarks'] ?? '<span class="text-muted small font-italic">N/A</span>';
+    //         $menstruation_period_arr[$menstruation_period_key]['action'] = '
+    //             <button type="button" class="btn btn-sm btn-primary edit_menstrual"
+    //                 data-id="' . $menstruation_period['id'] . '"
+    //                 data-menstruation_period="' . date('m/d/Y', strtotime($menstruation_period['menstruation_date'])) . '"
+    //                 data-remarks="' . $menstruation_period['remarks'] . '">
+    //                     <i class="fa-solid fa-pen-to-square"></i> Edit
+    //             </button>
+
+    //             <button type="button" class="btn btn-sm btn-danger delete_menstrual" data-id="' . $menstruation_period['id'] . '"><i class="fa-solid fa-trash"></i> Delete</button>
+    //         ';
+    //     }
+
+    //     return response()->json(['data' => $menstruation_period_arr, "recordsFiltered" => count($menstruation_period_arr), 'recordsTotal' => count($menstruation_period_arr)]);
+    // }
+
+    //NEW DISBALE EDIT FOR PAST DATE
     public function menstrualData()
     {
-
         $menstruation_period_arr = $this->getMenstruationPeriods()->toArray();
 
         $row_count = 0;
         foreach ($menstruation_period_arr as $menstruation_period_key => $menstruation_period) {
+            $row_count++;
 
-            $menstruation_period_arr[$menstruation_period_key]['row_count'] = ++$row_count;
-            $menstruation_period_arr[$menstruation_period_key]['menstruation_date'] = date('F j, Y', strtotime($menstruation_period['menstruation_date']));
-            $menstruation_period_arr[$menstruation_period_key]['remarks'] = $menstruation_period['remarks'] ?? '<span class="text-muted small font-italic">N/A</span>';
-            $menstruation_period_arr[$menstruation_period_key]['action'] = '
-                <button type="button" class="btn btn-sm btn-primary edit_menstrual"
-                    data-id="' . $menstruation_period['id'] . '"
-                    data-menstruation_period="' . date('m/d/Y', strtotime($menstruation_period['menstruation_date'])) . '"
-                    data-remarks="' . $menstruation_period['remarks'] . '">
+            $menstruation_date = strtotime($menstruation_period['menstruation_date']);
+            $today = strtotime(date('Y-m-d')); // Current date normalized
+
+            $is_past_date = $menstruation_date < $today; // Check if the date is in the past
+
+            $edit_button = $is_past_date
+                ? '<button type="button" class="btn btn-sm btn-secondary" disabled title="Editing past dates is not allowed">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
-                </button>
+                </button>'
+                : '<button type="button" class="btn btn-sm btn-primary edit_menstrual"
+                        data-id="' . $menstruation_period['id'] . '"
+                        data-menstruation_period="' . date('m/d/Y', $menstruation_date) . '"
+                        data-remarks="' . $menstruation_period['remarks'] . '">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>';
 
-                <button type="button" class="btn btn-sm btn-danger delete_menstrual" data-id="' . $menstruation_period['id'] . '"><i class="fa-solid fa-trash"></i> Delete</button>
-            ';
+            $delete_button = '<button type="button" class="btn btn-sm btn-danger delete_menstrual" data-id="' . $menstruation_period['id'] . '">
+                    <i class="fa-solid fa-trash"></i> Delete
+                </button>';
+
+            $menstruation_period_arr[$menstruation_period_key]['row_count'] = $row_count;
+            $menstruation_period_arr[$menstruation_period_key]['menstruation_date'] = date('F j, Y', $menstruation_date);
+            $menstruation_period_arr[$menstruation_period_key]['remarks'] = $menstruation_period['remarks'] ?? '<span class="text-muted small font-italic">N/A</span>';
+            $menstruation_period_arr[$menstruation_period_key]['action'] = $edit_button . ' ' . $delete_button;
         }
 
-        return response()->json(['data' => $menstruation_period_arr, "recordsFiltered" => count($menstruation_period_arr), 'recordsTotal' => count($menstruation_period_arr)]);
+        return response()->json([
+            'data' => $menstruation_period_arr,
+            "recordsFiltered" => count($menstruation_period_arr),
+            'recordsTotal' => count($menstruation_period_arr)
+        ]);
     }
+
 
     public function profileIndex()
     {
