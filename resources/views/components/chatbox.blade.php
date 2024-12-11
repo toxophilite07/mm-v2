@@ -49,7 +49,7 @@
         </div>
 
         <div class="chatbox-body" id="chatbox-body">
-            <div class="chat-message ai-response" id="initial-greeting">Hello! I'm Nyx, your virtual assistant for menstrual health. How can I help you today?</div>
+            <div class="chat-message ai-response" id="initial-greeting">Hello! I'm Nyx, your virtual assistant. How can I help you today?</div>
         </div>   
         
         <div class="chatbox-footer">
