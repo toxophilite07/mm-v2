@@ -26,7 +26,7 @@
             <li class="nav-item">
                 <a href="{{ URL::to('admin/health-worker') }}" class="nav-link" onclick="showLoading();">
                     <i class="link-icon" data-feather="smile"></i>
-                    <span class="link-title">Health Worker</span>
+                    <span class="link-title">Brgy. Health Worker</span>
                 </a>
             </li>
             <li class="nav-item">
