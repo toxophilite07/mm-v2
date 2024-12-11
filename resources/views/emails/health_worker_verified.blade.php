@@ -67,7 +67,7 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>Account Confirmed</h1>
+            <h1>Menstrual Monitoring App v2</h1>
         </div>
         <div class="email-body">
             <p>Hello {{ $userName }},</p>
