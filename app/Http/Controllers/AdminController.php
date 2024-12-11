@@ -17,7 +17,8 @@ use App\Models\FeminineHealthWorkerGroup;
 use App\Mail\HealthWorkerVerifiedMail;
 use App\Mail\FeminineVerifiedMail;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller {
 
@@ -54,7 +55,7 @@ class AdminController extends Controller {
         $active_user_count = User::where('user_role_id', 2)->where('is_active', 1)->count();
     
         // Count of barangays
-        $unique_barangay_count = User::where('user_role_id', 3) // Assuming '2' is the role ID for feminines
+        $unique_barangay_count = User::where('user_role_id', 2, 3) // Assuming '2' is the role ID for feminines
         ->distinct('address') // Get distinct addresses
         ->count('address'); // Ensure you have a Barangay model
     
@@ -212,210 +213,210 @@ class AdminController extends Controller {
     }    
 
     //OLD W/SANITIZED//
-    // public function postFeminine(Request $request)
-    // {
-    //     $feminine = User::findOrFail($request->id);
-    
-    //     // Validate the request
-    //     $validatedData = $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'middle_name' => 'nullable|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'address' => 'required|string|max:255',
-    //         'email' => [
-    //             'nullable', // Allow email to be null
-    //             'string',
-    //             'email',
-    //             'max:255',
-    //             Rule::unique('users')
-    //                 ->ignore($feminine->id)
-    //                 ->where(function ($query) {
-    //                     return $query->whereIn('user_role_id', [2, 3]);
-    //                 }),
-    //         ],
-    //         'contact_no' => 'nullable|string|max:255',
-    //         'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
-    //         'menstruation_status' => 'nullable|string|max:255',
-    //         'last_period_date' => 'nullable|date_format:m/d/Y', // Add validation for last period date
-    //     ], [
-    //         'email.unique' => 'The email address is already taken.',
-    //         'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
-    //         'last_period_date.date_format' => 'The last period date format is invalid. Please use MM/DD/YYYY.',
-    //     ]);
-    
-    //     // Sanitize input to prevent XSS attacks
-    //     $sanitizedData = [
-    //         'first_name' => strip_tags($request->first_name),
-    //         'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
-    //         'last_name' => strip_tags($request->last_name),
-    //         'address' => strip_tags($request->address),
-    //         'email' => $request->filled('email') ? strip_tags($request->email) : null,
-    //         'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
-    //         'menstruation_status' => $request->filled('menstruation_status') ? strip_tags($request->menstruation_status) : null,
-    //     ];
-    
-    //     // Check if the email has changed
-    //     if ($feminine->email !== $sanitizedData['email']) {
-    //         $feminine->email = $sanitizedData['email'];
-    //     }
-    
-    //     // Update other fields
-    //     $feminine->first_name = $sanitizedData['first_name'];
-    //     $feminine->middle_name = $sanitizedData['middle_name'];
-    //     $feminine->last_name = $sanitizedData['last_name'];
-    //     $feminine->address = $sanitizedData['address'];
-    //     $feminine->contact_no = $sanitizedData['contact_no'];
-    
-    //     // Format birthdate if present
-    //     if ($request->filled('birthdate')) {
-    //         $feminine->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
-    //     } else {
-    //         $feminine->birthdate = null;
-    //     }
-    
-    //     // Update menstruation status
-    //     $feminine->menstruation_status = $sanitizedData['menstruation_status'];
-    
-    //     // Save the feminine data
-    //     $feminine->save();
-    
-    //     // Handle last_periods data
-    //     $lastPeriod = $feminine->last_periods->first() ?? null;
-    
-    //     if ($request->filled('last_period_date')) {
-    //         // Update or create last period information
-    //         if ($lastPeriod) {
-    //             $lastPeriod->menstruation_date = Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d');
-    //             $lastPeriod->save();
-    //         } else {
-    //             // Create a new record for last period
-    //             $feminine->last_periods()->create([
-    //                 'menstruation_date' => Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d'),
-    //             ]);
-    //         }
-    //     }
-    
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Feminine details updated successfully.',
-    //         'data' => [
-    //             'first_name' => htmlspecialchars($feminine->first_name),
-    //             'middle_name' => htmlspecialchars($feminine->middle_name),
-    //             'last_name' => htmlspecialchars($feminine->last_name),
-    //             'email' => htmlspecialchars($feminine->email),
-    //             'address' => htmlspecialchars($feminine->address),
-    //             'contact_no' => htmlspecialchars($feminine->contact_no),
-    //             'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
-    //             'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
-    //             'remarks' => htmlspecialchars($feminine->remarks ?? null),
-    //             'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
-    //             'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
-    //         ]
-    //     ]);
-    // }
+        // public function postFeminine(Request $request)
+        // {
+        //     $feminine = User::findOrFail($request->id);
+        
+        //     // Validate the request
+        //     $validatedData = $request->validate([
+        //         'first_name' => 'required|string|max:255',
+        //         'middle_name' => 'nullable|string|max:255',
+        //         'last_name' => 'required|string|max:255',
+        //         'address' => 'required|string|max:255',
+        //         'email' => [
+        //             'nullable', // Allow email to be null
+        //             'string',
+        //             'email',
+        //             'max:255',
+        //             Rule::unique('users')
+        //                 ->ignore($feminine->id)
+        //                 ->where(function ($query) {
+        //                     return $query->whereIn('user_role_id', [2, 3]);
+        //                 }),
+        //         ],
+        //         'contact_no' => 'nullable|string|max:255',
+        //         'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
+        //         'menstruation_status' => 'nullable|string|max:255',
+        //         'last_period_date' => 'nullable|date_format:m/d/Y', // Add validation for last period date
+        //     ], [
+        //         'email.unique' => 'The email address is already taken.',
+        //         'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+        //         'last_period_date.date_format' => 'The last period date format is invalid. Please use MM/DD/YYYY.',
+        //     ]);
+        
+        //     // Sanitize input to prevent XSS attacks
+        //     $sanitizedData = [
+        //         'first_name' => strip_tags($request->first_name),
+        //         'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
+        //         'last_name' => strip_tags($request->last_name),
+        //         'address' => strip_tags($request->address),
+        //         'email' => $request->filled('email') ? strip_tags($request->email) : null,
+        //         'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
+        //         'menstruation_status' => $request->filled('menstruation_status') ? strip_tags($request->menstruation_status) : null,
+        //     ];
+        
+        //     // Check if the email has changed
+        //     if ($feminine->email !== $sanitizedData['email']) {
+        //         $feminine->email = $sanitizedData['email'];
+        //     }
+        
+        //     // Update other fields
+        //     $feminine->first_name = $sanitizedData['first_name'];
+        //     $feminine->middle_name = $sanitizedData['middle_name'];
+        //     $feminine->last_name = $sanitizedData['last_name'];
+        //     $feminine->address = $sanitizedData['address'];
+        //     $feminine->contact_no = $sanitizedData['contact_no'];
+        
+        //     // Format birthdate if present
+        //     if ($request->filled('birthdate')) {
+        //         $feminine->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
+        //     } else {
+        //         $feminine->birthdate = null;
+        //     }
+        
+        //     // Update menstruation status
+        //     $feminine->menstruation_status = $sanitizedData['menstruation_status'];
+        
+        //     // Save the feminine data
+        //     $feminine->save();
+        
+        //     // Handle last_periods data
+        //     $lastPeriod = $feminine->last_periods->first() ?? null;
+        
+        //     if ($request->filled('last_period_date')) {
+        //         // Update or create last period information
+        //         if ($lastPeriod) {
+        //             $lastPeriod->menstruation_date = Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d');
+        //             $lastPeriod->save();
+        //         } else {
+        //             // Create a new record for last period
+        //             $feminine->last_periods()->create([
+        //                 'menstruation_date' => Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d'),
+        //             ]);
+        //         }
+        //     }
+        
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Feminine details updated successfully.',
+        //         'data' => [
+        //             'first_name' => htmlspecialchars($feminine->first_name),
+        //             'middle_name' => htmlspecialchars($feminine->middle_name),
+        //             'last_name' => htmlspecialchars($feminine->last_name),
+        //             'email' => htmlspecialchars($feminine->email),
+        //             'address' => htmlspecialchars($feminine->address),
+        //             'contact_no' => htmlspecialchars($feminine->contact_no),
+        //             'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
+        //             'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
+        //             'remarks' => htmlspecialchars($feminine->remarks ?? null),
+        //             'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
+        //             'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
+        //         ]
+        //     ]);
+        // }
 
-    //NEW EDIT WITH SANITIZE//
-    //     public function postFeminine(Request $request)
-    // {
-    //     $feminine = User::findOrFail($request->id);
+        //NEW EDIT WITH SANITIZE//
+        //     public function postFeminine(Request $request)
+        // {
+        //     $feminine = User::findOrFail($request->id);
 
-    //     // Validate the request
-    //     $validatedData = $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'middle_name' => 'nullable|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'address' => 'required|string|max:255',
-    //         'email' => [
-    //             'nullable', // Allow email to be null
-    //             'string',
-    //             'email',
-    //             'max:255',
-    //             Rule::unique('users')
-    //                 ->ignore($feminine->id)
-    //                 ->where(function ($query) {
-    //                     return $query->whereIn('user_role_id', [2, 3]);
-    //                 }),
-    //         ],
-    //         'contact_no' => 'nullable|string|max:255',
-    //         'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
-    //         'menstruation_status' => 'nullable|string|max:255',
-    //         'last_period_date' => 'nullable|date_format:m/d/Y', // Add validation for last period date
-    //     ], [
-    //         'email.unique' => 'The email address is already taken.',
-    //         'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
-    //         'last_period_date.date_format' => 'The last period date format is invalid. Please use MM/DD/YYYY.',
-    //     ]);
+        //     // Validate the request
+        //     $validatedData = $request->validate([
+        //         'first_name' => 'required|string|max:255',
+        //         'middle_name' => 'nullable|string|max:255',
+        //         'last_name' => 'required|string|max:255',
+        //         'address' => 'required|string|max:255',
+        //         'email' => [
+        //             'nullable', // Allow email to be null
+        //             'string',
+        //             'email',
+        //             'max:255',
+        //             Rule::unique('users')
+        //                 ->ignore($feminine->id)
+        //                 ->where(function ($query) {
+        //                     return $query->whereIn('user_role_id', [2, 3]);
+        //                 }),
+        //         ],
+        //         'contact_no' => 'nullable|string|max:255',
+        //         'birthdate' => 'nullable|date_format:m/d/Y', // Validate the date format
+        //         'menstruation_status' => 'nullable|string|max:255',
+        //         'last_period_date' => 'nullable|date_format:m/d/Y', // Add validation for last period date
+        //     ], [
+        //         'email.unique' => 'The email address is already taken.',
+        //         'birthdate.date_format' => 'The birthdate format is invalid. Please use MM/DD/YYYY.',
+        //         'last_period_date.date_format' => 'The last period date format is invalid. Please use MM/DD/YYYY.',
+        //     ]);
 
-    //     // Sanitize input to prevent XSS attacks
-    //     $sanitizedData = [
-    //         'first_name' => strip_tags($request->first_name),
-    //         'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
-    //         'last_name' => strip_tags($request->last_name),
-    //         'address' => strip_tags($request->address),
-    //         'email' => $request->filled('email') ? strip_tags($request->email) : null,
-    //         'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
-    //         'menstruation_status' => $request->filled('menstruation_status') ? strip_tags($request->menstruation_status) : null,
-    //     ];
+        //     // Sanitize input to prevent XSS attacks
+        //     $sanitizedData = [
+        //         'first_name' => strip_tags($request->first_name),
+        //         'middle_name' => $request->filled('middle_name') ? strip_tags($request->middle_name) : null,
+        //         'last_name' => strip_tags($request->last_name),
+        //         'address' => strip_tags($request->address),
+        //         'email' => $request->filled('email') ? strip_tags($request->email) : null,
+        //         'contact_no' => $request->filled('contact_no') ? strip_tags($request->contact_no) : null,
+        //         'menstruation_status' => $request->filled('menstruation_status') ? strip_tags($request->menstruation_status) : null,
+        //     ];
 
-    //     // Check if the email has changed
-    //     if ($feminine->email !== $sanitizedData['email']) {
-    //         $feminine->email = $sanitizedData['email'];
-    //     }
+        //     // Check if the email has changed
+        //     if ($feminine->email !== $sanitizedData['email']) {
+        //         $feminine->email = $sanitizedData['email'];
+        //     }
 
-    //     // Update other fields
-    //     $feminine->first_name = $sanitizedData['first_name'];
-    //     $feminine->middle_name = $sanitizedData['middle_name'];
-    //     $feminine->last_name = $sanitizedData['last_name'];
-    //     $feminine->address = $sanitizedData['address'];
-    //     $feminine->contact_no = $sanitizedData['contact_no'];
+        //     // Update other fields
+        //     $feminine->first_name = $sanitizedData['first_name'];
+        //     $feminine->middle_name = $sanitizedData['middle_name'];
+        //     $feminine->last_name = $sanitizedData['last_name'];
+        //     $feminine->address = $sanitizedData['address'];
+        //     $feminine->contact_no = $sanitizedData['contact_no'];
 
-    //     // Format birthdate if present
-    //     if ($request->filled('birthdate')) {
-    //         $feminine->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
-    //     } else {
-    //         $feminine->birthdate = null;
-    //     }
+        //     // Format birthdate if present
+        //     if ($request->filled('birthdate')) {
+        //         $feminine->birthdate = Carbon::createFromFormat('m/d/Y', $request->birthdate)->format('Y-m-d');
+        //     } else {
+        //         $feminine->birthdate = null;
+        //     }
 
-    //     // Update menstruation status
-    //     $feminine->menstruation_status = $sanitizedData['menstruation_status'];
+        //     // Update menstruation status
+        //     $feminine->menstruation_status = $sanitizedData['menstruation_status'];
 
-    //     // Save the feminine data
-    //     $feminine->save();
+        //     // Save the feminine data
+        //     $feminine->save();
 
-    //     // Handle last_periods data
-    //     $lastPeriod = $feminine->last_periods->first() ?? null;
+        //     // Handle last_periods data
+        //     $lastPeriod = $feminine->last_periods->first() ?? null;
 
-    //     if ($request->filled('last_period_date')) {
-    //         // Update or create last period information
-    //         if ($lastPeriod) {
-    //             $lastPeriod->menstruation_date = Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d');
-    //             $lastPeriod->save();
-    //         } else {
-    //             // Create a new record for last period
-    //             $feminine->last_periods()->create([
-    //                 'menstruation_date' => Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d'),
-    //             ]);
-    //         }
-    //     }
+        //     if ($request->filled('last_period_date')) {
+        //         // Update or create last period information
+        //         if ($lastPeriod) {
+        //             $lastPeriod->menstruation_date = Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d');
+        //             $lastPeriod->save();
+        //         } else {
+        //             // Create a new record for last period
+        //             $feminine->last_periods()->create([
+        //                 'menstruation_date' => Carbon::createFromFormat('m/d/Y', $request->last_period_date)->format('Y-m-d'),
+        //             ]);
+        //         }
+        //     }
 
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Feminine details updated successfully.',
-    //         'data' => [
-    //             'first_name' => htmlspecialchars($feminine->first_name),
-    //             'middle_name' => htmlspecialchars($feminine->middle_name),
-    //             'last_name' => htmlspecialchars($feminine->last_name),
-    //             'email' => htmlspecialchars($feminine->email),
-    //             'address' => htmlspecialchars($feminine->address),
-    //             'contact_no' => htmlspecialchars($feminine->contact_no),
-    //             'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
-    //             'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
-    //             'remarks' => htmlspecialchars($feminine->remarks ?? null),
-    //             'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
-    //             'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
-    //         ]
-    //     ]);
-    // }
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Feminine details updated successfully.',
+        //         'data' => [
+        //             'first_name' => htmlspecialchars($feminine->first_name),
+        //             'middle_name' => htmlspecialchars($feminine->middle_name),
+        //             'last_name' => htmlspecialchars($feminine->last_name),
+        //             'email' => htmlspecialchars($feminine->email),
+        //             'address' => htmlspecialchars($feminine->address),
+        //             'contact_no' => htmlspecialchars($feminine->contact_no),
+        //             'birthdate' => $feminine->birthdate ? Carbon::parse($feminine->birthdate)->format('m/d/Y') : null,
+        //             'menstruation_status' => htmlspecialchars($feminine->menstruation_status),
+        //             'remarks' => htmlspecialchars($feminine->remarks ?? null),
+        //             'last_period_date' => $lastPeriod ? Carbon::parse($lastPeriod->menstruation_date)->format('m/d/Y') : null,
+        //             'menstruation_period_id' => $lastPeriod ? htmlspecialchars($lastPeriod->id) : null,
+        //         ]
+        //     ]);
+        // }
 
     public function postFeminine(Request $request)
     {
@@ -714,18 +715,48 @@ class AdminController extends Controller {
 
     }
 
-    public function accountReset(Request $request) {
-        try {
-            $user = User::findOrFail($request->id);
-            $user->password = Hash::make('password'); // reset the password to "password"
-            $user->save();
+    // public function accountReset(Request $request) {
+    //     try {
+    //         $user = User::findOrFail($request->id);
+    //         $user->password = Hash::make('password'); // reset the password to "password"
+    //         $user->save();
 
-            return response()->json(['status' => 'success', 'message' => 'Password successfully reset.']);
-        }
-        catch(\ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'message' => 'User not found, please try again.']);
-        }
-        catch(\Exception $e) {
+    //         return response()->json(['status' => 'success', 'message' => 'Password successfully reset.']);
+    //     }
+    //     catch(\ModelNotFoundException $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'User not found, please try again.']);
+    //     }
+    //     catch(\Exception $e) {
+    //         return response()->json(['status' => 'error', 'message' => 'Something went wrong, please try again.']);
+    //     }
+    // }  
+
+    public function accountReset(Request $request) 
+    {
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($request->id);
+
+            // Generate a new reset token
+            $token = Str::random(64);
+
+            // Insert or update the password reset record
+            DB::table('password_resets')->updateOrInsert(
+                ['email' => $user->email],
+                ['token' => $token, 'created_at' => now()]
+            );
+
+            // Send the password reset email
+            Mail::send('email.forgot_password_mail', ['token' => $token, 'user' => $user], function($message) use ($user) {
+                $message->from('no-reply@yourapp.com', 'Menstrual Monitoring App v2')
+                    ->to($user->email)
+                    ->subject('Password Reset Request');
+            });
+
+            return response()->json(['status' => 'success', 'message' => 'Password reset link has been sent to the user.']);
+        } catch (\ModelNotFoundException $e) {
+            return response()->json(['status' => 'error', 'message' => 'User not found.']);
+        } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'Something went wrong, please try again.']);
         }
     }
@@ -745,7 +776,7 @@ class AdminController extends Controller {
 
             $feminine_arr[$feminine_key]['row_count'] = ++$row_count;
             $feminine_arr[$feminine_key]['full_name'] = $full_name;
-            $feminine_arr[$feminine_key]['user_role_id'] = '<span class="text-' . ($feminine['user_role_id'] == 2 ? 'success' : 'primary') . '"><strong>&bull;</strong> ' . ($feminine['user_role_id'] == 2 ? 'Female' : 'Health Worker') . '</span>';
+            $feminine_arr[$feminine_key]['user_role_id'] = '<span class="text-' . ($feminine['user_role_id'] == 2 ? 'success' : 'primary') . '"><strong>&bull;</strong> ' . ($feminine['user_role_id'] == 2 ? 'Feminine' : 'Health Worker') . '</span>';
             $feminine_arr[$feminine_key]['action'] = '<button type="button" class="btn btn-sm btn-primary reset_password" data-id="'.$feminine['id'].'" data-full_name="'.$full_name.'"><i class="fa-solid fa-key"></i> Reset Password</button>';
         }
 
@@ -780,6 +811,7 @@ class AdminController extends Controller {
         
         return view('admin/health_worker/index', compact('new_notification', 'new_period_notification', 'new_health_worker_notification'));
     }
+
     ///WITHOUT SANITIZED
     // public function postHealthWorker(Request $request)
     // // {
@@ -923,9 +955,7 @@ class AdminController extends Controller {
             ]
         ]);
     }
-    
-     
-        
+           
     // public function postnewhbw(Request $request) {
     //     return $this->postHealthWorkerForm($request->all());
     // } 
