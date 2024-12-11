@@ -32,7 +32,7 @@
             <li class="nav-item">
                 <a href="{{ URL::to('admin/calendar') }}" class="nav-link" onclick="showLoading();">
                     <i class="link-icon" data-feather="calendar"></i>
-                    <span class="link-title">Calendar</span>
+                    <span class="link-title">Menstrual Calendar</span>
                 </a>
             </li>
             <li class="nav-item nav-category">Configuration</li>
