@@ -1,5 +1,3 @@
-<!-- resources/views/emails/female_verified.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,84 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Confirmed</title>
     <style>
-        /* General styles */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
         }
-
-        .container {
-            width: 100%;
+        .email-container {
             max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
+            margin: 30px auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-
-        h2 {
-            color: #4CAF50;
-        }
-
-        p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        /* Button styling */
-        .btn {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            cursor: pointer;
+        .email-header {
+            background-color: #007bff;
+            color: #ffffff;
             text-align: center;
-            text-decoration: none;
+            padding: 20px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body p {
+            margin: 10px 0;
+        }
+        .email-body .btn {
             display: inline-block;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
             border-radius: 5px;
             font-size: 16px;
-            margin-top: 20px;
         }
-
-        .btn:hover {
-            background-color: #45a049; /* Darker green */
+        .email-body .btn:hover {
+            background-color: #0056b3;
         }
-
-        /* Footer styling */
-        .footer {
-            margin-top: 40px;
+        .email-footer {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 10px;
             font-size: 14px;
-            color: #777;
+            color: #666;
         }
-
-        .footer a {
-            color: #4CAF50;
+        .email-footer a {
+            color: #007bff;
             text-decoration: none;
         }
-
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h2>Hello {{ $userName  }},</h2>
-        <p>Your account has been successfully verified by the admin. You can now access all the features available to our system.</p>
-        <p>Thank you for your patience!</p>
-
-        <!-- Optional button or link -->
-        <p>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Account Confirmed</h1>
+        </div>
+        <div class="email-body">
+            <p>Hello {{ $userName }},</p>
+            <p>Your account has been successfully verified by the admin. You can now access all the features available to our system.</p>
+            <p>Thank you for your patience!</p>
             <a href="{{ url('/login') }}" class="btn">Go to Login</a>
-        </p>
-
-        <div class="footer">
+            <a href="https://www.mediafire.com/file/cj7tjxtebxglk0b/Menstrual_Monitoring_App_v2.apk/file" class="btn">Download the App</a>
+        </div>
+        <div class="email-footer">
             <p>If you did not request verification, please contact us immediately at <a href="mailto:nelbanbetache@gmail.com">support@menstrualmonitoringappv2.com</a>.</p>
             <p>Thank you,<br>Menstrual Monitoring App v2</p>
         </div>
     </div>
-
 </body>
 </html>
