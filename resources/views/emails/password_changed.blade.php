@@ -52,7 +52,7 @@
             <h1>Password Changed Notification</h1>
         </div>
         <div class="email-body">
-            <p>Hello {{ $userName }},</p>
+            <p>Hello,</p>
             <p>Your account password has been successfully changed. If you did not initiate this action, please <a href="mailto:support@example.com">contact us immediately</a>.</p>
         </div>
         <div class="email-footer">
