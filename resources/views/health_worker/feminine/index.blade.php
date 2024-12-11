@@ -20,16 +20,17 @@
                 <div class="card-body">
                 <div class="d-flex align-items-baseline flex-wrap mb-md-3" style="margin-bottom: 0 !important;">
                     <h6 class="card-title flex-grow-1 mb-2 mb-md-0">Assigned Female Residents List</h6>
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="flex-wrap: wrap;">
-                        <button type="button" class="btn btn-outline-primary mr-2 mb-2" data-toggle="modal" data-target="#assignFeminineModal">
-                        <i class="fa-solid fa-user-tag"></i> Assign Female
-                        </button>
-                        <button type="button" class="btn btn-primary mr-2 mb-2" data-toggle="modal" data-target="#newFeminineModal">
-                        <i class="fa-solid fa-plus"></i> Add New Female
-                        </button>
-                            <button type="button" class="btn btn-danger pdf-button mb-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="btn-group btn-group-sm d-flex flex-wrap" role="group" aria-label="Actions">
+                            <button type="button" class="btn btn-outline-primary mb-2 mr-2" data-toggle="modal" data-target="#assignFeminineModal">
+                                <i class="fa-solid fa-user-tag"></i> Assign Female
+                            </button>
+                            <button type="button" class="btn btn-primary mb-2 mr-2" data-toggle="modal" data-target="#newFeminineModal">
+                                <i class="fa-solid fa-plus"></i> Add New Female
+                            </button>
+                            <button type="button" class="btn btn-danger mb-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-print"></i> Print
                             </button>
+                        </div>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="printFeminineList()"><i class="fa-solid fa-print"></i> Print List</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="downloadCSV()"><i class="fa-solid fa-file-csv"></i> Download as CSV</a></li>
