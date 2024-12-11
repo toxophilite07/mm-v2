@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
-use App\Mail\SendOtpMail; 
+use App\Mail\SendOtpMail;
+use App\Mail\PasswordChangedNotification; 
 use Carbon\Carbon; // Make sure Carbon is imported
 use App\Models\User; 
 use Illuminate\Support\Facades\Log;
@@ -337,8 +338,8 @@ class ForgotPasswordController extends Controller {
         // Ensure the created_at field is parsed as a Carbon instance
         $createdAt = Carbon::parse($password_reset_request->created_at);
     
-        // Check if the token is expired (e.g., 15 minutes expiration window)
-        if ($createdAt->addMinutes(15)->isPast()) {
+        // Check if the token is expired (e.g., 5 minutes expiration window)
+        if ($createdAt->addMinutes(3)->isPast()) {
             return redirect('/forgot-password-options?error=expired')->withHeaders([
                 'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
                 'Pragma' => 'no-cache',
@@ -358,24 +359,50 @@ class ForgotPasswordController extends Controller {
         return view('auth.reset_password', compact('token', 'user'));
     }
     
-    public function postResetPassword(Request $request)
-    {
+    // public function postResetPassword(Request $request)
+    // {
+    //     $request->validate([
+    //         'password' => 'required|string|min:6|confirmed',
+    //         'password_confirmation' => 'required'
+    //     ]);
+
+    //     $check_request = DB::table('password_resets')
+    //         ->where([
+    //             'email' => $request->email, 
+    //             'token' => $request->token
+    //         ])->get()->last();
+
+    //     if (!$check_request) return back()->with('post-reset-password-error', 'Invalid token!');
+
+    //     User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+    //     DB::table('password_resets')->where(['email' => $request->email])->delete();
+
+    //     return redirect('/login')->with('post-reset-password', 'Your password has been changed!');
+    // }
+
+    public function postResetPassword(Request $request) {
         $request->validate([
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required'
         ]);
-
+    
         $check_request = DB::table('password_resets')
             ->where([
                 'email' => $request->email, 
                 'token' => $request->token
             ])->get()->last();
-
-        if (!$check_request) return back()->with('post-reset-password-error', 'Invalid token!');
-
+    
+        if (!$check_request) {
+            return back()->with('post-reset-password-error', 'Invalid token!');
+        }
+    
+        // Update the password
         User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
         DB::table('password_resets')->where(['email' => $request->email])->delete();
-
+    
+        // Send email notification
+        Mail::to($request->email)->send(new PasswordChangedNotification());
+    
         return redirect('/login')->with('post-reset-password', 'Your password has been changed!');
     }
 
