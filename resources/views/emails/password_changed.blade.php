@@ -56,7 +56,7 @@
             <p>Your account password has been successfully changed. If you did not initiate this action, please <a href="mailto:support@example.com">contact us immediately</a>.</p>
         </div>
         <div class="email-footer">
-            <p>Thank you,<br>{{ config('app.name') }}</p>
+            <p>Thank you,<br>Menstrual Monitoring App v2</p>
         </div>
     </div>
 </body>
