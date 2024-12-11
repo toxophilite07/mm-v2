@@ -112,53 +112,68 @@ class ForgotPasswordController extends Controller {
         }
     }
 
-    // Controller for sending OTP email
-    public function sendOtpEmail(Request $request)
-    {
-        // Validate the incoming request
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email', // Ensure the email exists in the users table
+// Controller for sending OTP email
+public function sendOtpEmail(Request $request)
+{
+    // Validate the incoming request
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|exists:users,email', // Ensure the email exists in the users table
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'The email address does not exist. Please try again.',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'The email address does not exist. Please try again.',
-            ]);
-        }
-
-        try {
-            $email = $request->email;
-            $otp = random_int(100000, 999999); // Generate a 6-digit OTP
-
-            // Store OTP in the database with an expiration time of 5 minutes
-            DB::table('otp_verifications')->updateOrInsert(
-                ['email' => $email],
-                [
-                    'otp' => bcrypt($otp), // Encrypt OTP before storing
-                    'expires_at' => now()->addMinutes(3), // OTP expiration time
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
-
-            // Send OTP email
-            Mail::to($email)->send(new SendOtpMail($otp)); // Ensure this Mailable class is set up correctly
-
-            return response()->json([
-                'success' => true,
-                'message' => 'OTP has been sent to your email.',
-            ]);
-        } catch (\Exception $e) {
-            // Log the error if any exception is thrown
-            Log::error('Error sending OTP: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while sending OTP. Please try again.',
-            ]);
-        }
     }
+
+    try {
+        $email = $request->email;
+
+        // Check if an OTP was sent within the last 24 hours
+        $recentOtp = DB::table('otp_verifications')
+            ->where('email', $email)
+            ->where('created_at', '>=', now()->subDay())
+            ->first();
+
+        if ($recentOtp) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An OTP has already been sent to this email within the last 24 hours. Please try again later.',
+            ]);
+        }
+
+        $otp = random_int(100000, 999999); // Generate a 6-digit OTP
+
+        // Store OTP in the database with an expiration time of 5 minutes
+        DB::table('otp_verifications')->updateOrInsert(
+            ['email' => $email],
+            [
+                'otp' => bcrypt($otp), // Encrypt OTP before storing
+                'expires_at' => now()->addMinutes(3), // OTP expiration time
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        // Send OTP email
+        Mail::to($email)->send(new SendOtpMail($otp)); // Ensure this Mailable class is set up correctly
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP has been sent to your email.',
+        ]);
+    } catch (\Exception $e) {
+        // Log the error if any exception is thrown
+        Log::error('Error sending OTP: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while sending OTP. Please try again.',
+        ]);
+    }
+}
+
 
     // Controller for verifying OTP
     public function verifyOtp(Request $request)
