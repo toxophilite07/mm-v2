@@ -1081,11 +1081,6 @@ class AdminController extends Controller {
             }
             
                 $health_worker_arr[$health_worker_key]['assigning_action'] = '
-                <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
-                    data-health_worker_name="' . $full_name . '"
-                    data-id="' . $health_worker['id'] . '">
-                        <i class="fa-solid fa-user-tag"></i> Assign
-                </button>
             ';
 
     
@@ -1183,5 +1178,12 @@ class AdminController extends Controller {
                 //     data-menstruation_period_id="'. (empty($feminine['last_periods']) ? null : $feminine['last_periods'][0]['id']) .'"
                 //     data-toggle="modal" data-target="#editFeminineModal">
                 //         <i class="fa-solid fa-user-pen"></i> Edit
+                // </button>
+
+// ASSIGN BUTTON SA HEALTH WORKER
+                // <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
+                //     data-health_worker_name="' . $full_name . '"
+                //     data-id="' . $health_worker['id'] . '">
+                //         <i class="fa-solid fa-user-tag"></i> Assign
                 // </button>
 }
