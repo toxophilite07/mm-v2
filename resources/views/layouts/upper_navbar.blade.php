@@ -356,6 +356,7 @@
 </nav>
 
 <script>
+      var audio = new Audio('/alert.mp3'); 
    function confirmLogout() {
     Swal.fire({
         title: 'Confirm Logout',
