@@ -170,7 +170,7 @@
     var sessionLifetime = sessionLifetimeMinutes * 60 * 1000; // Convert minutes to milliseconds
 
     // Add an audio element for the sound
-    var audio = new Audio('/path/to/your/sound.mp3'); // Replace with the actual path to your sound file
+    var audio = new Audio('/session.mp3'); // Replace with the actual path to your sound file
 
     // Function to handle session expiration
     function sessionExpired() {
