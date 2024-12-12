@@ -123,46 +123,6 @@
             input.value = phoneNumber;
         }
     </script>
-<!--     <script>
-          // Fetch session lifetime from Laravel config
-        var sessionLifetimeMinutes = {{ config('session.lifetime', 5) }}; // Default to 1 minute if not set
-        var sessionLifetime = sessionLifetimeMinutes * 60 * 1000; // Convert minutes to milliseconds
-
-        // Function to handle session expiration
-        function sessionExpired() {
-            Swal.fire({
-                title:'Session Expired',
-                text: 'You have been automatically logged out due to inactivity! Please login again.',
-                icon: 'warning',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#dc3545',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-            }).then(() => {
-                window.location.href = '/login'; // Redirect to login page
-            });
-        }
-
-        // Initialize session timeout
-        var sessionTimeout = setTimeout(sessionExpired, sessionLifetime);
-
-        // Reset session timeout on user activity
-        document.addEventListener('mousemove', resetTimeout);
-        document.addEventListener('keypress', resetTimeout);
-
-        function resetTimeout() {
-            clearTimeout(sessionTimeout); // Clear existing timeout
-            sessionTimeout = setTimeout(sessionExpired, sessionLifetime); // Restart timeout
-        }
-
-        // Check session status on page load
-        window.addEventListener('load', function () {
-            if (!{{ Auth::check() ? 'true' : 'false' }}) {
-                sessionExpired(); // Trigger session expired alert if not authenticated
-            }
-        });
-
-    </script> -->
 
 <script>
     // Fetch session lifetime from Laravel config
