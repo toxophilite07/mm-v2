@@ -41,7 +41,7 @@
 
                         <div class="row">
                         <div class="col-lg-8 col-sm-12 mb-3">
-                                                        <label for="address" class="form-label">Address</label>
+                                                        <label for="address" class="form-label">Address (your address)</label>
                                                         <!-- Input with datalist -->
                                                         <input type="text" id="address" name="address" list="addressOptions" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}" placeholder="Type or select your address" oninput="handleInputCapitalize(event)" required>
                                                         
