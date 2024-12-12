@@ -217,31 +217,32 @@ $(function () {
         }
     });
 
-    $(document).on("click", ".verify_account", function (e) {
-        var id = $(this).data("id");
-        var full_name = $(this).data("full_name");
-      // Play the sound when the SweetAlert opens
-            var audio = new Audio('/session.mp3'); // Ensure the path is correct
-            audio.play();
-        }
+$(document).on("click", ".verify_account", function (e) {
+    e.preventDefault(); // Prevent default behavior if it's a link or form
+    var id = $(this).data("id");
+    var full_name = $(this).data("full_name");
 
-        Swal.fire({
-            title: "Confirmation",
-            html:
-                "Confirm and verify <strong>" +
-                full_name +
-                "'s</strong> account!",
-            imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom image URL
-            imageWidth: 120, // Adjust image width as needed
-            imageHeight: 120, // Adjust image height as needed
-            imageClass: 'animated-icon', // Add the animation class here
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Confirm",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        }).then((result) => {
+    // Play the sound when the SweetAlert is about to open
+    var audio = new Audio('/session.mp3'); // Ensure the path is correct
+    audio.play();
+
+    Swal.fire({
+        title: "Confirmation",
+        html:
+            "Confirm and verify <strong>" +
+            full_name +
+            "'s</strong> account!",
+        imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom image URL
+        imageWidth: 120, // Adjust image width as needed
+        imageHeight: 120, // Adjust image height as needed
+        imageClass: 'animated-icon', // Add the animation class here
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    })then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
                     url: "../admin/confirm-feminine",
@@ -314,25 +315,27 @@ $(function () {
         });
     });
 
-    $(document).on("click", ".delete_record", function (e) {
-      // Play the sound when the SweetAlert opens
-            var audio = new Audio('/session.mp3'); // Ensure the path is correct
-            audio.play();
-        }
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
-            imageWidth: 120, // Adjust image width as needed
-            imageHeight: 120, // Adjust image height as needed
-            imageClass: 'animated-icon', // Add the animation class here
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        }).then((result) => {
+$(document).on("click", ".delete_record", function (e) {
+    e.preventDefault(); // Prevent default action if it's a link or button in a form
+
+    // Play the sound when the SweetAlert is about to open
+    var audio = new Audio('/session.mp3'); // Ensure the path is correct
+    audio.play();
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        imageUrl: 'https://i.ibb.co/SsYSS95/error.png', // Custom image URL
+        imageWidth: 120, // Adjust image width as needed
+        imageHeight: 120, // Adjust image height as needed
+        imageClass: 'animated-icon', // Add the animation class here
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
                     url: "../admin/delete-feminine",
