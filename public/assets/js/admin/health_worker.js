@@ -462,6 +462,14 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".delete_record", function (e) {
+
+            // Add an audio element for the sound
+    var audio = new Audio('/session.mp3'); // Replace with the actual path to your sound file
+
+    function confirmLogout() {
+        // Play sound
+        audio.play();
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -579,6 +587,7 @@ $(document).on("click", ".verify_account", function (e) {
     function confirmLogout() {
         // Play sound
         audio.play();
+        
     Swal.fire({
         title: "Confirmation",
         html: "Confirm and verify <strong>" + full_name + "'s</strong> account!",
