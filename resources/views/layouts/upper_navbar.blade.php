@@ -355,8 +355,7 @@
     </div>
 </nav>
 
-<script>
-      var audio = new Audio('/alert.mp3'); 
+<!-- <script>
    function confirmLogout() {
     Swal.fire({
         title: 'Confirm Logout',
@@ -375,10 +374,11 @@
         }
     });
 }
-</script>
-<!-- <script>
+</script> -->
+
+<script>
     // Add an audio element for the sound
-    var audio = new Audio('/session.mp3'); // Replace with the actual path to your sound file
+    var audio = new Audio('/alert.mp3'); // Replace with the actual path to your sound file
 
     function confirmLogout() {
         // Play sound
@@ -402,4 +402,4 @@
             }
         });
     }
-</script> -->
+</script>
