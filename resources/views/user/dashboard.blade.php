@@ -173,7 +173,7 @@
     </script>
         
     @if($reminder_needed)
-    <script>
+<!--     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 title: 'Reminder',
@@ -239,7 +239,79 @@
                 }
             });
         });
-    </script>
+    </script> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add an audio element for the sound
+        var audio = new Audio('/session.mp3'); // Replace with the correct path to your sound file
+
+        // Play the sound when the pop-up is triggered
+        audio.play();
+
+        Swal.fire({
+            title: 'Reminder',
+            text: "Your estimated period date is today. Has your period started?",
+            imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL
+            imageWidth: 100,  // Adjust the width as needed
+            imageHeight: 100, // Adjust the height as needed
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Send an AJAX request to automatically add the period record
+                fetch('/user/auto-add-period', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        menstruation_period: '{{ $estimated_next_period }}',
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Your period has been recorded. Please go to your profile and update your "Note for current new period".',
+                                imageUrl: 'https://i.ibb.co/LkrkbzR/approved.png', // Custom icon URL
+                                imageWidth: 100,  // Adjust the width as needed
+                                imageHeight: 100, // Adjust the height as needed
+                                showCancelButton: true,
+                                confirmButtonText: 'Go to Profile',
+                                cancelButtonText: 'Close',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{{ URL::to('user/profile') }}"; // Redirect to the profile page
+                                } else {
+                                    location.reload(); // Refresh the page if 'Close' is clicked
+                                }
+                            });
+                        } else {
+                            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                    });
+            } else {
+                Swal.fire({
+                    title: 'Reminder',
+                    text: "We'll remind you later.",
+                    imageUrl: 'https://i.ibb.co/CzLGH0k/bell.png', // Custom icon URL for the reminder
+                    imageWidth: 100,  // Adjust the width as needed
+                    imageHeight: 100, // Adjust the height as needed
+                    imageAlt: 'Custom image', // Alternative text for the image
+                });
+            }
+        });
+    });
+</script>
+
     @endif
 
 @endsection
