@@ -572,7 +572,13 @@ $(document).ready(function () {
 $(document).on("click", ".verify_account", function (e) {
     var id = $(this).data("id");
     var full_name = $(this).data("full_name");
+    
+    // Add an audio element for the sound
+    var audio = new Audio('/session.mp3'); // Replace with the actual path to your sound file
 
+    function confirmLogout() {
+        // Play sound
+        audio.play();
     Swal.fire({
         title: "Confirmation",
         html: "Confirm and verify <strong>" + full_name + "'s</strong> account!",
