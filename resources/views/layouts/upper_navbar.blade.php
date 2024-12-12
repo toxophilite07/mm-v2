@@ -355,7 +355,7 @@
     </div>
 </nav>
 
-<script>
+<!-- <script>
    function confirmLogout() {
     Swal.fire({
         title: 'Confirm Logout',
@@ -374,4 +374,31 @@
         }
     });
 }
+</script> -->
+<script>
+    // Add an audio element for the sound
+    var audio = new Audio('/session.mp3'); // Replace with the actual path to your sound file
+
+    function confirmLogout() {
+        // Play sound
+        audio.play();
+
+        // Show SweetAlert confirmation dialog
+        Swal.fire({
+            title: 'Confirm Logout',
+            text: "Are you sure you want to logout?",
+            imageUrl: 'https://i.ibb.co/vQ4p98t/question.png', // Custom icon URL
+            imageWidth: 100,  // Adjust the width as needed
+            imageHeight: 100, // Adjust the height as needed
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, logout!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
 </script>
