@@ -1080,8 +1080,6 @@ class AdminController extends Controller {
                 $health_worker_arr[$health_worker_key]['is_active_status'] = '<button type="button" class="btn btn-sm btn-success verify_account" id="notif_' . $health_worker['id'] . '" data-id="' . $health_worker['id'] . '" data-full_name="' . $full_name . '" ><i class="fa-solid fa-user-check"></i> Verify</button>';
             }
             
-                $health_worker_arr[$health_worker_key]['assigning_action'] = '
-            ';
 
     
             $health_worker_arr[$health_worker_key]['action'] = '
@@ -1181,9 +1179,11 @@ class AdminController extends Controller {
                 // </button>
 
 // ASSIGN BUTTON SA HEALTH WORKER
-                // <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
-                //     data-health_worker_name="' . $full_name . '"
-                //     data-id="' . $health_worker['id'] . '">
-                //         <i class="fa-solid fa-user-tag"></i> Assign
-                // </button>
+            //     $health_worker_arr[$health_worker_key]['assigning_action'] = '
+            //     <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
+            //         data-health_worker_name="' . $full_name . '"
+            //         data-id="' . $health_worker['id'] . '">
+            //             <i class="fa-solid fa-user-tag"></i> Assign
+            //     </button>
+            // ';
 }
