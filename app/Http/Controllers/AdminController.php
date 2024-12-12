@@ -1081,11 +1081,11 @@ class AdminController extends Controller {
             }
     
             $health_worker_arr[$health_worker_key]['assigning_action'] = '
-                <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
-                    data-health_worker_name="' . $full_name . '"
-                    data-id="' . $health_worker['id'] . '">
-                        <i class="fa-solid fa-user-tag"></i> Assign
-                </button>
+                // <button type="button" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#assignFeminineModal" 
+                //     data-health_worker_name="' . $full_name . '"
+                //     data-id="' . $health_worker['id'] . '">
+                //         <i class="fa-solid fa-user-tag"></i> Assign
+                // </button>
             ';
     
             $health_worker_arr[$health_worker_key]['action'] = '
