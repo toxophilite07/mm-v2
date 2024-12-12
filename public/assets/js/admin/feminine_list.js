@@ -220,6 +220,10 @@ $(function () {
     $(document).on("click", ".verify_account", function (e) {
         var id = $(this).data("id");
         var full_name = $(this).data("full_name");
+      // Play the sound when the SweetAlert opens
+            var audio = new Audio('/session.mp3'); // Ensure the path is correct
+            audio.play();
+        }
 
         Swal.fire({
             title: "Confirmation",
@@ -311,6 +315,10 @@ $(function () {
     });
 
     $(document).on("click", ".delete_record", function (e) {
+      // Play the sound when the SweetAlert opens
+            var audio = new Audio('/session.mp3'); // Ensure the path is correct
+            audio.play();
+        }
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
