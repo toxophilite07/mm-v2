@@ -112,51 +112,28 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <!-- <div class="mb-3" id="mobileInput">
-                                                <label for="contact_no" class="form-label">Mobile # (Optional)</label>
-                                                <div class="input-group">
-                                                    <span class="input-addon px-2 rounded-start-1 border border-end-0 d-flex align-items-center justify-content-center" id="basic-addon1">+63</span>
-                                                    <input type="text" id="contact_no" name="contact_no" class="form-control" required autofocus placeholder="9123456789" oninput="formatPhoneNumber(this)" maxlength="10" pattern="[9]{1}[0-9]{9}">
-                                                </div>
-                                                @if ($errors->has('contact_no'))
-                                                    <span class="invalid-feedback">
-                                                        <strong>{{ $errors->first('contact_no') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div> -->
 
                                             <div class="mb-4">
                                                 <label for="password" class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="•••••••" required>
                                                     <span class="input-group-text">
-                                                    <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
-                                                </span>
-                                             </div>
+                                                        <i class="fas fa-eye-slash toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                                                    </span>
+                                                </div>
                                                 @if ($errors->has('password'))
                                                     <span class="invalid-feedback">
                                                         <strong>{{ $errors->first('password') }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
-                                            <!-- <div class="col-12 col-md-6 mb-4">
-                                                <div id="recaptcha" class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" required></div>
-                                                <p id="captcha-error" style="color: red; display: none;">
-                                                    Please verify that you are not a robot
-                                                </p>
-                                            </div>    -->
 
-                                     <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                        <!-- Display an error message if CAPTCHA is not completed -->
-                                        @if (session('captcha-error'))
-                                            <p id="captcha-error" style="color: red;">
-                                                {{ session('captcha-error') }}
-                                            </p>
-                                        @else
-                                            <p id="captcha-error" style="color: red; display: none;">
-                                                Please verify that you are not a robot.
-                                            </p>
-                                        @endif
+                                            <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+                                            @if (session('captcha-error'))
+                                                <p id="captcha-error" style="color: red;">
+                                                    {{ session('captcha-error') }}
+                                                </p>
+                                            @endif
 
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
@@ -169,7 +146,7 @@
                                                 <span id="buttonText">Sign In</span>
                                                 <span id="timerText" class="d-none"></span>
                                             </button>
-                                            
+
                                             <div class="d-flex align-items-center justify-content-between mt-3">
                                                 @if(Route::has('register'))
                                                     <a class="text-primary fw-bold" href="{{ route('register') }}">Register an Account</a>
@@ -389,6 +366,42 @@
                 }, 1000); // Update every second
             }
         @endif
+    </script>
+
+   <!-- REMEMEBER THE EMAIL -->
+    <script>
+            // Check if "Remember me" is checked and store the email and password in localStorage
+            document.getElementById('loginForm').addEventListener('submit', function() {
+                var rememberMe = document.getElementById('remember').checked;
+                if (rememberMe) {
+                    var email = document.getElementById('email').value;
+                    var password = document.getElementById('password').value;
+                    localStorage.setItem('email', email);
+                    localStorage.setItem('password', password);
+                    localStorage.setItem('remember', 'true'); // Store the remember me status
+                }
+            });
+
+            // When the page loads, check if there is any stored data in localStorage
+            document.addEventListener('DOMContentLoaded', function() {
+                if (localStorage.getItem('email')) {
+                    document.getElementById('email').value = localStorage.getItem('email');
+                }
+                if (localStorage.getItem('password')) {
+                    document.getElementById('password').value = localStorage.getItem('password');
+                }
+                // Check "Remember me" checkbox if stored in localStorage
+                if (localStorage.getItem('remember') === 'true') {
+                    document.getElementById('remember').checked = true;
+                }
+            });
+
+            // Clear stored data if user logs out
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('email');
+                localStorage.removeItem('password');
+                localStorage.removeItem('remember');
+            });
     </script>
 
     @include('auth.response')
