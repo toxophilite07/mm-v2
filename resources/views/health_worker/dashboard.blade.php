@@ -10,7 +10,6 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/blood.jpg') }}">
 
-
     <style>
        #forecastChart, #status_chart, #yearly_period {
             width: 100%;
@@ -138,6 +137,23 @@
                     </a>
                 </div>
             </div>
+
+
+            <div class="col-lg-3 col-sm-6" >
+                <div class="card-box bg-orange shadow-sm">
+                    <div class="inner">
+                        <h3 id="new_period_notification">{{ count($new_period_notification) }}</h3>
+                        <p>New Add Period</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa-solid fa-calendar"></i>
+                    </div>
+                    <a href="{{ URL::to('health-worker/feminine-list') }}" class="card-box-footer">
+                        View More <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -378,11 +394,4 @@
 });
     </script>
 @endsection
-
-
-
-
-
-
-
 
