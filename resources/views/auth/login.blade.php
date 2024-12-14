@@ -391,6 +391,42 @@
         @endif
     </script>
 
+    <!--    REMEMBER ME  -->
+    <script>
+        // Check if "Remember me" is checked and store the email and password in localStorage
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            var rememberMe = document.getElementById('remember').checked;
+            if (rememberMe) {
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+                localStorage.setItem('email', email);
+                localStorage.setItem('password', password);
+                localStorage.setItem('remember', 'true'); // Store the remember me status
+            }
+        });
+        
+        // When the page loads, check if there is any stored data in localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('email')) {
+                document.getElementById('email').value = localStorage.getItem('email');
+            }
+            if (localStorage.getItem('password')) {
+                document.getElementById('password').value = localStorage.getItem('password');
+            }
+            // Check "Remember me" checkbox if stored in localStorage
+            if (localStorage.getItem('remember') === 'true') {
+                document.getElementById('remember').checked = true;
+            }
+        });
+        
+        // Clear stored data if user logs out
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
+            localStorage.removeItem('remember');
+        });
+    </script>
+
     @include('auth.response')
     </body>
     </html>
