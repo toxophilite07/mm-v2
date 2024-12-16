@@ -143,7 +143,7 @@
                 <div class="card-box bg-orange shadow-sm">
                     <div class="inner">
                         <h3 id="new_period_notification">{{ count($new_period_notification) }}</h3>
-                        <p>New Add Menstruation</p>
+                        <p>Recently Added Menstruation</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-calendar"></i>
