@@ -146,8 +146,8 @@
                                                 </p>
                                             </div>    -->
 
-                                     <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
-                                        <!-- Display an error message if CAPTCHA is not completed -->
+                                  <!--   <div id="hcaptcha" class="h-captcha" data-sitekey="{{ env('HCAPTCHA_SITE_KEY') }}" required></div>
+                                        <!-- Display an error message if CAPTCHA is not completed 
                                         @if (session('captcha-error'))
                                             <p id="captcha-error" style="color: red;">
                                                 {{ session('captcha-error') }}
@@ -156,7 +156,7 @@
                                             <p id="captcha-error" style="color: red; display: none;">
                                                 Please verify that you are not a robot.
                                             </p>
-                                        @endif
+                                        @endif-->
 
                                             <div class="d-flex align-items-center justify-content-between mb-4">
                                                 <div class="form-check">
