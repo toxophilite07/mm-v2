@@ -81,7 +81,7 @@
                 <p class="text-center mb-4">Choose how you want to reset your password:</p>
                 <div class="d-flex flex-column gap-3">
                     <a href="{{ URL::to('forgot-password') }}" title="Send Password Reset Link via Email" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
-                        <i class="fa-solid fa-envelope"></i> Send password reset link via Email
+                        <i class="fa-solid fa-link"></i> Send password reset link via Email
                     </a>
                     <button type="button" id="sendOtpEmail" class="btn btn-primary py-2 fs-5 w-100 rounded-1" data-bs-toggle="modal" data-bs-target="#emailOtpModal">
                         <i class="fa-solid fa-envelope"></i> Send OTP via Email
