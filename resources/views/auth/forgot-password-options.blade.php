@@ -153,9 +153,9 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
+                   <!-- <a href="{{ route('reset-via-sms') }}" title="Send Password Reset Link via SMS" class="btn btn-primary py-2 fs-5 w-100 rounded-1">
                         <i class="fa-solid fa-sms"></i> Send password reset link via SMS
-                    </a>
+                    </a>-->
                 </div>
             </div>
         </div>
